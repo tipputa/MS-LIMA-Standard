@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MS-LIMA", "MS-LIMA\MS-LIMA.csproj", "{D5CEF2D5-3B54-4EEB-BFE3-523F83FD32A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A69287FC-E26F-4C9A-983C-9075BCB267B9} = {A69287FC-E26F-4C9A-983C-9075BCB267B9}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\Metabolomics-Core\Common\Common.csproj", "{A69287FC-E26F-4C9A-983C-9075BCB267B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5CEF2D5-3B54-4EEB-BFE3-523F83FD32A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5CEF2D5-3B54-4EEB-BFE3-523F83FD32A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5CEF2D5-3B54-4EEB-BFE3-523F83FD32A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5CEF2D5-3B54-4EEB-BFE3-523F83FD32A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A69287FC-E26F-4C9A-983C-9075BCB267B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A69287FC-E26F-4C9A-983C-9075BCB267B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A69287FC-E26F-4C9A-983C-9075BCB267B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A69287FC-E26F-4C9A-983C-9075BCB267B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B11620AC-D522-4FC1-9C29-C920D3A0D2E6}
+	EndGlobalSection
+EndGlobal
