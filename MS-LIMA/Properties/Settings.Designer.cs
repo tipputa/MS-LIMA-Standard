@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Metabolomics.Mslima.Properties {
+namespace Metabolomics.MsLima.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

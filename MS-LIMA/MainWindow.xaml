@@ -1,10 +1,11 @@
-﻿<Window x:Class="Metabolomics.Mslima.MainWindow"
+﻿<Window x:Class="Metabolomics.MsLima.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MS_LIMA"
+        xmlns:local="clr-namespace:Metabolomics.MsLima"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TextBox Text="Test" HorizontalAlignment="Center" VerticalAlignment="Center"/>
