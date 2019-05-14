@@ -15,7 +15,6 @@ namespace Metabolomics.Core.Parser
         {
             var mspFields = new List<MspBean>();
             var mspField = new MspBean();
-            var mspPeak = new MspBean();
             string wkstr;
             int counter = 0;
 
@@ -84,7 +83,7 @@ namespace Metabolomics.Core.Parser
                             }
                             else if (Regex.IsMatch(wkstr, "COLLISION.?ENERGY:", RegexOptions.IgnoreCase))
                             {
-                                mspField.CollisionEnergy = getCollisionEnergy(wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim()); ;
+                                mspField.CollisionEnergy = GetCollisionEnergy(wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim()); ;
                                 continue;
                             }
                             else if (Regex.IsMatch(wkstr, "INCHIKEY:.*", RegexOptions.IgnoreCase))
@@ -144,8 +143,7 @@ namespace Metabolomics.Core.Parser
                             }
                             else if (Regex.IsMatch(wkstr, "Num Peaks:.*", RegexOptions.IgnoreCase))
                             {
-                                var peakNum = 0;
-                                mspField.Spectrum = ReadSpectrum(sr, wkstr, out peakNum);
+                                mspField.Spectrum = ReadSpectrum(sr, wkstr, out int peakNum);
                                 mspField.PeakNumber = mspField.Spectrum.Count;
                                 continue;
                             }
@@ -153,7 +151,6 @@ namespace Metabolomics.Core.Parser
                         try
                         {
                             mspField.TheoreticalMass = ConvertFormulaToAdductMass(mspField.AdductIon, mspField.Formula, mspField.IonMode);
-                            Console.WriteLine(mspField.TheoreticalMass);
                             mspField.DiffPpm = (float)CommonUtility.PpmCalculator(mspField.TheoreticalMass, mspField.PrecursorMz);
                         }
                         catch
@@ -215,7 +212,7 @@ namespace Metabolomics.Core.Parser
                                         numChar = string.Empty;
 
                                         if (mspPeak.Comment == null)
-                                            mspPeak.Comment = mspPeak.Mz.ToString();
+                                        //    mspPeak.Comment = mspPeak.Mz.ToString();
                                         mspPeaks.Add(mspPeak);
                                         mspPeak = new Peak();
                                         pairCount++;
@@ -262,7 +259,7 @@ namespace Metabolomics.Core.Parser
                                     numChar = string.Empty;
 
                                     if (mspPeak.Comment == null)
-                                        mspPeak.Comment = mspPeak.Mz.ToString();
+                                    //    mspPeak.Comment = mspPeak.Mz.ToString();
 
                                     mspPeaks.Add(mspPeak);
                                     mspPeak = new Peak();
@@ -278,10 +275,10 @@ namespace Metabolomics.Core.Parser
 
             return mspPeaks;
         }
-        private static float getCollisionEnergy(string ce)
+        public static float GetCollisionEnergy(string ce)
         {
             string figure = string.Empty;
-            float ceValue = 0.0f;
+            float ceValue;
             for (int i = 0; i < ce.Length; i++)
             {
                 if (Char.IsNumber(ce[i]) || ce[i] == '.')
@@ -301,11 +298,9 @@ namespace Metabolomics.Core.Parser
         public static double ConvertFormulaToAdductMass(AdductIon adductIon, string formula, IonMode ion)
         {
             var mass = Utility.FormulaUtility.GetMass(formula);
-            Console.WriteLine(mass);
             double adductMass = (mass * (double)adductIon.AdductIonXmer + adductIon.AdductIonAccurateMass) / (double)adductIon.ChargeNumber;
-            Console.WriteLine(adductMass);
+            Console.WriteLine("mass: " + mass + ", adduct mass: " + adductIon.AdductIonAccurateMass);
             if (ion == IonMode.Positive) adductMass -= 0.0005485799 * adductIon.ChargeNumber; else adductMass += 0.0005485799 * adductIon.ChargeNumber;
-            Console.WriteLine(adductMass);
             return adductMass;
         }
     }

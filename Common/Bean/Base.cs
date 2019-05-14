@@ -8,4 +8,5 @@ namespace Metabolomics.Core
     public enum IonMode { Positive, Negative, Both }
     public enum MSType { Centroid, Profile }
 
+    public enum LibraryFileFormat { Msp, Mgf, MassBank, Text }
 }

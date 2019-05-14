@@ -8,16 +8,16 @@ namespace Metabolomics.Core.Parser
 {
     public class AdductIonParser
     {
-        private static double c13_c12 = 0.010815728;
-        private static double h2_h1 = 0.000115013;
-        private static double n15_n14 = 0.003653298;
-        private static double o17_o16 = 0.000380926;
-        private static double o18_o16 = 0.002054994;
-        private static double s33_s32 = 0.007895568;
-        private static double s34_s32 = 0.044741552;
-        private static double k40_k39 = 0.000125458;
-        private static double k41_k39 = 0.072167458;
-        private static double ni60_ni58 = 0.385196175;
+        private static readonly double c13_c12 = 0.010815728;
+        private static readonly double h2_h1 = 0.000115013;
+        private static readonly double n15_n14 = 0.003653298;
+        private static readonly double o17_o16 = 0.000380926;
+        private static readonly double o18_o16 = 0.002054994;
+        private static readonly double s33_s32 = 0.007895568;
+        private static readonly double s34_s32 = 0.044741552;
+        private static readonly double k40_k39 = 0.000125458;
+        private static readonly double k41_k39 = 0.072167458;
+        private static readonly double ni60_ni58 = 0.385196175;
 
         /// <summary>
         /// This method returns the AdductIon class variable from the adduct string.
@@ -38,7 +38,7 @@ namespace Metabolomics.Core.Parser
             var ionType = GetIonType(adductName);
             var isRadical = GetRadicalInfo(adductName);
 
-            //SetAccurateMassAndIsotopeRatio(adduct);
+            SetAccurateMassAndIsotopeRatio(adduct);
 
             adduct.AdductIonXmer = adductIonXmer;
             adduct.ChargeNumber = chargeNum;
@@ -77,7 +77,6 @@ namespace Metabolomics.Core.Parser
                 return string.Empty;
 
             var isCharacterMappeared = false;
-            var isNextEquationAppreared = false;
             var contentString = string.Empty;
 
             for (int i = 0; i < trimedAdductName.Length; i++)
@@ -88,11 +87,6 @@ namespace Metabolomics.Core.Parser
                     continue;
                 }
 
-                //if (isCharacterMappeared && (trimedAdductName[i] == '-' || trimedAdductName[i] == '+')) {
-                //    isNextEquationAppreared = true;
-                //    continue;
-                //}
-
                 if (isCharacterMappeared)
                 {
                     contentString += trimedAdductName[i];
@@ -100,7 +94,7 @@ namespace Metabolomics.Core.Parser
             }
             return contentString.Trim();
         }
-        /*
+        
         public static void SetAccurateMassAndIsotopeRatio(AdductIon adductIonBean)
         {
             string adductName = adductIonBean.AdductIonName;
@@ -136,7 +130,7 @@ namespace Metabolomics.Core.Parser
                 if (counter >= equationNum) break;
             }
         }
-        */
+        
         public static int CountChar(string s, char c)
         {
             return s.Length - s.Replace(c.ToString(), "").Length;
@@ -212,8 +206,7 @@ namespace Metabolomics.Core.Parser
                 if (chargeNum == string.Empty) return 1;
                 else
                 {
-                    int num;
-                    if (!int.TryParse(chargeNum, out num))
+                    if (!int.TryParse(chargeNum, out int num))
                     {
                         return -1;
                     }
@@ -229,8 +222,7 @@ namespace Metabolomics.Core.Parser
                 if (chargeNum == string.Empty) return 1;
                 else
                 {
-                    int num;
-                    if (!int.TryParse(chargeNum, out num))
+                    if (!int.TryParse(chargeNum, out int num))
                     {
                         return -1;
                     }
@@ -241,13 +233,13 @@ namespace Metabolomics.Core.Parser
                 }
             }
         }
-        /*
+        
         public static void SetAccurateMassAndIsotopeRatioOfMolecularFormula(AdductIon adductIonBean, string formula, double mode)
         {
-            double acurateMass = 0;
+            //double acurateMass = 0;
             double multipliedNum = 1.0;
 
-            MatchCollection mc;
+            //MatchCollection mc;
 
             string numString = string.Empty;
             for (int i = 0; i < formula.Length; i++)
@@ -461,124 +453,124 @@ namespace Metabolomics.Core.Parser
 
             //Organic compound adduct check
             #region
-            var formulaBean = new Formula();
-            mc = Regex.Matches(formula, "C(?!a|d|e|l|o|r|s|u)([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 12.0 * multipliedNum; formulaBean.Cnum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 12.0 * multipliedNum; formulaBean.Cnum = (int)(num * multipliedNum); }
-                }
-            }
+            /*
+              var formulaBean = new Formula();
+             mc = Regex.Matches(formula, "C(?!a|d|e|l|o|r|s|u)([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 12.0 * multipliedNum; formulaBean.Cnum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 12.0 * multipliedNum; formulaBean.Cnum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "H(?!e|f|g|o)([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 1.00782503207 * multipliedNum; formulaBean.Hnum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 1.00782503207 * multipliedNum; formulaBean.Hnum = (int)(num * multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "H(?!e|f|g|o)([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 1.00782503207 * multipliedNum; formulaBean.Hnum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 1.00782503207 * multipliedNum; formulaBean.Hnum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "N(?!a|b|d|e|i)([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 14.00307400480 * multipliedNum; formulaBean.Nnum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 14.00307400480 * multipliedNum; formulaBean.Nnum = (int)(num * multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "N(?!a|b|d|e|i)([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 14.00307400480 * multipliedNum; formulaBean.Nnum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 14.00307400480 * multipliedNum; formulaBean.Nnum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "O(?!s)([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 15.99491461956 * multipliedNum; formulaBean.Onum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 15.99491461956 * multipliedNum; formulaBean.Onum = (int)(num * multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "O(?!s)([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 15.99491461956 * multipliedNum; formulaBean.Onum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 15.99491461956 * multipliedNum; formulaBean.Onum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "S(?!b|c|e|i|m|n|r)([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 31.972071 * multipliedNum; formulaBean.Snum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 31.972071 * multipliedNum; formulaBean.Snum = (int)(num * multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "S(?!b|c|e|i|m|n|r)([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 31.972071 * multipliedNum; formulaBean.Snum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 31.972071 * multipliedNum; formulaBean.Snum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "Br([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 78.9183371 * multipliedNum; formulaBean.Brnum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 78.9183371 * multipliedNum; formulaBean.Brnum = (int)(num * multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "Br([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 78.9183371 * multipliedNum; formulaBean.Brnum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 78.9183371 * multipliedNum; formulaBean.Brnum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "Cl([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 34.96885268 * multipliedNum; formulaBean.Clnum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 34.96885268 * multipliedNum; formulaBean.Clnum = (int)(num * multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "Cl([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 34.96885268 * multipliedNum; formulaBean.Clnum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 34.96885268 * multipliedNum; formulaBean.Clnum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "F(?!e)([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 18.99840322 * multipliedNum; formulaBean.Fnum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 18.99840322 * multipliedNum; formulaBean.Fnum = (int)(num * multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "F(?!e)([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 18.99840322 * multipliedNum; formulaBean.Fnum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 18.99840322 * multipliedNum; formulaBean.Fnum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "I(?!n|r)([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 126.904473 * multipliedNum; formulaBean.Inum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 126.904473 * multipliedNum; formulaBean.Inum = (int)(num * multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "I(?!n|r)([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 126.904473 * multipliedNum; formulaBean.Inum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 126.904473 * multipliedNum; formulaBean.Inum = (int)(num * multipliedNum); }
+                 }
+             }
 
-            mc = Regex.Matches(formula, "P(?!d|t|b|r)([0-9]*)", RegexOptions.None);
-            if (mc.Count > 0)
-            {
-                if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 30.97376163 * multipliedNum; formulaBean.Pnum = (int)multipliedNum; }
-                else
-                {
-                    double num;
-                    if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 30.97376163 * multipliedNum; formulaBean.Pnum = (int)(num + multipliedNum); }
-                }
-            }
+             mc = Regex.Matches(formula, "P(?!d|t|b|r)([0-9]*)", RegexOptions.None);
+             if (mc.Count > 0)
+             {
+                 if (mc[0].Groups[1].Value == string.Empty) { acurateMass += 30.97376163 * multipliedNum; formulaBean.Pnum = (int)multipliedNum; }
+                 else
+                 {
+                     double num;
+                     if (double.TryParse(mc[0].Groups[1].Value, out num)) { acurateMass += num * 30.97376163 * multipliedNum; formulaBean.Pnum = (int)(num + multipliedNum); }
+                 }
+             }
 
-            adductIonBean.AdductIonAccurateMass += mode * acurateMass;
-         //   adductIonBean.M1Intensity += mode * SevenGoldenRulesCheck.GetM1IsotopicAbundance(formulaBean);
-         //   adductIonBean.M2Intensity += mode * SevenGoldenRulesCheck.GetM2IsotopicAbundance(formulaBean);
-
+             adductIonBean.AdductIonAccurateMass += mode * acurateMass;
+          //   adductIonBean.M1Intensity += mode * SevenGoldenRulesCheck.GetM1IsotopicAbundance(formulaBean);
+          //   adductIonBean.M2Intensity += mode * SevenGoldenRulesCheck.GetM2IsotopicAbundance(formulaBean);
+          */
             return;
             #endregion
-        }
-        */
+        }        
     }
 }

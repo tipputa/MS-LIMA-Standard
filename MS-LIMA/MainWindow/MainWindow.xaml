@@ -1,0 +1,203 @@
+﻿<Window x:Class="Metabolomics.MsLima.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Metabolomics.MsLima"
+        xmlns:chart="clr-namespace:ChartDrawing;assembly=ChartDrawing"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Title="MainWindow" Height="780" Width="1200">
+
+    <Window.Resources>
+
+        <Style TargetType="GridSplitter">
+            <Setter Property="Background" Value="Gray" />
+        </Style>
+        <Style TargetType="Menu">
+
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush>
+                        <SolidColorBrush.Color>
+                            <Color A="255" R="130" G="170" B="200"/>
+                        </SolidColorBrush.Color>
+                    </SolidColorBrush>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+<!--
+        <ContextMenu x:Key="control_basic">
+            <MenuItem Header="Copy spectra table as MSP format" Click="contextMenu_copyMspFormat_Click" />
+        </ContextMenu>
+        <ContextMenu x:Key="control_compInfo">
+            <MenuItem Header="Copy cell value" Click="contextMenu_copyCell_Click" />
+            <MenuItem Header="Copy row values" Click="contextMenu_copyRows_Click" />
+            <MenuItem Header="Copy spectra table as MSP format" Click="contextMenu_copyMspFormat_Click" />
+        </ContextMenu>
+        
+        <ContextMenu x:Key="control_MassSpectrogram">
+            <MenuItem Header="Save image as.." Click="contextMenu_SaveImageAs_Click" />
+            <MenuItem Header="Copy image as.." Click="contextMenu_CopyImageAs_Click" />
+        </ContextMenu>
+-->
+    </Window.Resources>
+    <DockPanel Name="DockPanel_MainWindow">
+
+        <Menu Name="Menu_MainMenueBar" Height="25" DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Name="MenuItem_Import" Header="_Import" Click="MenuItem_Import_Click">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Import MSP file"/>
+                    </ToolTipService.ToolTip>
+                </MenuItem>
+                <!--
+            <MenuItem Name="MenuItem_Export" Header="_Export as MSP" Click="MenuItem_Export_Click">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Export as MSP format"/>
+                </ToolTipService.ToolTip>
+            </MenuItem>
+            <MenuItem Name="MenuItem_Export2" Header="_Export as MSP without retention time" Click="MenuItem_Export_withoutRT_Click">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Export as MSP format without retention time"/>
+                </ToolTipService.ToolTip>
+            </MenuItem>
+
+            <MenuItem Name="MenuItem_Export3" Header="_Export as table for MZmine library" Click="MenuItem_ExportAsCsv_Click">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Export as tab-separated format"/>
+                </ToolTipService.ToolTip>
+            </MenuItem>
+            -->
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="250" />
+                <ColumnDefinition Width="*" MinWidth="250" />
+            </Grid.ColumnDefinitions>
+            <Grid Name="Grid_Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="50"/>
+                    <RowDefinition Height="*" MinHeight="50"/>
+                </Grid.RowDefinitions>
+
+                <Grid Name="Grid_MSview" Grid.Row="0">
+                    <TabControl Name="TabControl_MS2view" Grid.Row="0" Grid.Column="0" SelectionChanged="TabControl_MS2view_SelectionChanged">
+                        <TabItem Header="MS/MS single viewer" Name="TabItem_SingleView" Background="LightSteelBlue">
+                            <chart:MassSpectrumUI x:Name="SelectedSpectrumUI" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
+                        </TabItem>
+
+                        <TabItem Header="MS/MS multiple viewer" Name="TabItem_ScrollView" Background="LightSteelBlue">
+                            <ScrollViewer Name="Multi" VerticalScrollBarVisibility ="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,1,0"/>
+                        </TabItem>
+                        <TabItem Header="MS/MS grouping viewer" Name="TabItem_GroupView" Background="LightSteelBlue">
+                            <chart:MassSpectrumUI x:Name="GroupSpectrumUI" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
+                        </TabItem>
+
+                    </TabControl>
+
+                </Grid>
+                <GridSplitter Height="3" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+                <TabControl Name="Tab_MS_Table" Grid.Row="1">
+                    <TabItem Header="Peak Information" Name="TabItem_SingleMS" Background="LightSteelBlue">
+                        <DataGrid Name="DataGrid_SingleMassSpectrumTable" SelectedItem="{Binding Path=SelectedPeak}" SelectionChanged="DataGrid_SingleMassSpectrumTable_SelectionChanged" Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" 
+                                  CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" ><!--="{DynamicResource ResourceKey=control_basic}" >-->
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" >
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mz" Width="1*" Binding="{Binding Path=Mz, StringFormat=0.0000, UpdateSourceTrigger=LostFocus}" IsReadOnly="False" />
+                                <DataGridTextColumn Header="Intensity" Width="1*" Binding="{Binding Path=Intensity, StringFormat=0.0, UpdateSourceTrigger=LostFocus}" IsReadOnly="False" />
+                                <DataGridTextColumn Header="Comment" Width="4*" Binding="{Binding Path=Comment, UpdateSourceTrigger=LostFocus}" IsReadOnly="False" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    <TabItem Header="Consensus Peak" Name="TabItem_ConsensusMS" Background="LightSteelBlue">
+                        <DataGrid Name="DataGrid_Consensus" ItemsSource="{Binding PeakConsensus}" SelectedItem="{Binding SelectedMsGroup}" SelectionChanged="DataGrid_Consensus_SelectionChanged" CanUserAddRows="True" 
+                                  CanUserDeleteRows="True" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible">
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader" >
+                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Mz" Width="1*" Binding="{Binding Path=MedianMz, StringFormat=0.0000}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Intensity" Width="1*" Binding="{Binding Path=MedianIntensity, StringFormat=0.0}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Counter" Width="1*" Binding="{Binding Path=Counter, StringFormat=0}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="MinMz" Width="1*" Binding="{Binding Path=MinMz, StringFormat=0.0000}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="MaxMz" Width="1*" Binding="{Binding Path=MaxMz, StringFormat=0.0000}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="MinInt" Width="1*" Binding="{Binding Path=MinIntensity, StringFormat=0.0}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="MaxInt" Width="1*" Binding="{Binding Path=MaxIntensity, StringFormat=0.0}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Rep.Formula" Width="1*" Binding="{Binding Path=CommonFORMULA.Formula }" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Rep.Smiles" Width="1*" Binding="{Binding Path=CommonSMILES.Smiles }" IsReadOnly="True" />
+                                <DataGridTextColumn Header="NumFormula" Width="1*" Binding="{Binding Path=Formula.Count, StringFormat=0}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="NumSmiles" Width="1*" Binding="{Binding Path=SMILES.Count, StringFormat=0}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Comment" Width="2*" Binding="{Binding Path=CommonSMILES.Formula}"  IsReadOnly="False" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            <GridSplitter Width="3" Grid.Column="0" Grid.RowSpan="1" VerticalAlignment="Stretch" HorizontalAlignment="Right" />
+            <Grid Name="Right" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Content="Spectra" FontStyle="Normal" Grid.Row="0" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Center" Background="LightSteelBlue" />
+                <DataGrid Name="DataGrid_Spectra" Grid.Row="0" SelectedItem="{Binding Path=SelectedSpectrum}" SelectionChanged="DataGrid_Spectra_SelectionChanged" CanUserAddRows="False" 
+                          CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,25,0,0"
+                          ><!--="{DynamicResource ResourceKey=control_basic}" >-->
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" >
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Path=Id}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Name" Width="2*" Binding="{Binding Path=Name, UpdateSourceTrigger=LostFocus}" IsReadOnly="False" />
+                        <DataGridTextColumn Header="RT" Width="40" Binding="{Binding Path=RetentionTime, StringFormat=0.00}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Mz" Width="40" Binding="{Binding Path=PrecursorMz, StringFormat=0.0000}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Mz shift&#xa;(ppm)" Width="50" Binding="{Binding Path=DiffPpm, StringFormat=0.0}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Adduct" Width="50" Binding="{Binding Path=AdductIon.AdductIonName}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="CE" Width="40" Binding="{Binding Path=CollisionEnergy, StringFormat=0.0}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Num&#xa;Peaks" Width="40" Binding="{Binding Path=PeakNumber}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Comment" Width="1*" Binding="{Binding Path=Comment, UpdateSourceTrigger=LostFocus}" IsReadOnly="False" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <GridSplitter Height="3" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+
+                <DataGrid Name="DataGrid_CompoundTable"  Grid.Row="1"  SelectedItem="{Binding Path=SelectedCompoundBean}" SelectionChanged="DataGrid_CompoundTable_SelectionChanged" CanUserAddRows="False" 
+                              CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,150,0,0">
+                    <!--="{DynamicResource ResourceKey=control_compInfo}">-->
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" >
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="30" MaxWidth="50" Binding="{Binding Path=Id}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Name" Width="2*" MinWidth="50" Binding="{Binding Path=Name}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="MW" Width="70" MinWidth="50" MaxWidth="80" Binding="{Binding Path=MolecularWeight, StringFormat=0.000}" IsReadOnly="True" />
+                        <!--     <DataGridTextColumn Header="RT" Width="1*" Binding="{Binding Path=RetentionTime, StringFormat=0.00}" IsReadOnly="True" /> -->
+                        <DataGridTextColumn Header="RTs" Width="60" MinWidth="60" MaxWidth="150"  Binding="{Binding Path=RetentionTimes}" IsReadOnly="True" />
+                        <!--                 <DataGridTextColumn Header="Precursor Mz" Width="1*" Binding="{Binding Path=PrecursorMz, StringFormat=0.000}" IsReadOnly="True" />
+                      <DataGridTextColumn Header="Type" Width="1*" Binding="{Binding Path=AdductIonBean.AdductIonName}" IsReadOnly="True" />
+          -->
+                        <DataGridTextColumn Header="Formula" Width="80" MinWidth="70" MaxWidth="120" Binding="{Binding Path=Formula}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="InChIKey" Width="150" MinWidth="60" MaxWidth="200" Binding="{Binding Path=InChIKey}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Num&#xa;Spectra" Width="70" MinWidth="60" Binding="{Binding Path=NumSpectra}" IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

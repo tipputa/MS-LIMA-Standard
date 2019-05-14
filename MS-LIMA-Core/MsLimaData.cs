@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using Metabolomics.MsLima.Bean;
 
-namespace Metabolomics.MsLima.Bean
+namespace Metabolomics.MsLima
 { 
-    public class MsLimaDataBean
+    public class MsLimaData
     {
         #region Properties
 
         /// <summary>
         /// Storage of all data for MS-LIMA
         /// </summary>
-        public DataStorageBean DataStorage { get; set; }
+        public DataStorageBean DataStorage { get; set; } = new DataStorageBean();
         /// <summary>
         /// ParameterBean, all settings for MS-LIMA
         /// </summary>
@@ -23,10 +24,12 @@ namespace Metabolomics.MsLima.Bean
         public string ParameterFilePath { get { return AssemblyPath + "\\" + "MS-LIMA.conf"; } }
         #endregion
         
-        public MsLimaDataBean() {
+        public MsLimaData() {
             WriteParameterFile();
             Console.WriteLine(ParameterFilePath);
             ReadParameterFile();
+
+            
         }
 
         public void ReadParameterFile()

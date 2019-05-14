@@ -20,7 +20,6 @@ namespace Metabolomics.MsLima.Bean
         #endregion
         public ParameterBean() {
             MS2Tol = 0.01;
-
         }
 
         public static ParameterBean ReadParameterFile(string filePath)
