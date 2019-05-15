@@ -16,10 +16,12 @@ namespace Metabolomics.MsLima.Bean
         /// </summary>
         [Key(0)]
         public double MS2Tol { get; set; }
+        public int GraphHeightInMultipleView { get; set; }
 
         #endregion
         public ParameterBean() {
             MS2Tol = 0.01;
+            GraphHeightInMultipleView = 200;
         }
 
         public static ParameterBean ReadParameterFile(string filePath)

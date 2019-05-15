@@ -94,10 +94,10 @@
                         </TabItem>
 
                         <TabItem Header="MS/MS multiple viewer" Name="TabItem_ScrollView" Background="LightSteelBlue">
-                            <ScrollViewer Name="Multi" VerticalScrollBarVisibility ="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,1,0"/>
+                            <ScrollViewer Name="MultiSpectra" VerticalScrollBarVisibility ="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,1,0"/>
                         </TabItem>
                         <TabItem Header="MS/MS grouping viewer" Name="TabItem_GroupView" Background="LightSteelBlue">
-                            <chart:MassSpectrumUI x:Name="GroupSpectrumUI" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
+                            <chart:MassSpectrumUI x:Name="ConsensusSpectrumUI" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
                         </TabItem>
 
                     </TabControl>
@@ -121,7 +121,7 @@
                         </DataGrid>
                     </TabItem>
                     <TabItem Header="Consensus Peak" Name="TabItem_ConsensusMS" Background="LightSteelBlue">
-                        <DataGrid Name="DataGrid_Consensus" ItemsSource="{Binding PeakConsensus}" SelectedItem="{Binding SelectedMsGroup}" SelectionChanged="DataGrid_Consensus_SelectionChanged" CanUserAddRows="True" 
+                        <DataGrid Name="DataGrid_Consensus" ItemsSource="{Binding ConsensusSpectraTable}" SelectedItem="{Binding SelectedMsGroup}" SelectionChanged="DataGrid_Consensus_SelectionChanged" CanUserAddRows="True" 
                                   CanUserDeleteRows="True" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible">
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="DataGridColumnHeader" >
@@ -175,7 +175,7 @@
                 </DataGrid>
                 <GridSplitter Height="3" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
 
-                <DataGrid Name="DataGrid_CompoundTable"  Grid.Row="1"  SelectedItem="{Binding Path=SelectedCompoundBean}" SelectionChanged="DataGrid_CompoundTable_SelectionChanged" CanUserAddRows="False" 
+                <DataGrid Name="DataGrid_CompoundTable" Grid.Row="1"  SelectedItem="{Binding Path=SelectedCompoundBean}" SelectionChanged="DataGrid_CompoundTable_SelectionChanged" CanUserAddRows="False" 
                               CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,150,0,0">
                     <!--="{DynamicResource ResourceKey=control_compInfo}">-->
                     <DataGrid.ColumnHeaderStyle>

@@ -42,10 +42,14 @@ namespace ChartDrawing
         public SeriesList SeriesList { get; set; }
         public Title Title { get; set; }
 
-        public float MaxY { get; set; }
-        public float MinY { get; set; }
-        public float MaxX { get; set; }
-        public float MinX { get; set; }
+        private float maxY;
+        private float minY;
+        private float maxX;
+        private float minX;
+        public float MaxY { get => maxY; set => OnPropertyChangedIfSet(ref maxY, value, nameof(MaxY)); }
+        public float MinY { get => minY; set => OnPropertyChangedIfSet(ref minY, value, nameof(MinY)); }
+        public float MaxX { get => maxX; set => OnPropertyChangedIfSet(ref maxX, value, nameof(MaxX)); }
+        public float MinX { get => minX; set => OnPropertyChangedIfSet(ref minX, value, nameof(MinX)); }
         public float Offset { get; set; } = 5;
         public bool IsTargetManualPickMode { get; set; }
 

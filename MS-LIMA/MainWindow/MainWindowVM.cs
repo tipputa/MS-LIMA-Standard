@@ -11,14 +11,9 @@ namespace Metabolomics.MsLima
 {
     public class MainWindowVM : ViewModelBase
     {
+        #region properties
+
         public MsLimaData MsLimaData { get; set; }
-
-        public MainWindowVM() {
-            this.MsLimaData = new MsLimaData();
-        }
-
-
-        public string Test { get; set; } = "testc";
         public FilteredTable FilteredCompoundTable { get; set; }
         public FilterSettingsForLibrary FilteredTableSetting { get; set; }
 
@@ -26,8 +21,14 @@ namespace Metabolomics.MsLima
             get { return new ObservableCollection<CompoundBean>(MsLimaData.DataStorage.CompoundList); }
         }
 
+        private AnnotatedPeak selectedPeak;
+        public AnnotatedPeak SelectedPeak {
+            get => selectedPeak;
+            set => OnPropertyChangedIfSet(ref selectedPeak, value, nameof(SelectedPeak));
+        }
+
         private MassSpectrum selectedSpectrum;
-        public MassSpectrum SelectedSpectrum{
+        public MassSpectrum SelectedSpectrum {
             get => selectedSpectrum;
             set => OnPropertyChangedIfSet(ref selectedSpectrum, value, nameof(SelectedSpectrum));
         }
@@ -38,18 +39,29 @@ namespace Metabolomics.MsLima
             set => OnPropertyChangedIfSet(ref selectedCompoundBean, value, nameof(SelectedCompoundBean));
         }
 
+        private MsGroup selectedMsGroup;
+        public MsGroup SelectedMsGroup {
+            get => selectedMsGroup;
+            set => OnPropertyChangedIfSet(ref selectedMsGroup, value, nameof(SelectedMsGroup));
+        }
+
+        private List<MsGroup> consensusSpectraTable;
+        public List<MsGroup> ConsensusSpectraTable {
+            get => consensusSpectraTable;
+            set => OnPropertyChangedIfSet(ref consensusSpectraTable, value, nameof(ConsensusSpectraTable));
+        }
+        #endregion
+
+        public MainWindowVM() {
+            this.MsLimaData = new MsLimaData();
+        }
+
+
         public void Refresh_ImportRawData()
         {
             FilteredCompoundTable = new FilteredTable(this.CompoundTable);
             FilteredTableSetting = new FilterSettingsForLibrary(this.FilteredCompoundTable.View);
-            this.FilteredCompoundTable.View.Filter = this.FilteredTableSetting.CompoundFilter;
-
-            /*            this.mainWindow.DataGrid_RawData.ItemsSource = RawData;
-                        this.mainWindow.DataGrid_RawData.UpdateLayout();
-                        if (data.rawData.Count == 0) return;
-                        SelectedCompDataVM = data.rawData[0];
-                        CompRefresh();
-              */
+            FilteredCompoundTable.View.Filter = this.FilteredTableSetting.CompoundFilter;
         }
 
     }

@@ -14,7 +14,6 @@ namespace Metabolomics.MsLima.Bean
     {
         #region Properties
         public List<MassSpectrum> RawLibraryFile { get; set; }
-        public List<MassSpectrum> ModifiedRawMspFile { get; set; }
         public List<CompoundBean> CompoundList { get; set; }
 
         public string FilePath { get; set; }

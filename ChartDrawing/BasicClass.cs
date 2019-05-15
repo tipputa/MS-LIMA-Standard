@@ -104,6 +104,9 @@ namespace ChartDrawing
         public bool IsVisible { get; set; } = false;
 
         // TO DO: Implement Left, Top, Bottom
+        /// <summary>
+        /// Left, Top, and Bottom are not implemented. Please implement them before use as same as Right.
+        /// </summary>
         public Position Position { get; set; } = Position.Right;
         public bool InGraphicArea { get; set; } = true;
         public int MaxWidth { get; set; } = 100;
