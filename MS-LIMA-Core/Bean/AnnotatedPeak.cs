@@ -13,10 +13,7 @@ namespace Metabolomics.MsLima.Bean
         public double Intensity { get; set; }
         public string Comment { get; set; }
         public string Frag { get; set; }
-
-        /*        public string Smiles { get; set; }
-                public string Formulat { get; set; }
-                public string 
-          */
+        public string Smiles { get; set; }
+        public string Formula { get; set; }
     }
 }

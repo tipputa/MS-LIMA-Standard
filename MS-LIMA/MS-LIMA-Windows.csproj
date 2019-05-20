@@ -118,9 +118,9 @@
       <Project>{6131640b-30e6-4606-a394-be953590f3e9}</Project>
       <Name>ChartDrawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommonView\CommonView.csproj">
+    <ProjectReference Include="..\CommonView\MS-LIMA-CommonView.csproj">
       <Project>{e4626675-9f5a-4ebe-9433-6e46413262ab}</Project>
-      <Name>CommonView</Name>
+      <Name>MS-LIMA-CommonView</Name>
     </ProjectReference>
     <ProjectReference Include="..\CommonWindows\CommonWindows.csproj">
       <Project>{691f7770-0efb-4761-97db-205f56c3e848}</Project>

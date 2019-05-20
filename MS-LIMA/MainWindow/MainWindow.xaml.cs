@@ -28,6 +28,8 @@ namespace Metabolomics.MsLima {
         #region Properties
         public MainWindowVM MainWindowVM;
         public ControlRefresh ControlRefresh;
+        public TabMassSpectraView TabMassSpectraView { get; set; } = TabMassSpectraView.SingleMS;
+        public TabMassSpectrumTable TabMassSpectrumTable { get; set; } = TabMassSpectrumTable.SinglePeak;
         #endregion
 
         public MainWindow()
@@ -39,8 +41,10 @@ namespace Metabolomics.MsLima {
         private void Initialize()
         {
             this.MainWindowVM = new MainWindowVM();
-            this.ControlRefresh = new ControlRefresh(MainWindowVM);   
+            this.ControlRefresh = new ControlRefresh(MainWindowVM);
             this.DataContext = this.MainWindowVM;
+
+            
         }
 
 
@@ -75,7 +79,6 @@ namespace Metabolomics.MsLima {
                 Mouse.OverrideCursor = null;
                 CompoundTableRefresh();
             }
-
         }
         #endregion
 
@@ -83,40 +86,69 @@ namespace Metabolomics.MsLima {
         private void DataGrid_CompoundTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.MainWindowVM.SelectedCompoundBean == null) return;
+            MainWindowMetaInformationCompoundRefresh();
             SpectraTableRefresh();
-
         }
 
         private void DataGrid_Spectra_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.MainWindowVM.SelectedSpectrum == null) return;
             MassSpectrumTableRefresh();
-
+            MassSpectrumViewRefresh();
+            MainWindowMetaInformationSpectraRefresh();
         }
 
         private void DataGrid_SingleMassSpectrumTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            ControlRefresh.SelectedPeakChanged(TabMassSpectraView);
         }
 
         private void DataGrid_Consensus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void TabControl_MS2view_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Console.WriteLine("tab view" + this.TabControl_MS2view.SelectedIndex);
 
+            if (this.TabControl_MS2view.SelectedIndex == 0)
+            {
+                TabMassSpectraView = TabMassSpectraView.SingleMS;
+            }
+            else if (this.TabControl_MS2view.SelectedIndex == 1)
+            {
+                TabMassSpectraView = TabMassSpectraView.MultipleMS;
+            }
+            else if (this.TabControl_MS2view.SelectedIndex == 2)
+            {
+                TabMassSpectraView = TabMassSpectraView.ConsensusMS;
+            }
+            MassSpectrumViewRefresh();
         }
 
+        private void Tab_MS_Table_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Console.WriteLine("tab table" + this.Tab_MS_Table.SelectedIndex);
+            if (this.Tab_MS_Table.SelectedIndex == 0)
+            {
+                TabMassSpectrumTable = TabMassSpectrumTable.SinglePeak;
+            }
+            else if (this.Tab_MS_Table.SelectedIndex == 1)
+            {
+                TabMassSpectrumTable = TabMassSpectrumTable.Consensus;
+            }
+            MassSpectrumTableRefresh();
+        }
         #endregion
 
         #region Refresh
         private void CompoundTableRefresh()
         {
             MainWindowVM.Refresh_ImportRawData();
-            DataGrid_CompoundTable.ItemsSource = MainWindowVM.CompoundTable;
+            DataGrid_CompoundTable.ItemsSource = MainWindowVM.FilteredCompoundTable.View;
             MainWindowVM.SelectedCompoundBean = MainWindowVM.CompoundTable[0];
+            MainWindowMetaInformationRefresh();
+            MainWindowMetaInformationCompoundRefresh();
             SpectraTableRefresh();
         }
 
@@ -125,30 +157,18 @@ namespace Metabolomics.MsLima {
             DataGrid_Spectra.ItemsSource = MainWindowVM.SelectedCompoundBean.Spectra;
             MainWindowVM.SelectedSpectrum = MainWindowVM.SelectedCompoundBean.Spectra[0];
             MassSpectrumTableRefresh();
+            MassSpectrumViewRefresh();
+            MainWindowMetaInformationSpectraRefresh();
         }
 
         private void MassSpectrumTableRefresh()
         {
-            if (this.MainWindowVM.SelectedSpectrum == null) return;
-            if (this.TabControl_MS2view.SelectedIndex == 0)
-            {
-                SingleSpectrumViewRefresh();
-            }
-            else if (TabControl_MS2view.SelectedIndex == 1)
-            {
-
-                MultipleSpectraViewRefresh();
-            }
-            else if (TabControl_MS2view.SelectedIndex == 2)
-            {
-                ConsensusSpectrumTableRefresh();
-                ConsensusSpectrumViewRefresh();
-            }
-            if (this.Tab_MS_Table.SelectedIndex == 0)
+            if (MainWindowVM.SelectedSpectrum == null) return;
+            if (TabMassSpectrumTable == TabMassSpectrumTable.SinglePeak)
             {
                 SingleSpectrumTableRefresh();
             }
-            else
+            else if(TabMassSpectrumTable == TabMassSpectrumTable.Consensus)
             {
                 ConsensusSpectrumTableRefresh();
             }
@@ -156,7 +176,21 @@ namespace Metabolomics.MsLima {
 
         private void MassSpectrumViewRefresh()
         {
-            ConsensusSpectrumViewRefresh();
+            if (MainWindowVM.SelectedSpectrum == null) return;
+            if (TabMassSpectraView == TabMassSpectraView.SingleMS)
+            {
+                ControlRefresh.SingleSpectrumViewRefresh();
+
+            }
+            else if(TabMassSpectraView == TabMassSpectraView.MultipleMS)
+            {
+                MultipleSpectraViewRefresh();
+            }
+            else if(TabMassSpectraView == TabMassSpectraView.ConsensusMS)
+            {
+                ConsensusSpectrumTableRefresh();
+                ControlRefresh.ConsensusSpectrumViewRefresh();
+            }
         }
 
 
@@ -171,27 +205,31 @@ namespace Metabolomics.MsLima {
             MainWindowVM.ConsensusSpectraTable = MsGrouping.Excute(MainWindowVM.SelectedCompoundBean);
         }
 
-        private void SingleSpectrumViewRefresh()
-        {
-            var vm = MassSpectrumViewHandler.GetMassSpectrumDrawVisual(MainWindowVM.SelectedSpectrum);
-            SelectedSpectrumUI.Content = new ChartDrawing.MassSpectrumUI(vm);
-        }
 
         private void MultipleSpectraViewRefresh()
         {
-            var vm = ControlRefresh.MultipleSpectraRefresh();
-            MultiSpectra.Content = vm;
+            MainWindowVM.MultipleSpectra = ControlRefresh.MultipleSpectraRefresh();
         }
 
-        private void ConsensusSpectrumViewRefresh()
+
+        private void MainWindowMetaInformationRefresh()
         {
-            var vm = MassSpectrumViewHandler.GetMassSpectrumDrawVisualFromConsensus(MainWindowVM.ConsensusSpectraTable);
-            ConsensusSpectrumUI.Content = new ChartDrawing.MassSpectrumUI(vm);
+            Label_NumComp.Text = "Number of compounds: " + MainWindowVM.CompoundTable.Count;
+            Label_NumSpectra.Text = "Number of spectra: " + MainWindowVM.MsLimaData.DataStorage.RawLibraryFile.Count;
+        }
+        private void MainWindowMetaInformationCompoundRefresh()
+        {
+            Label_SelectedComp.Text = "Selected sompound: " + MainWindowVM.SelectedCompoundBean.Name;
+        }
+
+        private void MainWindowMetaInformationSpectraRefresh()
+        {
+            if (MainWindowVM.SelectedSpectrum == null) return;
+            Label_SelectedSpectra.Text = "Spectra ID: " + MainWindowVM.SelectedSpectrum.Id + ", " + MainWindowVM.SelectedSpectrum.AdductIon.AdductIonName + ", " + MainWindowVM.SelectedSpectrum.CollisionEnergy + "eV";
         }
 
 
         #endregion
-
 
 
     }

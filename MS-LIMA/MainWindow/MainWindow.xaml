@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Metabolomics.MsLima"
-        xmlns:chart="clr-namespace:ChartDrawing;assembly=ChartDrawing"
+        xmlns:view="clr-namespace:Metabolomics.Core;assembly=MS-LIMA-CommonView"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         Title="MainWindow" Height="780" Width="1200">
@@ -90,21 +90,21 @@
                 <Grid Name="Grid_MSview" Grid.Row="0">
                     <TabControl Name="TabControl_MS2view" Grid.Row="0" Grid.Column="0" SelectionChanged="TabControl_MS2view_SelectionChanged">
                         <TabItem Header="MS/MS single viewer" Name="TabItem_SingleView" Background="LightSteelBlue">
-                            <chart:MassSpectrumUI x:Name="SelectedSpectrumUI" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
+                            <view:MassSpectrumUI x:Name="SelectedSpectrumUI" Content="{Binding SingleMassSpectrumUI}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
                         </TabItem>
 
                         <TabItem Header="MS/MS multiple viewer" Name="TabItem_ScrollView" Background="LightSteelBlue">
-                            <ScrollViewer Name="MultiSpectra" VerticalScrollBarVisibility ="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,1,0"/>
+                            <ScrollViewer Name="MultiSpectra" Content="{Binding MultipleSpectra}" VerticalScrollBarVisibility ="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,1,0"/>
                         </TabItem>
                         <TabItem Header="MS/MS grouping viewer" Name="TabItem_GroupView" Background="LightSteelBlue">
-                            <chart:MassSpectrumUI x:Name="ConsensusSpectrumUI" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
+                            <view:MassSpectrumUI x:Name="ConsensusSpectrumUI" Content="{Binding ConsensusSpectrumUI}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
                         </TabItem>
 
                     </TabControl>
 
                 </Grid>
                 <GridSplitter Height="3" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
-                <TabControl Name="Tab_MS_Table" Grid.Row="1">
+                <TabControl Name="Tab_MS_Table" Grid.Row="1" SelectionChanged="Tab_MS_Table_SelectionChanged">
                     <TabItem Header="Peak Information" Name="TabItem_SingleMS" Background="LightSteelBlue">
                         <DataGrid Name="DataGrid_SingleMassSpectrumTable" SelectedItem="{Binding Path=SelectedPeak}" SelectionChanged="DataGrid_SingleMassSpectrumTable_SelectionChanged" Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" 
                                   CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" ><!--="{DynamicResource ResourceKey=control_basic}" >-->
@@ -174,7 +174,48 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <GridSplitter Height="3" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+                <Grid Grid.Row="1">
+                    <Label Content="Compound Information" FontStyle="Normal" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Center" Background="LightSteelBlue" />
+                    <Grid Name="Grid_RawData_Info" Grid.Row="1" Grid.Column="0" Margin="5,25,0,0" Height="125" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" MinWidth="10" />
+                            <ColumnDefinition Width="1*" MinWidth="20" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,0" Height="75" VerticalAlignment="Top">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="500"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Name="Label_NumComp" Grid.Column="0" Margin="0,0,0,0" FontFamily="Calibri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
+                            </Grid>
+                            <TextBox Name="Label_NumSpectra" Text="Please import a library" Margin="0,0,0,0" FontFamily="Calibri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
+                            <TextBox Name="Label_SelectedComp" Margin="0,0,0,0" FontFamily="Caribri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
+                            <TextBox Name="Label_SelectedSpectra" Margin="0,0,0,0" FontFamily="Caribri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
+                        </StackPanel>
+                        <Grid Name="Grid_Filter" Margin="0,75,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" MinWidth="30"/>
+                                <ColumnDefinition Width="*" MinWidth="30"/>
+                                <ColumnDefinition Width="*" MinWidth="30"/>
+                                <ColumnDefinition Width="3*" MinWidth="30"/>
+                            </Grid.ColumnDefinitions>
 
+                            <Label Grid.Column="0" Content="Name" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <Label Grid.Column="1" Content="MW"  HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <Label Grid.Column="2" Content="RT" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <Label Grid.Column="3" Content="InChIKey" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                            <TextBox Grid.Column="0" Text="{Binding Path=FilterNameText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                            <TextBox Grid.Column="1" Text="{Binding Path=FilterMzText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                            <TextBox Grid.Column="2" Text="{Binding Path=FilterRtText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                            <TextBox Grid.Column="3" Text="{Binding Path=FilterInChIKeyText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                        </Grid>
+                        <Grid Name="Grid_Structure" Grid.Column="1">
+                            <Image Name="Image_Structure" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
                 <DataGrid Name="DataGrid_CompoundTable" Grid.Row="1"  SelectedItem="{Binding Path=SelectedCompoundBean}" SelectionChanged="DataGrid_CompoundTable_SelectionChanged" CanUserAddRows="False" 
                               CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,150,0,0">
                     <!--="{DynamicResource ResourceKey=control_compInfo}">-->

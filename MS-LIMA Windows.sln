@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonWindows", "CommonWind
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartDrawing", "ChartDrawing\ChartDrawing.csproj", "{6131640B-30E6-4606-A394-BE953590F3E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonView", "CommonView\CommonView.csproj", "{E4626675-9F5A-4EBE-9433-6E46413262AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MS-LIMA-CommonView", "CommonView\MS-LIMA-CommonView.csproj", "{E4626675-9F5A-4EBE-9433-6E46413262AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -15,14 +15,11 @@ namespace Metabolomics.MsLima.Bean
         /// Tolerance of MS2 peaks
         /// </summary>
         [Key(0)]
-        public double MS2Tol { get; set; }
-        public int GraphHeightInMultipleView { get; set; }
-
+        public double MS2Tol { get; set; } = 0.01;
+        public int GraphHeightInMultipleView { get; set; } = 200;
+        public int NumberOfDecimalPlaces { get; set; } = 3;
         #endregion
-        public ParameterBean() {
-            MS2Tol = 0.01;
-            GraphHeightInMultipleView = 200;
-        }
+        public ParameterBean() { }
 
         public static ParameterBean ReadParameterFile(string filePath)
         {
@@ -38,7 +35,7 @@ namespace Metabolomics.MsLima.Bean
         {
             if (parameter == null)
             {
-                parameter = new ParameterBean();
+                return;
             }
             MessagePackDefaultHandler.SaveToFile<ParameterBean>(parameter, filePath);
         }

@@ -7,9 +7,18 @@ using Metabolomics.Core;
 using Metabolomics.MsLima.Bean;
 namespace Metabolomics.MsLima
 {
-    public static class MassSpectrumViewHandler
+    public class MassSpectrumViewHandler
     {
-        public static DrawVisualMassSpectrum GetMassSpectrumDrawVisual(MassSpectrum spectrum)
+        //number of decimal places
+        public ParameterBean Param { get; set; }
+        public int NumDecimalPlaces { get => Param.NumberOfDecimalPlaces; }
+        public MassSpectrumViewHandler() { }
+        public MassSpectrumViewHandler(ParameterBean param) {
+            Param = param;
+        }
+
+        #region Single mass spectrum
+        public DrawVisualMassSpectrum GetMassSpectrumDrawVisual(MassSpectrum spectrum)
         {
             var height = 200;
             var width = 500;
@@ -18,7 +27,7 @@ namespace Metabolomics.MsLima
                 Height = height,
                 Width = width,
                 LabelSpace = new LabelSpace() { Top = 25, Bottom = 0 },
-                Margin = new Margin(60, 0, 20, 40)
+                Margin = new Margin(60, 30, 20, 40)
             };
             area.AxisX.IsItalicLabel = true;
             //area.AxisX.Pen = new System.Windows.Media.Pen(Brushes.Black, 1);
@@ -29,9 +38,9 @@ namespace Metabolomics.MsLima
             area.AxisY.AxisLabel = "Intensity";
             area.AxisY.MinorScaleEnabled = false;
             area.AxisX.MinorScaleEnabled = false;
-            var title = Utility.GetDefaultTitleV1();
-            var slist = GetMassSpectrumSeriesList(ConvertMassSpectrum2List(spectrum)); 
-            var dv = new DrawVisualMassSpectrum(area, title, slist);
+            var title = Utility.GetDefaultTitleV1(15, "ID: " + spectrum.Id + ", " + spectrum.Name);
+            var slist = GetMassSpectrumSeriesList(spectrum);
+            var dv = new DrawVisualMassSpectrum(area, title, slist, null, Param.MS2Tol, NumDecimalPlaces);
             dv.SeriesList.MinY = 0;
             if (slist.Series[0].Points.Count > 1)
             {
@@ -47,43 +56,28 @@ namespace Metabolomics.MsLima
             return dv;
         }
 
-        public static List<float[]> ConvertMassSpectrum2List(MassSpectrum spectrum)
-        {
-            var newList = new List<float[]>();
-            foreach(var s in spectrum.Spectrum)
-            {
-                newList.Add(new float[2] { (float)s.Mz, (float)s.Intensity });
-            }
-            return newList;
-        }
-
-        public static List<float[]> ConvertMsgroup2List(List<MsGroup> spectrum)
-        {
-            var newList = new List<float[]>();
-            foreach (var s in spectrum)
-            {
-                newList.Add(new float[2] { (float)s.MedianMz, (float)s.MedianIntensity });
-            }
-            return newList;
-
-        }
-
-
-        public static SeriesList GetMassSpectrumSeriesList(List<float[]> msList)
+        public SeriesList GetMassSpectrumSeriesList(MassSpectrum spectrum)
         {
             var slist = new SeriesList();
-            var s = new Series() { ChartType = ChartType.MS, MarkerType = MarkerType.None, Pen = new System.Windows.Media.Pen(Brushes.Black, 1), FontType = new Typeface("Arial") };
-            var x1 = msList.Select(x => (float)(x[0])).ToArray();
-            var y1 = msList.Select(x => (float)(x[1])).ToArray();
-            for (var i = 0; i < x1.Length; i++)
+            var s = new Series() { ChartType = ChartType.MS, MarkerType = MarkerType.None, Pen = new System.Windows.Media.Pen(Brushes.Blue, 1), FontType = new Typeface("Arial") };
+            var maxInt = spectrum.Spectrum.Max(x => x.Intensity);
+            foreach (var peak in spectrum.Spectrum)
             {
-                s.AddPoint(x1[i], y1[i], x1[i].ToString("0.000"));
+                var peakAnnotation = GetMsPeakAnnotation(peak, maxInt);
+                s.AddPoint((float)peak.Mz, (float)peak.Intensity, 
+                    Math.Round(peak.Mz, NumDecimalPlaces).ToString(),
+                    new Accessory() { PeakAnnotation = peakAnnotation }
+                    );
+
             }
             s.IsLabelVisible = true;
             slist.Series.Add(s);
             return slist;
         }
-        public static DrawVisualMassSpectrum GetMassSpectrumDrawVisualFromConsensus(List<MsGroup> spectrum)
+        #endregion
+
+        #region Consensus Mass Spectrum
+        public DrawVisualMassSpectrum GetMassSpectrumDrawVisualFromConsensus(List<MsGroup> spectrum)
         {
             var height = 200;
             var width = 500;
@@ -104,7 +98,7 @@ namespace Metabolomics.MsLima
             area.AxisY.MinorScaleEnabled = false;
             area.AxisX.MinorScaleEnabled = false;
             var title = Utility.GetDefaultTitleV1();
-            var slist = GetMassSpectrumSeriesList(ConvertMsgroup2List(spectrum));
+            var slist = GetMassSpectrumSeriesList(spectrum);
             var dv = new DrawVisualMassSpectrum(area, title, slist);
             dv.SeriesList.MinY = 0;
             if (slist.Series[0].Points.Count > 1)
@@ -120,5 +114,34 @@ namespace Metabolomics.MsLima
             dv.Initialize();
             return dv;
         }
+        public SeriesList GetMassSpectrumSeriesList(List<MsGroup> spectrum)
+        {
+            var slist = new SeriesList();
+            var s = new Series() { ChartType = ChartType.MS, MarkerType = MarkerType.None, Pen = new System.Windows.Media.Pen(Brushes.Black, 1), FontType = new Typeface("Arial") };
+            foreach (var peak in spectrum)
+            {
+                s.AddPoint((float)peak.MedianMz, (float)peak.MedianIntensity, Math.Round(peak.MedianMz, NumDecimalPlaces).ToString());
+
+            }
+            s.IsLabelVisible = true;
+            slist.Series.Add(s);
+            return slist;
+        }
+        #endregion
+
+        #region Utilities
+        // Conversion from AnnotatedPeaks to Accessory.MsPeakAnnotation for 
+        public static Accessory.MsPeakAnnotation GetMsPeakAnnotation(AnnotatedPeak peak, double maxInt)
+        {
+            return new Accessory.MsPeakAnnotation()
+            {
+                RelInt = (peak.Intensity / maxInt) * 100,
+                IsMsGroup = false,
+                Formula = peak.Formula,
+                Smiles = peak.Smiles
+            };
+        }
+
+        #endregion
     }
 }

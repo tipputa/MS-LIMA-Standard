@@ -147,6 +147,10 @@ namespace ChartDrawing
         public void AddPoint(float x, float y, string s) {
             Points.Add(new XY() { X = x, Y = y, Label = s });
         }
+        public void AddPoint(float x, float y, string s, Accessory accessory)
+        {
+            Points.Add(new XY() { X = x, Y = y, Label = s, Accessory = accessory });
+        }
     }
 
     public class XY
@@ -154,12 +158,14 @@ namespace ChartDrawing
         public string Label { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
+        public Accessory Accessory { get; set; }
     }
 
     public class Accessory
     {
         public PeakInfo Chromatogram { get; set; }
-
+        public MsPeakAnnotation PeakAnnotation { get; set; }
+        
         public Accessory() {
             this.Chromatogram = new PeakInfo() {
                 RtTop = -1,
@@ -194,6 +200,18 @@ namespace ChartDrawing
             public float AreaFactor { get; set; } = 1.0F; // in GCMS, if RI is used for drawing chromatogram, the area is calculated by (RtEnd - RtBegin)/(RiEnd - RiBegin)
             public float SignalToNoise { get; set; } = 1.0F; 
             public float EstimatedNoise { get; set; } = 1.0F;
+        }
+
+        // Selected MS2 peak for mass spectrum
+        public class MsPeakAnnotation
+        {
+            public double RelInt { get; set; }
+            public string Formula { get; set; }
+            public string Smiles { get; set; }
+            public bool IsMsGroup { get; set; } = false;
+            public string MzRange { get; set; }
+            public string IntRange { get; set; }
+            public string Frequency { get; set; }
         }
     }
 

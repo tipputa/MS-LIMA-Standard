@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Metabolomics.MsLima
 {
-    public enum TabSpectrumTable { SinglePeak, Consensus }
-    public enum TabMassSpectraView { SingleMS, ScrollMS, ConsensusMS }
+    public enum TabMassSpectrumTable { SinglePeak, Consensus }
+    public enum TabMassSpectraView { SingleMS, MultipleMS, ConsensusMS }
     public class MainWindowModel
     {
 
