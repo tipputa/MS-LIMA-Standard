@@ -18,17 +18,17 @@ namespace Metabolomics.Core
         public ICommand OkCommand {
             get {
                 if (okCommand != null) return okCommand;
-                okCommand = new DelegateCommand(executeCommand, canExecuteCommand);
+                okCommand = new DelegateCommand(ExecuteCommand, CanExecuteCommand);
                 return okCommand;
             }
         }
 
-        private bool canExecuteCommand(object parameter)
+        private bool CanExecuteCommand(object parameter)
         {
             return !HasError;
         }
 
-        protected virtual void executeCommand(object parameter)
+        protected virtual void ExecuteCommand(object parameter)
         {
         }
 
@@ -36,24 +36,21 @@ namespace Metabolomics.Core
         public event EventHandler<EventArgs> CloseViewHandler;
 
         private ICommand closeCommand;
-        public ICommand CloseCommand { get { if (closeCommand != null) return closeCommand; closeCommand = new DelegateCommand(excuteCloseCommand, canExcuteCloseCommand); return closeCommand; } }
+        public ICommand CloseCommand { get { if (closeCommand != null) return closeCommand; closeCommand = new DelegateCommand(ExcuteCloseCommand, CanExcuteCloseCommand); return closeCommand; } }
 
-        private bool canExcuteCloseCommand(object parameter)
+        private bool CanExcuteCloseCommand(object parameter)
         {
             return true;
         }
 
-        private void excuteCloseCommand(object parameter)
+        private void ExcuteCloseCommand(object parameter)
         {
             CloseView();
         }
 
         public void CloseView()
         {
-            if (CloseViewHandler != null)
-            {
-                CloseViewHandler(this, EventArgs.Empty);
-            }
+            CloseViewHandler?.Invoke(this, EventArgs.Empty);
         }
 
 
@@ -155,9 +152,7 @@ namespace Metabolomics.Core
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            PropertyChangedEventHandler eventHandlers = this.PropertyChanged;
-            if (null != eventHandlers)
-                eventHandlers(this, e);
+            this.PropertyChanged?.Invoke(this, e);
         }
 
         protected bool OnPropertyChangedIfSet<TResult>(ref TResult source, TResult value, string propertyName = null)

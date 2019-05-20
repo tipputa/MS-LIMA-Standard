@@ -105,6 +105,7 @@ namespace Metabolomics.MsLima {
 
         private void DataGrid_Consensus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ControlRefresh.SelectedConsensusPeakChanged(TabMassSpectraView);
         }
 
         private void TabControl_MS2view_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -128,16 +129,20 @@ namespace Metabolomics.MsLima {
 
         private void Tab_MS_Table_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Console.WriteLine(e.OriginalSource);
             Console.WriteLine("tab table" + this.Tab_MS_Table.SelectedIndex);
-            if (this.Tab_MS_Table.SelectedIndex == 0)
+            if (e.OriginalSource is TabControl)
             {
-                TabMassSpectrumTable = TabMassSpectrumTable.SinglePeak;
+                if (this.Tab_MS_Table.SelectedIndex == 0)
+                {
+                    TabMassSpectrumTable = TabMassSpectrumTable.SinglePeak;
+                }
+                else if (this.Tab_MS_Table.SelectedIndex == 1)
+                {
+                    TabMassSpectrumTable = TabMassSpectrumTable.Consensus;
+                }
+                MassSpectrumTableRefresh();
             }
-            else if (this.Tab_MS_Table.SelectedIndex == 1)
-            {
-                TabMassSpectrumTable = TabMassSpectrumTable.Consensus;
-            }
-            MassSpectrumTableRefresh();
         }
         #endregion
 

@@ -17,38 +17,41 @@ namespace Metabolomics.MsLima
         public MsLimaData MsLimaData { get; set; }
         public MassSpectrumViewHandler MsHandler { get; set; }
 
-        public FilteredTable FilteredCompoundTable { get; set; }
-        public FilterSettingsForLibrary FilteredTableSetting { get; set; }
+        public AutoRepeater AutoExporter { get; set; }
 
         public ObservableCollection<CompoundBean> CompoundTable {
             get { return new ObservableCollection<CompoundBean>(MsLimaData.DataStorage.CompoundList); }
         }
+        public FilteredTable FilteredCompoundTable { get; set; }
+        public FilterSettingsForLibrary FilteredTableSetting { get; set; }
+
+
 
         private AnnotatedPeak selectedPeak;
+        private MassSpectrum selectedSpectrum;
+        private CompoundBean selectedCompoundBean;
+        private MsGroup selectedMsGroup;
+        private List<MsGroup> consensusSpectraTable;
         public AnnotatedPeak SelectedPeak {
             get => selectedPeak;
             set => OnPropertyChangedIfSet(ref selectedPeak, value, nameof(SelectedPeak));
         }
 
-        private MassSpectrum selectedSpectrum;
         public MassSpectrum SelectedSpectrum {
             get => selectedSpectrum;
             set => OnPropertyChangedIfSet(ref selectedSpectrum, value, nameof(SelectedSpectrum));
         }
 
-        private CompoundBean selectedCompoundBean;
         public CompoundBean SelectedCompoundBean {
             get => selectedCompoundBean;
             set => OnPropertyChangedIfSet(ref selectedCompoundBean, value, nameof(SelectedCompoundBean));
         }
 
-        private MsGroup selectedMsGroup;
         public MsGroup SelectedMsGroup {
             get => selectedMsGroup;
             set => OnPropertyChangedIfSet(ref selectedMsGroup, value, nameof(SelectedMsGroup));
         }
 
-        private List<MsGroup> consensusSpectraTable;
         public List<MsGroup> ConsensusSpectraTable {
             get => consensusSpectraTable;
             set => OnPropertyChangedIfSet(ref consensusSpectraTable, value, nameof(ConsensusSpectraTable));
@@ -71,10 +74,10 @@ namespace Metabolomics.MsLima
                 ConsensusSpectrumUI.UpdateFE(value);
             }
         }
-    #endregion
+        #endregion
 
-    #region UI
-    public MassSpectrumUI SingleMassSpectrumUI { get; set; }
+        #region UI
+        public MassSpectrumUI SingleMassSpectrumUI { get; set; }
         public MassSpectrumUI ConsensusSpectrumUI { get; set; }
 
         private StackPanel multipleSpectra;
@@ -83,7 +86,6 @@ namespace Metabolomics.MsLima
             set => OnPropertyChangedIfSet(ref multipleSpectra, value, nameof(MultipleSpectra)); }
 
         #endregion
-
 
         #region Filter
 
@@ -123,17 +125,23 @@ namespace Metabolomics.MsLima
             }
         }
         #endregion
+
         #endregion
 
         public MainWindowVM() {
             this.MsLimaData = new MsLimaData();
             this.MsHandler = new MassSpectrumViewHandler(MsLimaData.Parameter);
-
+            this.AutoExporter = new AutoRepeater(MsLimaData.Parameter.AutoExportIntervalMillisecond);
+            this.AutoExporter.OnTimeEventHandler += (o, e) => { AutoExportFunction(); }; 
             SingleMassSpectrumUI = new MassSpectrumUI(SingleMassSpectrumVM);
             ConsensusSpectrumUI = new MassSpectrumUI(ConsensusSpectrumVM);
             MultipleSpectra = new StackPanel();
         }
 
+        public void AutoExportFunction()
+        {
+
+        }
 
         public void Refresh_ImportRawData()
         {

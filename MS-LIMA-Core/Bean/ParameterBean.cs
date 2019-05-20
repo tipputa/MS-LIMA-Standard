@@ -18,6 +18,7 @@ namespace Metabolomics.MsLima.Bean
         public double MS2Tol { get; set; } = 0.01;
         public int GraphHeightInMultipleView { get; set; } = 200;
         public int NumberOfDecimalPlaces { get; set; } = 3;
+        public int AutoExportIntervalMillisecond { get; set; } = 60000;
         #endregion
         public ParameterBean() { }
 

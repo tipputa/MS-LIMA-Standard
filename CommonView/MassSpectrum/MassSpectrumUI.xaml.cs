@@ -227,11 +227,10 @@ namespace Metabolomics.Core
                         float[] peakInformation = fe.GetDataPositionOnMousePoint(fe.ac.RightButtonStartClickPoint);
                         if (peakInformation == null) return;
 
-                        float mousePointRt = 0;
                         float newMinRt = float.MaxValue;
                         float newMaxRt = float.MinValue;
 
-                        mousePointRt = peakInformation[1];
+                        float mousePointRt = peakInformation[1];
 
                         if (Mouse.GetPosition(this).X - fe.ac.RightButtonEndClickPoint.X > 0)
                         {
@@ -293,7 +292,7 @@ namespace Metabolomics.Core
                         else if (Mouse.GetPosition(this).Y - fe.ac.RightButtonEndClickPoint.Y > 0)
                         {
                             fe.ac.RightButtonEndClickPoint = Mouse.GetPosition(this);
-                            fe.drawing.MaxY = fe.drawing.MaxY * 1.02F;
+                            fe.drawing.MaxY *= 1.02F;
 
                             if (fe.drawing.MaxY > fe.drawing.SeriesList.MaxY)
                                 fe.drawing.MaxY = fe.drawing.SeriesList.MaxY;

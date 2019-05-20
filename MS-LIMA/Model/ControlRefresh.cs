@@ -16,7 +16,7 @@ namespace Metabolomics.MsLima.Model
 {
     public class ControlRefresh
     {
-        private MainWindowVM mainWindowVM;
+        private readonly MainWindowVM mainWindowVM;
 
         public ControlRefresh (MainWindowVM vm) { mainWindowVM = vm; }
 
@@ -43,6 +43,32 @@ namespace Metabolomics.MsLima.Model
             {
 
             }
+
+        }
+
+        public void SelectedConsensusPeakChanged(TabMassSpectraView tab)
+        {
+            if (mainWindowVM.SelectedMsGroup == null) return;
+            if (tab == TabMassSpectraView.SingleMS)
+            {
+                mainWindowVM.SingleMassSpectrumUI.UpdateSelectedPeak(mainWindowVM.SelectedMsGroup.MedianMz);
+            }
+            else if (tab == TabMassSpectraView.MultipleMS)
+            {
+                if (mainWindowVM.MultipleSpectra == null) return;
+                foreach (var g in mainWindowVM.MultipleSpectra.Children)
+                {
+                    var grid = (Grid)g;
+                    var ui = (MassSpectrumUI)grid.Children[0];
+                    ui.UpdateSelectedPeak(mainWindowVM.SelectedMsGroup.MedianMz);
+                }
+
+            }
+            else if (tab == TabMassSpectraView.ConsensusMS)
+            {
+
+            }
+
 
         }
 
@@ -103,10 +129,6 @@ namespace Metabolomics.MsLima.Model
 
         private void MultipleMassSpectrogramVIew_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-
-            Console.WriteLine(e.PropertyName);
-            var tmpGrid = new Grid();
-            var tmpUI = new MassSpectrumUI();
             if (e.PropertyName == "MaxX" || e.PropertyName == "MinX")
             {
                 var max = ((DrawVisualMassSpectrum)sender).MaxX;
