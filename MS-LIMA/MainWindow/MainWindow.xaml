@@ -50,30 +50,31 @@
     <DockPanel Name="DockPanel_MainWindow">
 
         <Menu Name="Menu_MainMenueBar" Height="25" DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Name="MenuItem_Import" Header="_Import" Click="MenuItem_Import_Click">
+            <MenuItem Header="_File">
+                <MenuItem Name="MenuItem_Import" Header="_Import" Command="{Binding ImportFileCommand}">
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Import MSP file"/>
                     </ToolTipService.ToolTip>
                 </MenuItem>
-                <!--
-            <MenuItem Name="MenuItem_Export" Header="_Export as MSP" Click="MenuItem_Export_Click">
-                <ToolTipService.ToolTip>
-                    <ToolTip Content="Export as MSP format"/>
-                </ToolTipService.ToolTip>
-            </MenuItem>
-            <MenuItem Name="MenuItem_Export2" Header="_Export as MSP without retention time" Click="MenuItem_Export_withoutRT_Click">
-                <ToolTipService.ToolTip>
-                    <ToolTip Content="Export as MSP format without retention time"/>
-                </ToolTipService.ToolTip>
-            </MenuItem>
 
-            <MenuItem Name="MenuItem_Export3" Header="_Export as table for MZmine library" Click="MenuItem_ExportAsCsv_Click">
-                <ToolTipService.ToolTip>
-                    <ToolTip Content="Export as tab-separated format"/>
-                </ToolTipService.ToolTip>
-            </MenuItem>
-            -->
+                <MenuItem Name="Export" Header="Export">
+                    <MenuItem Name="MenuItem_ExportAsMsp" Header="Export as MSP" Command="{Binding SaveAsMspCommand}">
+                           <ToolTipService.ToolTip>
+                            <ToolTip Content="Export as MSP format"/>
+                        </ToolTipService.ToolTip>
+                    </MenuItem>
+                    <MenuItem Name="MenuItem_ExportAsMspDropRt" Header="Export as MSP without retention time" Click="MenuItem_Export_withoutRT_Click">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="Export as MSP format without retention time"/>
+                        </ToolTipService.ToolTip>
+                    </MenuItem>
+
+                    <MenuItem Name="MenuItem_ExportAsTable" Header="Export as table for MZmine library" Click="MenuItem_ExportAsCsv_Click">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="Export as tab-separated format"/>
+                        </ToolTipService.ToolTip>
+                    </MenuItem>
+                 </MenuItem>            
             </MenuItem>
         </Menu>
         <Grid>
@@ -106,7 +107,7 @@
                 <GridSplitter Height="3" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
                 <TabControl Name="Tab_MS_Table" Grid.Row="1" SelectionChanged="Tab_MS_Table_SelectionChanged">
                     <TabItem Header="Peak Information" Name="TabItem_SingleMS" Background="LightSteelBlue">
-                        <DataGrid Name="DataGrid_SingleMassSpectrumTable" SelectedItem="{Binding Path=SelectedPeak}" SelectionChanged="DataGrid_SingleMassSpectrumTable_SelectionChanged" Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" 
+                        <DataGrid Name="DataGrid_SingleMassSpectrumTable" ItemsSource="{Binding SelectedSpectrum.Spectrum}" SelectedItem="{Binding Path=SelectedPeak}" SelectionChanged="DataGrid_SingleMassSpectrumTable_SelectionChanged" Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" 
                                   CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" ><!--="{DynamicResource ResourceKey=control_basic}" >-->
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="DataGridColumnHeader" >
@@ -153,7 +154,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Label Content="Spectra" FontStyle="Normal" Grid.Row="0" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Center" Background="LightSteelBlue" />
-                <DataGrid Name="DataGrid_Spectra" Grid.Row="0" SelectedItem="{Binding Path=SelectedSpectrum}" SelectionChanged="DataGrid_Spectra_SelectionChanged" CanUserAddRows="False" 
+                <DataGrid Name="DataGrid_Spectra" Grid.Row="0" ItemsSource="{Binding SelectedCompoundBean.Spectra}" SelectedItem="{Binding Path=SelectedSpectrum}" SelectionChanged="DataGrid_Spectra_SelectionChanged" CanUserAddRows="False" 
                           CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,25,0,0"
                           ><!--="{DynamicResource ResourceKey=control_basic}" >-->
                     <DataGrid.ColumnHeaderStyle>
@@ -187,11 +188,11 @@
                                     <ColumnDefinition Width="500"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Name="Label_NumComp" Grid.Column="0" Margin="0,0,0,0" FontFamily="Calibri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
+                                <TextBox Name="Label_NumComp" Text="{Binding LabelNumCompounds, Mode=OneWay}" Grid.Column="0" Margin="0,0,0,0" FontFamily="Calibri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
                             </Grid>
-                            <TextBox Name="Label_NumSpectra" Text="Please import a library" Margin="0,0,0,0" FontFamily="Calibri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
-                            <TextBox Name="Label_SelectedComp" Margin="0,0,0,0" FontFamily="Caribri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
-                            <TextBox Name="Label_SelectedSpectra" Margin="0,0,0,0" FontFamily="Caribri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
+                            <TextBox Name="Label_NumSpectra" Text="{Binding LabelNumSpectra, Mode=OneWay}" Margin="0,0,0,0" FontFamily="Calibri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
+                            <TextBox Name="Label_SelectedComp" Text="{Binding LabelSelectedCompound, Mode=OneWay}" Margin="0,0,0,0" FontFamily="Caribri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
+                            <TextBox Name="Label_SelectedSpectra" Text="{Binding LabelSelectedSpectra, Mode=OneWay}" Margin="0,0,0,0" FontFamily="Caribri" BorderThickness="0" IsReadOnly="True" FontSize="14"/>
                         </StackPanel>
                         <Grid Name="Grid_Filter" Margin="0,75,0,0">
                             <Grid.ColumnDefinitions>
@@ -216,7 +217,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
-                <DataGrid Name="DataGrid_CompoundTable" Grid.Row="1"  SelectedItem="{Binding Path=SelectedCompoundBean}" SelectionChanged="DataGrid_CompoundTable_SelectionChanged" CanUserAddRows="False" 
+                <DataGrid Name="DataGrid_CompoundTable" Grid.Row="1" ItemsSource="{Binding FilteredComponudTableView}" SelectedItem="{Binding Path=SelectedCompoundBean}" SelectionChanged="DataGrid_CompoundTable_SelectionChanged" CanUserAddRows="False" 
                               CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,150,0,0">
                     <!--="{DynamicResource ResourceKey=control_compInfo}">-->
                     <DataGrid.ColumnHeaderStyle>

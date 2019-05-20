@@ -80,6 +80,8 @@
     <Compile Include="MainWindow\MainWindowModel.cs" />
     <Compile Include="Model\AutoRepeater.cs" />
     <Compile Include="Model\ControlRefresh.cs" />
+    <Compile Include="Model\ExportUtility.cs" />
+    <Compile Include="Model\ImportUtility.cs" />
     <Compile Include="WindowUtility\FilteredTableCollection.cs" />
     <Compile Include="MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -8,8 +8,4 @@ namespace Metabolomics.MsLima
 {
     public enum TabMassSpectrumTable { SinglePeak, Consensus }
     public enum TabMassSpectraView { SingleMS, MultipleMS, ConsensusMS }
-    public class MainWindowModel
-    {
-
-    }
 }

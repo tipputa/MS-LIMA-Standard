@@ -29,7 +29,7 @@ namespace Metabolomics.MsLima.Bean
         public int Counter { get; set; }
         public double LinkedMz { get; set; }
         public string Label { get; set; }
-        public Isotope(string name, double mz) { Counter = 1; Label = name; LinkedMz = mz; Console.WriteLine("Isotope: " + name); }
+        public Isotope(string name, double mz) { Counter = 1; Label = name; LinkedMz = mz; }
     }
 
     public class Adduct
@@ -132,7 +132,6 @@ namespace Metabolomics.MsLima.Bean
                     var tmp2 = tmp.Split(',');
                     var mz = tmp2[1].Trim().Split(' ')[1].Trim();
                     double d;
-                    Console.WriteLine("mz: " + mz);
                     if (double.TryParse(mz, out d))
                     {
                         return new Isotope(tmp2[0].Trim(), d);

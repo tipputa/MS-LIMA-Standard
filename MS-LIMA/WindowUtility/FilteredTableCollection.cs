@@ -8,9 +8,12 @@ using Metabolomics.MsLima.Bean;
 
 namespace Metabolomics.MsLima
 {
-    public class FilteredTable
+    public class FilteredTable : ViewModelBase
     {
-        public ICollectionView View { get; private set; }
+        private ICollectionView view;
+        public ICollectionView View {
+            get => view;
+            private set => OnPropertyChangedIfSet(ref view, value, nameof(View)); }
 
         public FilteredTable(System.Collections.IList list)
         {

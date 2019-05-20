@@ -40,7 +40,7 @@ namespace Metabolomics.MsLima.Bean
             else if (extention == ".msp")
             {
                 this.FileFormat = LibraryFileFormat.Msp;
-                this.RawLibraryFile = ReadFile.ReadMspFileAsMsSpectrum(FilePath);
+                this.RawLibraryFile = ReadMspFile.ReadMspFileAsMsSpectrum(FilePath);
             }
             else if (extention == ".massbank")
             {

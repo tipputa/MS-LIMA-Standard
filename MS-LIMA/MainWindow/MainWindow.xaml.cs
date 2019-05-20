@@ -18,7 +18,7 @@ using Metabolomics.Core.Handler;
 using Metabolomics.Core;
 using Microsoft.Win32;
 
-namespace Metabolomics.MsLima { 
+namespace Metabolomics.MsLima {
 
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
@@ -28,8 +28,6 @@ namespace Metabolomics.MsLima {
         #region Properties
         public MainWindowVM MainWindowVM;
         public ControlRefresh ControlRefresh;
-        public TabMassSpectraView TabMassSpectraView { get; set; } = TabMassSpectraView.SingleMS;
-        public TabMassSpectrumTable TabMassSpectrumTable { get; set; } = TabMassSpectrumTable.SinglePeak;
         #endregion
 
         public MainWindow()
@@ -41,15 +39,15 @@ namespace Metabolomics.MsLima {
         private void Initialize()
         {
             this.MainWindowVM = new MainWindowVM();
-            this.ControlRefresh = new ControlRefresh(MainWindowVM);
+            this.ControlRefresh = MainWindowVM.ControlRefresh;
             this.DataContext = this.MainWindowVM;
 
-            
+
         }
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {            
+        {
         }
 
         #region MenuItems
@@ -77,35 +75,43 @@ namespace Metabolomics.MsLima {
                 //this.mainWindowVM.Refresh_ImportRawData(mspQueries);
                 //this.Title = this.MainWindowTitle + " " + mspFileNewPath;
                 Mouse.OverrideCursor = null;
-                CompoundTableRefresh();
             }
         }
+
+        #region Export
+        private void MenuItem_Export_withoutRT_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void MenuItem_ExportAsCsv_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
         #endregion
 
         #region SelectionChanged
         private void DataGrid_CompoundTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.MainWindowVM.SelectedCompoundBean == null) return;
-            MainWindowMetaInformationCompoundRefresh();
             SpectraTableRefresh();
         }
 
         private void DataGrid_Spectra_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.MainWindowVM.SelectedSpectrum == null) return;
-            MassSpectrumTableRefresh();
             MassSpectrumViewRefresh();
-            MainWindowMetaInformationSpectraRefresh();
         }
 
         private void DataGrid_SingleMassSpectrumTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ControlRefresh.SelectedPeakChanged(TabMassSpectraView);
+            ControlRefresh.SelectedPeakChanged(MainWindowVM.TabMassSpectraView);
         }
 
         private void DataGrid_Consensus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ControlRefresh.SelectedConsensusPeakChanged(TabMassSpectraView);
+            ControlRefresh.SelectedConsensusPeakChanged(MainWindowVM.TabMassSpectraView);
         }
 
         private void TabControl_MS2view_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -114,15 +120,15 @@ namespace Metabolomics.MsLima {
 
             if (this.TabControl_MS2view.SelectedIndex == 0)
             {
-                TabMassSpectraView = TabMassSpectraView.SingleMS;
+                MainWindowVM.TabMassSpectraView = TabMassSpectraView.SingleMS;
             }
             else if (this.TabControl_MS2view.SelectedIndex == 1)
             {
-                TabMassSpectraView = TabMassSpectraView.MultipleMS;
+                MainWindowVM.TabMassSpectraView = TabMassSpectraView.MultipleMS;
             }
             else if (this.TabControl_MS2view.SelectedIndex == 2)
             {
-                TabMassSpectraView = TabMassSpectraView.ConsensusMS;
+                MainWindowVM.TabMassSpectraView = TabMassSpectraView.ConsensusMS;
             }
             MassSpectrumViewRefresh();
         }
@@ -135,103 +141,28 @@ namespace Metabolomics.MsLima {
             {
                 if (this.Tab_MS_Table.SelectedIndex == 0)
                 {
-                    TabMassSpectrumTable = TabMassSpectrumTable.SinglePeak;
+                    MainWindowVM.TabMassSpectrumTable = TabMassSpectrumTable.SinglePeak;
                 }
                 else if (this.Tab_MS_Table.SelectedIndex == 1)
                 {
-                    TabMassSpectrumTable = TabMassSpectrumTable.Consensus;
+                    MainWindowVM.TabMassSpectrumTable = TabMassSpectrumTable.Consensus;
                 }
-                MassSpectrumTableRefresh();
             }
         }
         #endregion
 
         #region Refresh
-        private void CompoundTableRefresh()
-        {
-            MainWindowVM.Refresh_ImportRawData();
-            DataGrid_CompoundTable.ItemsSource = MainWindowVM.FilteredCompoundTable.View;
-            MainWindowVM.SelectedCompoundBean = MainWindowVM.CompoundTable[0];
-            MainWindowMetaInformationRefresh();
-            MainWindowMetaInformationCompoundRefresh();
-            SpectraTableRefresh();
-        }
 
         private void SpectraTableRefresh()
         {
-            DataGrid_Spectra.ItemsSource = MainWindowVM.SelectedCompoundBean.Spectra;
             MainWindowVM.SelectedSpectrum = MainWindowVM.SelectedCompoundBean.Spectra[0];
-            MassSpectrumTableRefresh();
             MassSpectrumViewRefresh();
-            MainWindowMetaInformationSpectraRefresh();
-        }
-
-        private void MassSpectrumTableRefresh()
-        {
-            if (MainWindowVM.SelectedSpectrum == null) return;
-            if (TabMassSpectrumTable == TabMassSpectrumTable.SinglePeak)
-            {
-                SingleSpectrumTableRefresh();
-            }
-            else if(TabMassSpectrumTable == TabMassSpectrumTable.Consensus)
-            {
-                ConsensusSpectrumTableRefresh();
-            }
         }
 
         private void MassSpectrumViewRefresh()
-        {
-            if (MainWindowVM.SelectedSpectrum == null) return;
-            if (TabMassSpectraView == TabMassSpectraView.SingleMS)
-            {
-                ControlRefresh.SingleSpectrumViewRefresh();
-
-            }
-            else if(TabMassSpectraView == TabMassSpectraView.MultipleMS)
-            {
-                MultipleSpectraViewRefresh();
-            }
-            else if(TabMassSpectraView == TabMassSpectraView.ConsensusMS)
-            {
-                ConsensusSpectrumTableRefresh();
-                ControlRefresh.ConsensusSpectrumViewRefresh();
-            }
+        { 
         }
 
-
-
-        private void SingleSpectrumTableRefresh()
-        {
-            DataGrid_SingleMassSpectrumTable.ItemsSource = MainWindowVM.SelectedSpectrum.Spectrum;
-        }
-
-        private void ConsensusSpectrumTableRefresh()
-        {
-            MainWindowVM.ConsensusSpectraTable = MsGrouping.Excute(MainWindowVM.SelectedCompoundBean);
-        }
-
-
-        private void MultipleSpectraViewRefresh()
-        {
-            MainWindowVM.MultipleSpectra = ControlRefresh.MultipleSpectraRefresh();
-        }
-
-
-        private void MainWindowMetaInformationRefresh()
-        {
-            Label_NumComp.Text = "Number of compounds: " + MainWindowVM.CompoundTable.Count;
-            Label_NumSpectra.Text = "Number of spectra: " + MainWindowVM.MsLimaData.DataStorage.RawLibraryFile.Count;
-        }
-        private void MainWindowMetaInformationCompoundRefresh()
-        {
-            Label_SelectedComp.Text = "Selected sompound: " + MainWindowVM.SelectedCompoundBean.Name;
-        }
-
-        private void MainWindowMetaInformationSpectraRefresh()
-        {
-            if (MainWindowVM.SelectedSpectrum == null) return;
-            Label_SelectedSpectra.Text = "Spectra ID: " + MainWindowVM.SelectedSpectrum.Id + ", " + MainWindowVM.SelectedSpectrum.AdductIon.AdductIonName + ", " + MainWindowVM.SelectedSpectrum.CollisionEnergy + "eV";
-        }
 
 
         #endregion

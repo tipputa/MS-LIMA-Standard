@@ -13,9 +13,8 @@ namespace Metabolomics.Core
     public class DelegateCommand : ICommand
     {
         private Action<object> executeAction;
-        private Func<object, bool> canExecuteAction;
+        private Func<object, bool> canExecuteAction { get; set; }
         public event EventHandler CanExecuteChanged;
-
 
         public DelegateCommand(Action<object> executeAction, Func<object, bool> canExecuteAction)
         {
@@ -23,14 +22,17 @@ namespace Metabolomics.Core
             this.canExecuteAction = canExecuteAction;
         }
 
+        public DelegateCommand(Action<object> executeAction)
+        {
+            this.executeAction = executeAction;
+            this.canExecuteAction = x => true;
+        }
+
+
         #region ICommand
 
         public bool CanExecute(object parameter)
         {
-            if (parameter == null)
-            {
-                return true;
-            }
             return canExecuteAction(parameter);
         }
 

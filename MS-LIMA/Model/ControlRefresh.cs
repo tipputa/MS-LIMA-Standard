@@ -77,8 +77,6 @@ namespace Metabolomics.MsLima.Model
         #region Single MS spectrum
         public void SingleSpectrumViewRefresh()
         {
-            if (mainWindowVM.SelectedSpectrum == null) return;
-            mainWindowVM.SingleMassSpectrumVM = mainWindowVM.MsHandler.GetMassSpectrumDrawVisual(mainWindowVM.SelectedSpectrum);
         }
 
         #endregion
@@ -138,12 +136,5 @@ namespace Metabolomics.MsLima.Model
         }
         #endregion
 
-        #region ConsensusPeak
-        public void ConsensusSpectrumViewRefresh()
-        {
-            mainWindowVM.ConsensusSpectrumVM = mainWindowVM.MsHandler.GetMassSpectrumDrawVisualFromConsensus(mainWindowVM.ConsensusSpectraTable);
-        }
-
-        #endregion
     }
 }
