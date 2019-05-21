@@ -299,7 +299,6 @@ namespace Metabolomics.Core.Parser
         {
             var mass = Utility.FormulaUtility.GetMass(formula);
             double adductMass = (mass * (double)adductIon.AdductIonXmer + adductIon.AdductIonAccurateMass) / (double)adductIon.ChargeNumber;
-            Console.WriteLine("mass: " + mass + ", adduct mass: " + adductIon.AdductIonAccurateMass);
             if (ion == IonMode.Positive) adductMass -= 0.0005485799 * adductIon.ChargeNumber; else adductMass += 0.0005485799 * adductIon.ChargeNumber;
             return adductMass;
         }

@@ -31,13 +31,13 @@ namespace Metabolomics.MsLima.Model
             else if(tab == TabMassSpectraView.MultipleMS)
             {
                 if (mainWindowVM.MultipleSpectra == null) return;
+                if (mainWindowVM.SelectedPeak == null) return;
                 foreach(var g in mainWindowVM.MultipleSpectra.Children)
                 {
                     var grid = (Grid)g;
                     var ui = (MassSpectrumUI)grid.Children[0];
                     ui.UpdateSelectedPeak(mainWindowVM.SelectedPeak.Mz);
                 }
-
             }
             else if(tab == TabMassSpectraView.ConsensusMS)
             {

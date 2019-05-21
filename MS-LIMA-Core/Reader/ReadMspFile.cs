@@ -147,7 +147,6 @@ namespace Metabolomics.MsLima.Reader
                             else if (Regex.IsMatch(wkstr, "Num Peaks:.*", RegexOptions.IgnoreCase))
                             {
                                 spectrum.Spectrum = ReadFile.ReadSpectrum(sr, wkstr, out int peakNum);
-                                spectrum.PeakNumber = spectrum.Spectrum.Count;
                                 continue;
                             }
                         }

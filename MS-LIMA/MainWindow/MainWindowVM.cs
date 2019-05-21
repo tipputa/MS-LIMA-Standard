@@ -27,14 +27,25 @@ namespace Metabolomics.MsLima
         public FilteredTable FilteredCompoundTable { get; set; }
 
         public FilterSettingsForLibrary FilteredTableSetting { get; set; }
-        public TabMassSpectraView TabMassSpectraView { get; set; } = TabMassSpectraView.SingleMS;
+        public TabMassSpectraView TabMassSpectraView { get; set; } 
         public TabMassSpectrumTable TabMassSpectrumTable { get; set; } = TabMassSpectrumTable.SinglePeak;
 
         public ICollectionView FilteredComponudTableView {
             get => FilteredCompoundTable.View;
         }
 
+        public List<MsGroup> ConsensusSpectraTable {
+            get {
+                if (SelectedCompoundBean == null) return null;
+                return MsGrouping.Excute(SelectedCompoundBean);
+            }
+        }
 
+        private bool ShouldUpdateSingleMassSpectrumVM = true;
+        private bool ShouldUpdateMultipleSpectrumVM = true;
+        private bool ShouldUpdateConsensusSpectrumVM = true;
+
+        #region Selected Items
         private AnnotatedPeak selectedPeak;
         private MassSpectrum selectedSpectrum;
         private CompoundBean selectedCompoundBean;
@@ -48,9 +59,7 @@ namespace Metabolomics.MsLima
             get => selectedSpectrum;
             set {
                 OnPropertyChangedIfSet(ref selectedSpectrum, value, nameof(SelectedSpectrum));
-                OnPropertyChanged(nameof(LabelSelectedSpectra));
-                OnPropertyChanged(nameof(SingleMassSpectrumVM));
-                OnPropertyChanged(nameof(SingleMassSpectrumUI));
+                SelectedSpectrumChanged();
             }
         }
 
@@ -58,9 +67,7 @@ namespace Metabolomics.MsLima
             get => selectedCompoundBean;
             set {
                 OnPropertyChangedIfSet(ref selectedCompoundBean, value, nameof(SelectedCompoundBean));
-                OnPropertyChanged(nameof(LabelSelectedCompound));
-                OnPropertyChanged(nameof(ConsensusSpectraTable));
-                OnPropertyChanged(nameof(MultipleSpectra));
+                SelectedCompoundChanged();
             }
         }
 
@@ -68,16 +75,14 @@ namespace Metabolomics.MsLima
             get => selectedMsGroup;
             set => OnPropertyChangedIfSet(ref selectedMsGroup, value, nameof(SelectedMsGroup));
         }
-
-        public List<MsGroup> ConsensusSpectraTable {
-            get {
-                if (SelectedCompoundBean == null) return null;
-                return MsGrouping.Excute(SelectedCompoundBean);
-            }
-            //set => OnPropertyChangedIfSet(ref consensusSpectraTable, value, nameof(ConsensusSpectraTable));
-        }
+        #endregion
 
         #region Label
+        private string mainWindowTitle = Properties.Resources.Version;
+        public string MainWindowTitle {
+            get => mainWindowTitle;
+            set => OnPropertyChangedIfSet(ref mainWindowTitle, value, nameof(MainWindowTitle));
+        }
         public string LabelNumCompounds {
             get {
                 if (CompoundTable == null) return ""; return "Number of compounds: " + CompoundTable.Count;
@@ -101,18 +106,23 @@ namespace Metabolomics.MsLima
         #endregion
 
         #region ViewModel
+        private DrawVisualMassSpectrum singleMassSpectrumVM = new DrawVisualMassSpectrum();
         public DrawVisualMassSpectrum SingleMassSpectrumVM {
-            get {
-                if (SelectedSpectrum == null) return new DrawVisualMassSpectrum();
-                return  MsHandler.GetMassSpectrumDrawVisual(SelectedSpectrum);
+            get => singleMassSpectrumVM;
+            set {
+                singleMassSpectrumVM = value;
+                OnPropertyChanged(nameof(SingleMassSpectrumVM));
+                SingleMassSpectrumUI.UpdateFE(SingleMassSpectrumVM);
             }
         }
 
         private DrawVisualMassSpectrum consensusSpectrumVM = new DrawVisualMassSpectrum();
         public DrawVisualMassSpectrum ConsensusSpectrumVM {
-            get {
-                if (ConsensusSpectraTable == null) return new DrawVisualMassSpectrum();
-                return MsHandler.GetMassSpectrumDrawVisualFromConsensus(ConsensusSpectraTable);
+            get => consensusSpectrumVM;
+            set {
+                consensusSpectrumVM = value;
+                OnPropertyChanged(nameof(ConsensusSpectrumVM));
+                ConsensusSpectrumUI.UpdateFE(ConsensusSpectrumVM);
             }
         }
         #endregion
@@ -120,21 +130,20 @@ namespace Metabolomics.MsLima
         #region UI
         private MassSpectrumUI singleMassSpectrumUI;
         public MassSpectrumUI SingleMassSpectrumUI {
-            get {
-                singleMassSpectrumUI.UpdateFE(SingleMassSpectrumVM); 
-                return singleMassSpectrumUI;
-            }
-            set {
-                singleMassSpectrumUI = value;
-            }
+            get => singleMassSpectrumUI;
+            set => OnPropertyChangedIfSet(ref singleMassSpectrumUI, value, nameof(SingleMassSpectrumUI));
         }
-        public MassSpectrumUI ConsensusSpectrumUI { get; set; }
 
+        private MassSpectrumUI consensusSpectrumUI;
+        public MassSpectrumUI ConsensusSpectrumUI {
+            get => consensusSpectrumUI;
+            set => OnPropertyChangedIfSet(ref consensusSpectrumUI, value, nameof(ConsensusSpectrumUI));
+        }
+
+        private StackPanel multipleSpectra;
         public StackPanel MultipleSpectra {
-            get {
-                if (SelectedCompoundBean == null) return null;
-                return ControlRefresh.MultipleSpectraRefresh();
-            }
+            get => multipleSpectra;
+            set => OnPropertyChangedIfSet(ref multipleSpectra, value, nameof(MultipleSpectra));                
         }
 
         #endregion
@@ -181,9 +190,22 @@ namespace Metabolomics.MsLima
 
         #region Command
 
+        #region Selection Changed Commands
+        public DelegateCommand SelectionChangedSingleSpectrumTableCommand { get; set; }
+        public DelegateCommand SelectionChangedConsensusTableCommand { get; set; }
+
+        //public DelegateCommand SelectionChangedTabControlMsViewCommand { get; set; }
+        public DelegateCommand SelectionChangedTabControlMsTableCommand { get; set; }
+
+
+        #endregion
+        #region Menu Commands
         public DelegateCommand ImportFileCommand { get; set; }
 
         public DelegateCommand SaveAsMspCommand { get; set; }
+
+        #endregion
+
 
         #endregion
         #endregion
@@ -195,10 +217,23 @@ namespace Metabolomics.MsLima
             this.AutoExporter.OnTimeEventHandler += (o, e) => { AutoExportFunction(); }; 
             SingleMassSpectrumUI = new MassSpectrumUI(SingleMassSpectrumVM);
             ConsensusSpectrumUI = new MassSpectrumUI(ConsensusSpectrumVM);
+
             ControlRefresh = new ControlRefresh(this);
             SetCommands();
         }
 
+        private void MainWindow_Load()
+        {
+            /*
+            ShortMessageWindow window = new ShortMessageWindow();
+            window.Owner = mainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            window.Show();
+            EtcMethod.TryClassLoad();
+
+            window.Close();
+        */
+        }
 
         private void SetCommands()
         {
@@ -210,6 +245,108 @@ namespace Metabolomics.MsLima
                 x => ExportUtility.SaveAsMsp(CompoundTable),
                 x => !IsDataLoaded());
 
+            SelectionChangedSingleSpectrumTableCommand = new DelegateCommand(
+                x => SingleSpectrumTableSelectionChanged()
+                );
+
+            SelectionChangedConsensusTableCommand = new DelegateCommand(
+                x => ConsensusTableSelectionChanged()
+                );
+            SelectionChangedTabControlMsTableCommand = new DelegateCommand(
+                x => SelectionChangedTabConrtrolMsView()
+                );
+        }
+
+
+        #region Methods for SelectionChanged Command
+
+        public void SingleSpectrumTableSelectionChanged()
+        {
+            ControlRefresh.SelectedPeakChanged(TabMassSpectraView);
+        }
+
+        public void ConsensusTableSelectionChanged()
+        {
+            ControlRefresh.SelectedConsensusPeakChanged(TabMassSpectraView);
+        }
+
+        public void SelectionChangedTabConrtrolMsView()
+        {
+            SingleMassSpectrumRefresh();
+            MsSpectraViewRefresh();
+        }
+
+        public void SelectedCompoundChanged()
+        {
+            OnPropertyChanged(nameof(LabelSelectedCompound));
+            OnPropertyChanged(nameof(ConsensusSpectraTable));
+            ShouldUpdateMultipleSpectrumVM = true;
+            ShouldUpdateConsensusSpectrumVM = true;
+            SelectedSpectrum = selectedCompoundBean.Spectra[0];
+            MsSpectraViewRefresh();
+        }
+
+        public void SelectedSpectrumChanged()
+        {
+            OnPropertyChanged(nameof(LabelSelectedSpectra));
+            ShouldUpdateSingleMassSpectrumVM = true;
+            SingleMassSpectrumRefresh();
+        }
+
+        public void SingleMassSpectrumRefresh()
+        {
+            if (TabMassSpectraView == TabMassSpectraView.SingleMS && ShouldUpdateSingleMassSpectrumVM)
+            {
+                SingleMassSpectrumVM = MsHandler.GetMassSpectrumDrawVisual(SelectedSpectrum);
+                ShouldUpdateSingleMassSpectrumVM = false;
+            }
+        }
+
+        public void MsSpectraViewRefresh()
+        {
+            if (TabMassSpectraView == TabMassSpectraView.MultipleMS && ShouldUpdateMultipleSpectrumVM)
+            {
+                MultipleSpectra = ControlRefresh.MultipleSpectraRefresh();
+                ShouldUpdateMultipleSpectrumVM = false;
+            }
+            else if(TabMassSpectraView == TabMassSpectraView.ConsensusMS && ShouldUpdateConsensusSpectrumVM)
+            {
+                ConsensusSpectrumUI.UpdateFE(ConsensusSpectrumVM);
+                ShouldUpdateConsensusSpectrumVM = false;
+            }
+        }
+        #endregion
+
+
+        #region Methods for MenuItem Commands
+
+        public void ImportFile()
+        {
+            ImportUtility.ImportFile(MsLimaData);
+            FilteredCompoundTable = new FilteredTable(this.CompoundTable);
+            FilteredTableSetting = new FilterSettingsForLibrary(this.FilteredCompoundTable.View);
+            FilteredCompoundTable.View.Filter = this.FilteredTableSetting.CompoundFilter;
+            MainWindowTitle += " File: " + MsLimaData.DataStorage.FilePath;
+            SelectedCompoundBean = CompoundTable[0];
+            OnPropertyChangedAfterFileImported();
+        }
+
+
+
+        #endregion
+
+        #region Utilities
+        private void OnPropertyChangedAfterFileImported()
+        {
+            SaveAsMspCommand.RaiseCanExecuteChanged();
+            OnPropertyChanged(nameof(FilteredComponudTableView));
+            OnPropertyChanged(nameof(LabelNumCompounds));
+            OnPropertyChanged(nameof(LabelNumSpectra));
+        }
+
+        private bool IsDataLoaded()
+        {
+            return (CompoundTable == null || CompoundTable.Count == 0);
         }
 
         public void AutoExportFunction()
@@ -217,32 +354,7 @@ namespace Metabolomics.MsLima
 
         }
 
-        public void ImportFile()
-        {
-            ImportUtility.ImportFile(MsLimaData);
-            RefreshImportRawData();
-        }
 
-        public void RefreshImportRawData()
-        {
-            FilteredCompoundTable = new FilteredTable(this.CompoundTable);
-            FilteredTableSetting = new FilterSettingsForLibrary(this.FilteredCompoundTable.View);
-            FilteredCompoundTable.View.Filter = this.FilteredTableSetting.CompoundFilter;
-
-            SaveAsMspCommand.RaiseCanExecuteChanged();
-
-            SelectedCompoundBean = CompoundTable[0];
-
-            OnPropertyChanged(nameof(FilteredComponudTableView));
-            OnPropertyChanged(nameof(LabelNumCompounds));
-            OnPropertyChanged(nameof(LabelNumSpectra));
-        }
-
-
-        private bool IsDataLoaded()
-        {
-            return (CompoundTable == null || CompoundTable.Count == 0);
-        } 
-
+        #endregion
     }
 }

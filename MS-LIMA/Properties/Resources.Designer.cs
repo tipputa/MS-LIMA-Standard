@@ -59,5 +59,14 @@ namespace Metabolomics.MsLima.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   MS-LIMA ver. 1.20 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Version {
+            get {
+                return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
     }
 }

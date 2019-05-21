@@ -3,13 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Metabolomics.MsLima"
+        xmlns:model="clr-namespace:Metabolomics.MsLima.Model"
         xmlns:view="clr-namespace:Metabolomics.Core;assembly=MS-LIMA-CommonView"
         mc:Ignorable="d"
-        Loaded="Window_Loaded"
-        Title="MainWindow" Height="780" Width="1200">
+        Title="{Binding MainWindowTitle}" Height="780" Width="1200">
 
     <Window.Resources>
+        <model:TabMassSpectraViewIntConverter x:Key="TabMassSpectraViewIntConverter" />
+        <model:TabMassSpectraTableIntConverter x:Key="TabMassSpectrumTableIntConverter" />
 
         <Style TargetType="GridSplitter">
             <Setter Property="Background" Value="Gray" />
@@ -63,13 +66,13 @@
                             <ToolTip Content="Export as MSP format"/>
                         </ToolTipService.ToolTip>
                     </MenuItem>
-                    <MenuItem Name="MenuItem_ExportAsMspDropRt" Header="Export as MSP without retention time" Click="MenuItem_Export_withoutRT_Click">
+                    <MenuItem Name="MenuItem_ExportAsMspDropRt" Header="Export as MSP without retention time" Command="{Binding SaveAsMspCommand}">
                         <ToolTipService.ToolTip>
                             <ToolTip Content="Export as MSP format without retention time"/>
                         </ToolTipService.ToolTip>
                     </MenuItem>
 
-                    <MenuItem Name="MenuItem_ExportAsTable" Header="Export as table for MZmine library" Click="MenuItem_ExportAsCsv_Click">
+                    <MenuItem Name="MenuItem_ExportAsTable" Header="Export as table for MZmine library" Command="{Binding SaveAsMspCommand}">
                         <ToolTipService.ToolTip>
                             <ToolTip Content="Export as tab-separated format"/>
                         </ToolTipService.ToolTip>
@@ -89,8 +92,13 @@
                 </Grid.RowDefinitions>
 
                 <Grid Name="Grid_MSview" Grid.Row="0">
-                    <TabControl Name="TabControl_MS2view" Grid.Row="0" Grid.Column="0" SelectionChanged="TabControl_MS2view_SelectionChanged">
-                        <TabItem Header="MS/MS single viewer" Name="TabItem_SingleView" Background="LightSteelBlue">
+                    <TabControl Name="TabControl_MS2view" Grid.Row="0" Grid.Column="0" SelectedIndex="{Binding TabMassSpectraView, Converter={StaticResource TabMassSpectraViewIntConverter}}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding Path=SelectionChangedTabControlMsTableCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <TabItem Header="MS/MS single viewer" Name="TabItem_SingleView" Background="LightSteelBlue" IsSelected="True">
                             <view:MassSpectrumUI x:Name="SelectedSpectrumUI" Content="{Binding SingleMassSpectrumUI}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
                         </TabItem>
 
@@ -105,10 +113,16 @@
 
                 </Grid>
                 <GridSplitter Height="3" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
-                <TabControl Name="Tab_MS_Table" Grid.Row="1" SelectionChanged="Tab_MS_Table_SelectionChanged">
+                <TabControl Name="Tab_MS_Table" Grid.Row="1" SelectedIndex="{Binding TabMassSpectrumTable, Converter={StaticResource TabMassSpectrumTableIntConverter}}">
                     <TabItem Header="Peak Information" Name="TabItem_SingleMS" Background="LightSteelBlue">
-                        <DataGrid Name="DataGrid_SingleMassSpectrumTable" ItemsSource="{Binding SelectedSpectrum.Spectrum}" SelectedItem="{Binding Path=SelectedPeak}" SelectionChanged="DataGrid_SingleMassSpectrumTable_SelectionChanged" Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" 
+                        <DataGrid Name="DataGrid_SingleMassSpectrumTable" ItemsSource="{Binding SelectedSpectrum.Spectrum}" SelectedItem="{Binding Path=SelectedPeak}" Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" 
                                   CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" ><!--="{DynamicResource ResourceKey=control_basic}" >-->
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding Path=SelectionChangedSingleSpectrumTableCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="DataGridColumnHeader" >
                                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -122,8 +136,14 @@
                         </DataGrid>
                     </TabItem>
                     <TabItem Header="Consensus Peak" Name="TabItem_ConsensusMS" Background="LightSteelBlue">
-                        <DataGrid Name="DataGrid_Consensus" ItemsSource="{Binding ConsensusSpectraTable}" SelectedItem="{Binding SelectedMsGroup}" SelectionChanged="DataGrid_Consensus_SelectionChanged" CanUserAddRows="True" 
+                        <DataGrid Name="DataGrid_Consensus" ItemsSource="{Binding ConsensusSpectraTable}" SelectedItem="{Binding SelectedMsGroup}" CanUserAddRows="True" 
                                   CanUserDeleteRows="True" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding Path=SelectionChangedConsensusTableCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="DataGridColumnHeader" >
                                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -154,7 +174,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Label Content="Spectra" FontStyle="Normal" Grid.Row="0" Height="25" VerticalAlignment="Top" HorizontalContentAlignment="Center" Background="LightSteelBlue" />
-                <DataGrid Name="DataGrid_Spectra" Grid.Row="0" ItemsSource="{Binding SelectedCompoundBean.Spectra}" SelectedItem="{Binding Path=SelectedSpectrum}" SelectionChanged="DataGrid_Spectra_SelectionChanged" CanUserAddRows="False" 
+                <DataGrid Name="DataGrid_Spectra" Grid.Row="0" ItemsSource="{Binding SelectedCompoundBean.Spectra}" SelectedItem="{Binding Path=SelectedSpectrum}" CanUserAddRows="False" 
                           CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,25,0,0"
                           ><!--="{DynamicResource ResourceKey=control_basic}" >-->
                     <DataGrid.ColumnHeaderStyle>
@@ -217,7 +237,7 @@
                         </Grid>
                     </Grid>
                 </Grid>
-                <DataGrid Name="DataGrid_CompoundTable" Grid.Row="1" ItemsSource="{Binding FilteredComponudTableView}" SelectedItem="{Binding Path=SelectedCompoundBean}" SelectionChanged="DataGrid_CompoundTable_SelectionChanged" CanUserAddRows="False" 
+                <DataGrid Name="DataGrid_CompoundTable" Grid.Row="1" ItemsSource="{Binding FilteredComponudTableView}" SelectedItem="{Binding Path=SelectedCompoundBean}" CanUserAddRows="False" 
                               CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,150,0,0">
                     <!--="{DynamicResource ResourceKey=control_compInfo}">-->
                     <DataGrid.ColumnHeaderStyle>

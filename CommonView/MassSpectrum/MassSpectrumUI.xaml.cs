@@ -105,6 +105,8 @@ namespace Metabolomics.Core
             RefreshUIWithSizeChanged();
 
         }
+
+
         public void UpdateSelectedPeak(double mz)
         {
             while (fe.visualCollection.Count > 1) fe.visualCollection.RemoveAt(fe.visualCollection.Count - 1);

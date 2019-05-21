@@ -48,7 +48,7 @@ namespace Metabolomics.MsLima.Bean
 
         public float DiffPpm { get; set; }
         public int Order { get; set; }
-        public int PeakNumber { get; set; }
+        public int PeakNumber { get => Spectrum.Count; }
         public List<AnnotatedPeak> Spectrum { get; set; }
     }
 }
