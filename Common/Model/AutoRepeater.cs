@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Metabolomics.MsLima.Model
+namespace Metabolomics.Core
 {
     public class AutoRepeater
     {
@@ -15,19 +11,19 @@ namespace Metabolomics.MsLima.Model
             this.ExportIntervalMillisecond = exportIntervalMillisecond;
         }
 
-        public int ExportIntervalMillisecond { get; set; } = 60000;
+        public int ExportIntervalMillisecond { get; set; } = 10000;
         public System.Timers.Timer ExportTimer { get; set; }
 
         public event EventHandler<EventArgs> OnTimeEventHandler;
 
-        private void Start()
+        public void Start()
         {
             ExportTimer = new System.Timers.Timer(ExportIntervalMillisecond);
             ExportTimer.Elapsed += OnTimedEvent;
             ExportTimer.Enabled = true;
         }
 
-        private void Stop()
+        public void Stop()
         {
             ExportTimer.Enabled = false;
         }

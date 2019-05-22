@@ -66,13 +66,13 @@ namespace Metabolomics.MsLima
             this.view = view;
         }
 
-        public bool MspFilter(object sender)
+        public bool MassSpectrumFilter(object sender)
         {
-            var msp = (MspBean)sender;
+            var msp = (MassSpectrum)sender;
             if (this.MetaboliteNameFilter != string.Empty && !msp.Name.ToLower().Contains(this.MetaboliteNameFilter.ToLower())) return false;
             if (this.RetentionTimeFilter != string.Empty && msp.RetentionTime.ToString().IndexOf(this.RetentionTimeFilter, 0) < 0) return false;
             if (this.MzFilter != string.Empty && msp.PrecursorMz.ToString().IndexOf(this.MzFilter, 0) < 0) return false;
-            if (this.InChIKeyFilter != string.Empty && !msp.InchiKey.ToLower().Contains(this.InChIKeyFilter.ToLower())) return false;
+            if (this.InChIKeyFilter != string.Empty && !msp.InChiIKey.ToLower().Contains(this.InChIKeyFilter.ToLower())) return false;
             return true;
         }
 

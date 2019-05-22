@@ -204,6 +204,11 @@ namespace Metabolomics.MsLima
 
         public DelegateCommand SaveAsMspCommand { get; set; }
 
+        public DelegateCommand WindowLoaded { get; set; }
+        public DelegateCommand StartUpWindowAllSpectra { get; set; }
+
+        public DelegateCommand StartUpWindowComparativeViewer { get; set; }
+
         #endregion
 
 
@@ -211,10 +216,11 @@ namespace Metabolomics.MsLima
         #endregion
 
         public MainWindowVM() {
-            this.MsLimaData = new MsLimaData();
-            this.MsHandler = new MassSpectrumViewHandler(MsLimaData.Parameter);
-            this.AutoExporter = new AutoRepeater(MsLimaData.Parameter.AutoExportIntervalMillisecond);
-            this.AutoExporter.OnTimeEventHandler += (o, e) => { AutoExportFunction(); }; 
+            MsLimaData = new MsLimaData();
+            MsHandler = new MassSpectrumViewHandler(MsLimaData.Parameter);
+            AutoExporter = new AutoRepeater(MsLimaData.Parameter.AutoExportIntervalMillisecond);
+            AutoExporter.OnTimeEventHandler += (o, e) => { AutoExportFunction(); };
+            AutoExporter.Start();
             SingleMassSpectrumUI = new MassSpectrumUI(SingleMassSpectrumVM);
             ConsensusSpectrumUI = new MassSpectrumUI(ConsensusSpectrumVM);
 
@@ -222,8 +228,9 @@ namespace Metabolomics.MsLima
             SetCommands();
         }
 
-        private void MainWindow_Load()
+        private void MainWindowLoad()
         {
+            WindowUtility.StartUpInitializingWindow();
             /*
             ShortMessageWindow window = new ShortMessageWindow();
             window.Owner = mainWindow;
@@ -235,8 +242,10 @@ namespace Metabolomics.MsLima
         */
         }
 
+
         private void SetCommands()
         {
+            WindowLoaded = new DelegateCommand(x => MainWindowLoad());
             ImportFileCommand = new DelegateCommand(
                 x => ImportFile()
                 );
@@ -255,6 +264,14 @@ namespace Metabolomics.MsLima
             SelectionChangedTabControlMsTableCommand = new DelegateCommand(
                 x => SelectionChangedTabConrtrolMsView()
                 );
+
+
+            StartUpWindowAllSpectra = new DelegateCommand(
+                x => WindowUtility.StartUpAllSpectraTableWindow(MsLimaData), 
+                x => !IsDataLoaded());
+            StartUpWindowComparativeViewer = new DelegateCommand(
+                x => WindowUtility.StartUpComparativeSpectraViewer(MsLimaData),
+                x => !IsDataLoaded());
         }
 
 
@@ -338,6 +355,8 @@ namespace Metabolomics.MsLima
         #region Utilities
         private void OnPropertyChangedAfterFileImported()
         {
+            StartUpWindowComparativeViewer.RaiseCanExecuteChanged();
+            StartUpWindowAllSpectra.RaiseCanExecuteChanged();
             SaveAsMspCommand.RaiseCanExecuteChanged();
             OnPropertyChanged(nameof(FilteredComponudTableView));
             OnPropertyChanged(nameof(LabelNumCompounds));
@@ -351,7 +370,7 @@ namespace Metabolomics.MsLima
 
         public void AutoExportFunction()
         {
-
+            Console.WriteLine("working");
         }
 
 

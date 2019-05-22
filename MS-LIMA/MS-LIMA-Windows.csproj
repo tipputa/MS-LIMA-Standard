@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>MS_LIMA.App</StartupObject>
+    <StartupObject>Metabolomics.MsLima.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MessagePack, Version=1.7.3.4, Culture=neutral, PublicKeyToken=b4a0369545f0a1be, processorArchitecture=MSIL">
@@ -75,6 +75,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ComparativeSpectrumViewerModel.cs" />
+    <Compile Include="ViewModel\ComparativeSpectrumViewerVM.cs" />
+    <Compile Include="Model\WindowUtility.cs" />
+    <Compile Include="ViewModel\AllSpectraMetaInformationTableVM.cs" />
+    <Compile Include="ViewModel\ShortMessageVM.cs" />
+    <Compile Include="Window\AllSpectraMetaInformationTable.xaml.cs">
+      <DependentUpon>AllSpectraMetaInformationTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Window\ComparativeSpectrumViewer.xaml.cs">
+      <DependentUpon>ComparativeSpectrumViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Window\ShortMessage.xaml.cs">
+      <DependentUpon>ShortMessage.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -84,7 +98,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow\MainWindowModel.cs" />
-    <Compile Include="Model\AutoRepeater.cs" />
     <Compile Include="Model\ControlRefresh.cs" />
     <Compile Include="Model\ExportUtility.cs" />
     <Compile Include="Model\ImportUtility.cs" />
@@ -94,6 +107,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Window\AllSpectraMetaInformationTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window\ComparativeSpectrumViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window\ShortMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow\MainWindowVM.cs" />

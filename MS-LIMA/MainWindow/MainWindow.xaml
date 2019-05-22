@@ -9,6 +9,11 @@
         xmlns:view="clr-namespace:Metabolomics.Core;assembly=MS-LIMA-CommonView"
         mc:Ignorable="d"
         Title="{Binding MainWindowTitle}" Height="780" Width="1200">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoaded}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Window.Resources>
         <model:TabMassSpectraViewIntConverter x:Key="TabMassSpectraViewIntConverter" />
@@ -60,7 +65,7 @@
                     </ToolTipService.ToolTip>
                 </MenuItem>
 
-                <MenuItem Name="Export" Header="Export">
+                <MenuItem Name="Export" Header="_Export">
                     <MenuItem Name="MenuItem_ExportAsMsp" Header="Export as MSP" Command="{Binding SaveAsMspCommand}">
                            <ToolTipService.ToolTip>
                             <ToolTip Content="Export as MSP format"/>
@@ -77,7 +82,18 @@
                             <ToolTip Content="Export as tab-separated format"/>
                         </ToolTipService.ToolTip>
                     </MenuItem>
-                 </MenuItem>            
+                 </MenuItem>
+            </MenuItem>
+
+            <MenuItem Name="Setting" Header="_Setting">
+                <MenuItem Name="MenuItem_Setting" Header="_Setting Window" Command="{Binding SaveAsMspCommand}">
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Name="Tool" Header="_Tool">
+                <MenuItem Name="MenuItem_AllSpectra" Header="Show meta deta of all spectra" Command="{Binding StartUpWindowAllSpectra}">
+                </MenuItem>
+                <MenuItem Name="MenuItem_ComparativeViewer" Header="Show comparative spectra viewer" Command="{Binding StartUpWindowComparativeViewer}">
+                </MenuItem>
             </MenuItem>
         </Menu>
         <Grid>

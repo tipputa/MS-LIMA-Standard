@@ -882,6 +882,9 @@ namespace ChartDrawing
         #region default drawing visual         
         protected DrawingVisual SetDefaultDrawingVisual(DrawingVisual drawingVisual) {
             MaxX = 10; MaxY = 10; MinY = 0;MinX = 0;
+            yPacket = (Area.ActualGraphHeight - Area.LabelSpace.Top - Area.LabelSpace.Bottom) / (MaxY - MinY);
+            xPacket = Area.ActualGraphWidth / (MaxX - MinX);
+
             if (string.IsNullOrWhiteSpace(Title.Label)) {
                 Title.Label = "No Data";
                 Title.FontSize = 15;

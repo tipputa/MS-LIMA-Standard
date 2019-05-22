@@ -1,0 +1,33 @@
+﻿<Window x:Class="Metabolomics.MsLima.AllSpectraMetaInformationTable"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Metabolomics.MsLima"
+        mc:Ignorable="d"
+        Title="Meta information of all spectra" Height="500" Width="1220">
+    <Grid>
+        <DataGrid Name="DataGrid_RawData" ItemsSource="{Binding Path=Table}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" Margin="0,0,0,0">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader" >
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Width="50" Binding="{Binding Path=Id}" IsReadOnly="False" />
+                <DataGridTextColumn Header="Name" Width="2*" Binding="{Binding Path=Name}" IsReadOnly="False" />
+                <DataGridTextColumn Header="RT" Width="50" Binding="{Binding Path=RetentionTime, StringFormat=0.00}" IsReadOnly="False" />
+                <DataGridTextColumn Header="m/z" Width="80" Binding="{Binding Path=PrecursorMz, StringFormat=0.000}" IsReadOnly="False" />
+                <DataGridTextColumn Header="Theor. m/z" Width="80" Binding="{Binding Path=TheoreticalMass, StringFormat=0.000}" IsReadOnly="False" />
+                <DataGridTextColumn Header="Diff (ppm)" Width="80" Binding="{Binding Path=DiffPpm, StringFormat=0.0}" IsReadOnly="False" />
+                <DataGridTextColumn Header="Type" Width="80" Binding="{Binding Path=AdductIon.AdductIonName}" IsReadOnly="False" />
+                <DataGridTextColumn Header="CE" Width="50" Binding="{Binding Path=CollisionEnergy}" IsReadOnly="False" />
+                <DataGridTextColumn Header="Formula" Width="100" Binding="{Binding Path=Formula}" IsReadOnly="False" />
+                <DataGridTextColumn Header="InChIKey" Width="100" Binding="{Binding Path=InChIKey}" IsReadOnly="False" />
+                <DataGridTextColumn Header="NumPeaks" Width="50" Binding="{Binding Path=PeakNumber}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Comment" Width="2*" Binding="{Binding Path=Comment}" IsReadOnly="false" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

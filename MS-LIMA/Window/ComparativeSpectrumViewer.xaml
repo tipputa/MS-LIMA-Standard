@@ -1,0 +1,161 @@
+﻿<Window x:Class="Metabolomics.MsLima.ComparativeSpectrumViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Metabolomics.MsLima"
+        xmlns:chart="clr-namespace:ChartDrawing;assembly=ChartDrawing"
+        mc:Ignorable="d"
+        Title="Comparative mass spectra viewer" Height="600" Width="1200">
+    <!--    <Window.Resources>
+
+        <ContextMenu x:Key="menuReverseMassSpectrogram">
+            <MenuItem Header="Save image as.." Click="contextMenu_SaveImageAs_Click" />
+            <MenuItem Header="Copy image as.." Click="contextMenu_CopyImageAs_Click" />
+            <MenuItem Header="Save spectra table as.." Click="contextMenu_SaveSpectraTableAs_Click" />
+            <MenuItem Header="Copy spectra table as.." Click="contextMenu_CopySpectraTableAs_Click" />
+        </ContextMenu>
+    </Window.Resources>
+    -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="100"/>
+            <ColumnDefinition Width="*" MinWidth="100"/>
+            <ColumnDefinition Width="*" MinWidth="100"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" MinHeight="50"/>
+                <RowDefinition Height="50" MinHeight="50"/>
+                <RowDefinition Height="*" MinHeight="100"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBox Name="TextBox_LeftMsp" Text="{Binding Path=LeftFileName}" Margin="5,5,45,5" VerticalAlignment="Top" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+                <Button Name="Button_ImportLeftMsp" Command="{Binding ImportLeftFileCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Import" Width="40" Height="25" FontSize="10"/>
+                <Label Content="Search function; Share filters for both msp files : " Margin="5,22,0,0"/>
+                <CheckBox Content="" IsChecked="True" Margin="280,28,0,0"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" MinWidth="30"/>
+                    <ColumnDefinition Width="*" MinWidth="30"/>
+                    <ColumnDefinition Width="*" MinWidth="30"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Name" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Grid.Column="1" Content="Mz"  HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Content="RT" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                <TextBox Grid.Column="0" Text="{Binding Path=LeftNameText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                <TextBox Grid.Column="1" Text="{Binding Path=LeftMzText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                <TextBox Grid.Column="2" Text="{Binding Path=LeftRtText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <DataGrid Name="DataGrid_Msp_Left" ItemsSource="{Binding Path=LeftSpectraTable}" SelectedItem="{Binding SelectedMassSpectrumLeft}"
+                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" Margin="5,10,10,10" >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding Path=SpectraSelectionChangedCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" >
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Path=Id}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Name" Width="2*" Binding="{Binding Path=Name}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="m/z" Width="60" Binding="{Binding Path=PrecursorMz, StringFormat=0.00}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="RT" Width="50" Binding="{Binding Path=RetentionTime, StringFormat=0.00}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="CE" Width="40" Binding="{Binding Path=CollisionEnergy, StringFormat=0}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Type" Width="60" Binding="{Binding Path=AdductIon.AdductIonName}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Num" Width="40" Binding="{Binding Path=PeakNumber, StringFormat=0}" IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" MinHeight="50"/>
+                <RowDefinition Height="50" MinHeight="50"/>
+                <RowDefinition Height="*" MinHeight="100"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBox Text="{Binding Path=Right}" Margin="5,5,45,5" VerticalAlignment="Top" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+                <Button  Command="{Binding ImportRightFileCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Import" Width="40" Height="25" FontSize="10"/>
+                <Label Content="Filtere based on selected compound: " Margin="5,22,0,0"/>
+                <CheckBox Content="" IsChecked="True"  Margin="210,28,0,0"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" MinWidth="30"/>
+                    <ColumnDefinition Width="*" MinWidth="30"/>
+                    <ColumnDefinition Width="*" MinWidth="30"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Name" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Grid.Column="1" Content="Mz"  HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Grid.Column="2" Content="RT" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                <TextBox Grid.Column="0" Text="{Binding Path=RightNameText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                <TextBox Grid.Column="1" Text="{Binding Path=RightMzText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                <TextBox Grid.Column="2" Text="{Binding Path=RightRtText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <DataGrid Name="DataGrid_Msp_Right" ItemsSource="{Binding Path=RightSpectraTable}" SelectedItem="{Binding SelectedMassSpectrumRight}"
+                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="True" SelectionUnit="FullRow" IsReadOnly="False" HeadersVisibility="All" AutoGenerateColumns="False" Margin="5,10,10,10">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding Path=SpectraSelectionChangedCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" >
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Path=Id}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Name" Width="2*" Binding="{Binding Path=Name}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="m/z" Width="60" Binding="{Binding Path=PrecursorMz, StringFormat=0.00}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="RT" Width="50" Binding="{Binding Path=RetentionTime, StringFormat=0.00}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="CE" Width="40" Binding="{Binding Path=CollisionEnergy, StringFormat=0}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Type" Width="60" Binding="{Binding Path=AdductIon.AdductIonName}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Num" Width="40" Binding="{Binding Path=PeakNumber, StringFormat=0}" IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90" MinHeight="90"/>
+                <RowDefinition Height="*" MinHeight="160"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250" MinWidth="250" />
+                    <ColumnDefinition Width="*" MinWidth="50"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="5,10,0,0">
+                    <TextBox Text="Total MS/MS similarity score: " Height="20" BorderThickness="0" IsReadOnly="True" Background="Transparent"/>
+                    <TextBox Text="Dot product similarity score: " Height="20" BorderThickness="0" IsReadOnly="True" Background="Transparent"/>
+                    <TextBox Text="Reverse dot product similarity score: " Height="20" BorderThickness="0" IsReadOnly="True" Background="Transparent"/>
+                    <TextBox Text="Number of muched peaks: " Height="20" BorderThickness="0" IsReadOnly="True" Background="Transparent"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5,10,0,0">
+                    <TextBox Name="Label_PeakInformation_Ms2TotalScore" Text="{Binding Path=TotalScore, StringFormat=0}" Height="20" BorderThickness="0" IsReadOnly="True" Background="Transparent"/>
+                    <TextBox Name="Label_PeakInformation_DotProduct" Text="{Binding Path=DotScore, StringFormat=0}" Height="20" BorderThickness="0" IsReadOnly="True" Background="Transparent"/>
+                    <TextBox Name="Label_PeakInformation_ReverseDotProduct" Text="{Binding Path=RevScore, StringFormat=0}" Height="20" BorderThickness="0" IsReadOnly="True" Background="Transparent"/>
+                    <TextBox Name="Label_PeakInformation_NumMachedPeaks" Text="{Binding Path=MatchScore, StringFormat=0}" Height="20" BorderThickness="0" IsReadOnly="True" Background="Transparent"/>
+                </StackPanel>
+            </Grid>
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1">
+                <chart:DefaultUC x:Name="MassSpectrogramWithRefUI" Content="{Binding MassSpectrumWithRef}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <!--="{DynamicResource ResourceKey=menuReverseMassSpectrogram}" />-->
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

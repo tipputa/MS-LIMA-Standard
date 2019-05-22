@@ -103,7 +103,6 @@ namespace Metabolomics.Core
             dv.ActionContainer = Action;
             this.Content = this.fe;
             RefreshUIWithSizeChanged();
-
         }
 
 

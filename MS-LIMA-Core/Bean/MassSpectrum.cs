@@ -29,8 +29,6 @@ namespace Metabolomics.MsLima.Bean
         public string Instrument { get; set; }
         public string InstrumentType { get; set; }
         public string License { get; set; }
-        public List<float> IsotopeRatioList { get; set; }
-
 
         public string Links { get; set; }
 
@@ -50,5 +48,45 @@ namespace Metabolomics.MsLima.Bean
         public int Order { get; set; }
         public int PeakNumber { get => Spectrum.Count; }
         public List<AnnotatedPeak> Spectrum { get; set; }
+
+        public MassSpectrum Copy()
+        {
+            var spectrum = new MassSpectrum()
+            {
+                Id = this.Id,
+                BinId = this.BinId,
+                CompoundClass = this.CompoundClass,
+                Name = this.Name,
+                PrecursorMz = this.PrecursorMz,
+                RetentionTime = this.RetentionTime,
+                RetentionIndex = this.RetentionIndex,
+                Formula = this.Formula,
+                IonMode = this.IonMode,
+                Smiles = this.Smiles,
+                InChiIKey = this.InChiIKey,
+                ShortInChiIKey = this.ShortInChiIKey,
+                InChI = this.InChI,
+                Target = this.Target,
+                Authors = this.Authors,
+                SpectrumType = this.SpectrumType,
+                Instrument = this.Instrument,
+                InstrumentType = this.InstrumentType,
+                License = this.License,
+                Links = this.Links,
+                Comment = this.Comment,
+                CollisionEnergy = this.CollisionEnergy,
+                Ontology = this.Ontology,
+                Intensity = this.Intensity,
+                TheoreticalMass = this.TheoreticalMass,
+                DiffPpm = this.DiffPpm,
+                Order = this.Order,
+                AdductIon = Metabolomics.Core.Parser.AdductIonParser.GetAdductIon(this.AdductIon.AdductIonName),
+                Spectrum = new List<AnnotatedPeak>()
+            };
+            foreach (var peak in this.Spectrum) {
+                spectrum.Spectrum.Add(peak.Copy());
+            }
+            return spectrum;
+        }
     }
 }
