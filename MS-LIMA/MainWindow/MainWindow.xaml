@@ -71,13 +71,13 @@
                             <ToolTip Content="Export as MSP format"/>
                         </ToolTipService.ToolTip>
                     </MenuItem>
-                    <MenuItem Name="MenuItem_ExportAsMspDropRt" Header="Export as MSP without retention time" Command="{Binding SaveAsMspCommand}">
+                    <MenuItem Name="MenuItem_ExportAsMspDropRt" Header="Export as MSP without retention time" Command="{Binding SaveAsMspWithoutRTCommand}">
                         <ToolTipService.ToolTip>
                             <ToolTip Content="Export as MSP format without retention time"/>
                         </ToolTipService.ToolTip>
                     </MenuItem>
 
-                    <MenuItem Name="MenuItem_ExportAsTable" Header="Export as table for MZmine library" Command="{Binding SaveAsMspCommand}">
+                    <MenuItem Name="MenuItem_ExportAsTable" Header="Export as table for MZmine library" Command="{Binding SaveAsMzMineCommand}">
                         <ToolTipService.ToolTip>
                             <ToolTip Content="Export as tab-separated format"/>
                         </ToolTipService.ToolTip>
@@ -86,13 +86,35 @@
             </MenuItem>
 
             <MenuItem Name="Setting" Header="_Setting">
-                <MenuItem Name="MenuItem_Setting" Header="_Setting Window" Command="{Binding SaveAsMspCommand}">
+                <MenuItem Name="MenuItem_Setting" Header="Setting Window" Command="{Binding StartUpSettingWindow}">
                 </MenuItem>
             </MenuItem>
-            <MenuItem Name="Tool" Header="_Tool">
+
+            <MenuItem Name="Utility" Header="_Utility">
+                <MenuItem Name="MenuItem_Utility_Convert2TheoreticalMass" Header="Convert precursor m/z as theoretical m/z" Command="{Binding ConvertAccurateMassToTheoreticalMass}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Accurate m/z of precursorMz will be converted to theoretical m/z"/>
+                    </ToolTipService.ToolTip>
+                </MenuItem>
+                <MenuItem Name="MenuItem_Utility_DropRt" Header="Remove all retention time" Command="{Binding DropRetentionTime}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Remove retention time in all records"/>
+                    </ToolTipService.ToolTip>
+                </MenuItem>
+
+            </MenuItem>
+
+
+            <MenuItem Name="Viewer" Header="_Viewer">
                 <MenuItem Name="MenuItem_AllSpectra" Header="Show meta deta of all spectra" Command="{Binding StartUpWindowAllSpectra}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Meta data of all spectra will be shown. User can change them. "/>
+                    </ToolTipService.ToolTip>
                 </MenuItem>
                 <MenuItem Name="MenuItem_ComparativeViewer" Header="Show comparative spectra viewer" Command="{Binding StartUpWindowComparativeViewer}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="For comparing two MS2 spectra. User can also import different libraries."/>
+                    </ToolTipService.ToolTip>
                 </MenuItem>
             </MenuItem>
         </Menu>

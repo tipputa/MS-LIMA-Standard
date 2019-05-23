@@ -19,5 +19,16 @@ namespace Metabolomics.MsLima.Model
             }
             return spectrum;
         }
+
+        public static MassSpectrum DropRetentionTime(MassSpectrum spectrum)
+        {
+            spectrum.RetentionTime = -1;
+            return spectrum;
+        }
+
+        public static void ConvertActualMassToTheoreticalMass(MassSpectrum spectrum)
+        {
+            spectrum.PrecursorMz = spectrum.TheoreticalMass;
+        }
     }
 }

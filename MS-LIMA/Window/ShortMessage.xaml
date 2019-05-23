@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="{Binding Title}" Height="200" Width="400">
     <Grid>
-        <Label Name="LabelMessage" Content="{Binding Message}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox Name="LabelMessage" Text="" BorderThickness="0" IsReadOnly="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>

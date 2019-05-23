@@ -18,5 +18,29 @@ namespace Metabolomics.MsLima
             }
 
         }
+
+        public static void ExportCompoundTableAsMspWithoutRT(string filePath, List<CompoundBean> compounds)
+        {
+            using (var sw = new StreamWriter(filePath, false, Encoding.UTF8))
+            {
+                foreach (var comp in compounds)
+                {
+
+                    Writer.MassSpectrumWriter.WriteMassSpectraAsMspWithoutRT(sw, comp.Spectra);
+                }
+            }
+        }
+
+        public static void ExportCompoundTableAsMzMineFormat(string filePath, List<CompoundBean> compounds)
+        {
+            using (var sw = new StreamWriter(filePath, false, Encoding.UTF8))
+            {
+                foreach (var comp in compounds)
+                {
+                    Writer.MassSpectrumWriter.WriteMassSpectraAsMzMineFormat(sw, comp);
+                }
+            }
+        }
+
     }
 }

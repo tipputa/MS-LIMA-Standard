@@ -107,7 +107,7 @@ namespace Metabolomics.MsLima.Model
                 vm.PropertyChanged -= MultipleMassSpectrogramVIew_PropertyChanged;
                 vm.PropertyChanged += MultipleMassSpectrogramVIew_PropertyChanged;
                 msUI = new MassSpectrumUI(vm);
-                var spectrumGrid = new Grid() { Height = mainWindowVM.MsLimaData.Parameter.GraphHeightInMultipleView, HorizontalAlignment = HorizontalAlignment.Stretch };
+                var spectrumGrid = new Grid() { Height = mainWindowVM.MsLimaData.Parameter.WinParam.GraphHeightInMultipleView, HorizontalAlignment = HorizontalAlignment.Stretch };
                 spectrumGrid.Children.Add(msUI);
                 stackPanel.Children.Add(spectrumGrid);
             }

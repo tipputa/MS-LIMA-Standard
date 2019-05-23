@@ -32,7 +32,7 @@ namespace Metabolomics.Core
         {
         }
 
-
+        /*
         public event EventHandler<EventArgs> CloseViewHandler;
 
         private ICommand closeCommand;
@@ -52,7 +52,7 @@ namespace Metabolomics.Core
         {
             CloseViewHandler?.Invoke(this, EventArgs.Empty);
         }
-
+        */
 
 
         #endregion

@@ -33,6 +33,7 @@ namespace Metabolomics.MsLima.ViewModel
 
         private bool share = true;
 
+        public ParameterBean Param { get; set; }
         public MassSpectrumViewHandler MsHandler;
         public FilteredTable FilteredTableLeft { get; set; }
         public FilteredTable FilteredTableRight { get; set; }
@@ -199,6 +200,7 @@ namespace Metabolomics.MsLima.ViewModel
 
         public ComparativeSpectrumViewerVM(MsLimaData data)
         {
+            Param = data.Parameter;
             MsHandler = new MassSpectrumViewHandler(data.Parameter);
             var spectra = ComparativeSpectrumViewerModel.ConvertCompoundDataToSpectra(data);
             MassSpectrumWithRef = new DefaultUC(MassSpectrumVM);
@@ -216,6 +218,7 @@ namespace Metabolomics.MsLima.ViewModel
             SpectraSelectionChangedCommand = new DelegateCommand(
                 x =>
                 {
+                    SetScores(SelectedMassSpectrumLeft, SelectedMassSpectrumRight);
                     MassSpectrumVM = MsHandler.GetMassSpectrumWithRefDrawVisual(SelectedMassSpectrumLeft, SelectedMassSpectrumRight);
                     MassSpectrumWithRef = new DefaultUC(MassSpectrumVM);
                 });
@@ -236,6 +239,29 @@ namespace Metabolomics.MsLima.ViewModel
             FilteredTableRight.View.Filter = FilterSettingRight.MassSpectrumFilter;
             OnPropertyChanged(nameof(RightSpectraTable));
         }
+
+        public void SetScores(MassSpectrum spectrum1, MassSpectrum spectrum2)
+        {
+            var ms2tol = (float)this.Param.MS2Tol;
+            var dotProductFactor = 1.0;
+            var reverseDotProdFactor = 1.0;
+            var presensePercentageFactor = 1.0;
+            if (spectrum1 == null || spectrum2 == null)
+            {
+                this.DotScore = 0;
+                this.RevScore = 0;
+                this.MatchScore = 0;
+                this.TotalScore = 0;
+            }
+            else
+            {
+                this.DotScore = (float)MsSimilarityScoring.GetMassSpectraSimilarity(spectrum1, spectrum2, ms2tol) * 1000;
+                this.RevScore = (float)MsSimilarityScoring.GetReverseSearchSimilarity(spectrum1, spectrum2, ms2tol) * 1000;
+                this.MatchScore = (float)MsSimilarityScoring.GetPresenceSimilarityBasedOnReference(spectrum1, spectrum2, ms2tol) * 1000;
+                this.TotalScore = (float)((dotProductFactor * DotScore + reverseDotProdFactor * RevScore + presensePercentageFactor * MatchScore) / (dotProductFactor + reverseDotProdFactor + presensePercentageFactor));
+            }
+        }
+
 
     }
 }

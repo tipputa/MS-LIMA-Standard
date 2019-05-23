@@ -117,5 +117,12 @@ namespace ChartDrawing
                                 System.Math.Ceiling(dValue * dCoef) / dCoef;
         }
 
+        public static void CheckStringSize(string text, int size, out double width, out double height)
+        {
+            var s = new FormattedText(text, System.Globalization.CultureInfo.GetCultureInfo("en-us"), System.Windows.FlowDirection.LeftToRight, new Typeface("Calibri"), size, Brushes.Black, 1);
+            width = s.Width;
+            height = s.Height;
+        }
+
     }
 }

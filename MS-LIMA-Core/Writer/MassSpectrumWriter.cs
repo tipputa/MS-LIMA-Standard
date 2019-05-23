@@ -7,6 +7,15 @@ namespace Metabolomics.MsLima.Writer
 {
     public static class MassSpectrumWriter
     {
+        #region Msp
+        public static void WriteMassSpectraAsMspWithoutRT(StreamWriter sw, List<MassSpectrum> spectra)
+        {
+            foreach (var spectrum in spectra)
+            {                
+                WriteMassSpectrumAsMsp(sw, Model.MassSpectrumUtility.DropRetentionTime(spectrum.Copy()));
+            }
+        }
+
         public static void WriteMassSpectraAsMsp(StreamWriter sw, List<MassSpectrum> spectra)
         {
             foreach(var spectrum in spectra)
@@ -50,5 +59,18 @@ namespace Metabolomics.MsLima.Writer
             }
             sw.WriteLine("");
         }
+
+        #endregion
+
+        public static void WriteMassSpectraAsMzMineFormat(StreamWriter sw, CompoundBean compound)
+        {
+            var exported = new List<string>();
+            foreach(var spec in compound.Spectra){
+                if (exported.Contains(spec.AdductIon.AdductIonName) == true) continue;
+                sw.WriteLine(Math.Round(spec.TheoreticalMass, 6) + "\t" + spec.RetentionTime + "\t" + spec.InChiIKey + "\t" + spec.Name + "\t" + spec.AdductIon.AdductIonName);
+                exported.Add(spec.AdductIon.AdductIonName);
+            }
+        }
+
     }
 }

@@ -26,5 +26,36 @@ namespace Metabolomics.MsLima.Model
             }
         }
 
+        public static void SaveAsMspWithoutRT(List<CompoundBean> compounds)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "MSP file(.msp)|*.msp|All Files (*.*)|*.*";
+
+            if (sfd.ShowDialog() == true)
+            {
+                var filePath = sfd.FileName;
+                Mouse.OverrideCursor = Cursors.Wait;
+                
+                ExportCompoundTable.ExportCompoundTableAsMspWithoutRT(filePath, compounds);
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        public static void SaveCompoundTableAsMzMineFormat(List<CompoundBean> compounds)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "MSP file(.msp)|*.msp|All Files (*.*)|*.*";
+
+            if (sfd.ShowDialog() == true)
+            {
+                var filePath = sfd.FileName;
+                Mouse.OverrideCursor = Cursors.Wait;
+
+                ExportCompoundTable.ExportCompoundTableAsMzMineFormat(filePath, compounds);
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+
     }
 }
