@@ -56,6 +56,21 @@ namespace Metabolomics.MsLima.Model
             }
         }
 
+        public static void SaveCommonProductIonTable(List<CompoundBean> compounds)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Text file(.txt)|*.txt|All Files (*.*)|*.*";
+
+            if (sfd.ShowDialog() == true)
+            {
+                var filePath = sfd.FileName;
+                Mouse.OverrideCursor = Cursors.Wait;
+
+                ExportCompoundTable.CalculateConsensusPeakInLibrary(filePath, compounds);
+                Mouse.OverrideCursor = null;
+            }
+        }
+
 
     }
 }

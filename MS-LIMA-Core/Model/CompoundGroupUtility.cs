@@ -5,6 +5,7 @@ using System.Linq;
 using Metabolomics.MsLima.Bean;
 using Metabolomics.Core.Utility;
 using Metabolomics.MsLima;
+using System.IO;
 
 namespace Metabolomics.MsLima.Model
 {
@@ -233,5 +234,15 @@ namespace Metabolomics.MsLima.Model
             }
         }
 
+        public static void RemoveUnannotatedPeaks(List<CompoundBean> compounds)
+        {
+            foreach (var comp in compounds)
+            {
+                foreach (var spec in comp.Spectra)
+                {
+                    MassSpectrumUtility.RemoveUnannotatedPeaks(spec);
+                }
+            }
+        }
     }
 }

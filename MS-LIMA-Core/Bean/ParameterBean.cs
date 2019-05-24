@@ -69,6 +69,7 @@ namespace Metabolomics.MsLima.Bean
                 MS2Tol = this.MS2Tol,
                 NumberOfDecimalPlaces = this.NumberOfDecimalPlaces,
                 MinimumNumberOfSamplesForConsensus = this.MinimumNumberOfSamplesForConsensus,
+                CompoundGroupingKey = this.CompoundGroupingKey, 
                 WinParam = new WindowParameterBean()
                 {
                     GraphHeightInMultipleView = this.WinParam.GraphHeightInMultipleView,

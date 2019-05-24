@@ -105,7 +105,7 @@
     <Compile Include="Model\ControlRefresh.cs" />
     <Compile Include="Model\ExportUtility.cs" />
     <Compile Include="Model\ImportUtility.cs" />
-    <Compile Include="Model\TabConverters.cs" />
+    <Compile Include="Model\Converters.cs" />
     <Compile Include="WindowUtility\FilteredTableCollection.cs" />
     <Compile Include="MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

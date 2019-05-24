@@ -199,85 +199,83 @@ namespace Metabolomics.MsLima.Bean
                 }
             }
         }
-
-        public static void Excute_All2(string output, MainWindow mainWindow, MainWindowVM mainWindowVM)
+        */
+        public static void ExcuteAll(StreamWriter sw, List<CompoundBean> compounds)
         {
-            using (var sw = new StreamWriter(output, false, Encoding.ASCII))
+            var MsGroupList = new List<MsGroup>();
+            var num = 0;
+            foreach (var comp in compounds)
             {
-                var MsGroupList = new List<MsGroup>();
-                var num = 0;
-                foreach (var comp in mainWindowVM.Data.rawData)
+                foreach (var spec in comp.Spectra)
                 {
-                    foreach (var spec in comp.DataList)
-                    {
-                        num++;
-                    }
-                }
-                var i = 0;
-                foreach (var comp in mainWindowVM.Data.rawData)
-                {
-                    foreach (var spec in comp.DataList)
-                    {
-                        var peaks = spec.MzIntensityCommentBeanList.OrderBy(n => n.Mz).ToList();
-                        var maxInt = peaks.Max(x => x.Intensity);
-                        foreach (var peak in peaks)
-                        {
-                            CheckPeak(MsGroupList, peak, num, i, maxInt);
-                        }
-                        i++;
-                    }
-                }
-                Finalizer(MsGroupList);
-                var counter = num;
-                foreach (var g in MsGroupList)
-                {
-                    var comment = "";
-                    if (g.CommonSMILES != null)
-                    {
-                        comment += "SMILES " + g.CommonSMILES.Smiles + ", NumSmiles " + g.SMILES.Count();
-                        if (g.SMILES.Count > 1)
-                        {
-                            comment += " {";
-                            var tmp = new List<string>();
-                            foreach (var s in g.SMILES)
-                            {
-                                tmp.Add(s.Smiles + "(" + s.Counter + ")");
-                            }
-                            comment += string.Join(", ", tmp);
-                            comment += "}; ";
-                        }
-                        else comment += "; ";
-                    }
-                    if (g.CommonFORMULA != null)
-                    {
-                        comment += "Formula " + g.CommonFORMULA.Formula + ", numFormula " + g.Formula.Count();
-                        if (g.Formula.Count > 1)
-                        {
-                            comment += " {";
-                            var tmp = new List<string>();
-                            foreach (var f in g.Formula)
-                            {
-                                tmp.Add(f.Formula + "(" + f.Counter + ")");
-                            }
-                            comment += string.Join(", ", tmp);
-                            comment += "}; ";
-                        }
-                        else comment += "; ";
-                    }
-                    if (g.CommonAdduct != null)
-                    {
-                        comment += "Adduct " + g.CommonAdduct.AdductName + ", linkedMz " + g.CommonAdduct.LinkedMz + "; ";
-                    }
-                    if (g.Isotope != null)
-                    {
-                        comment += "Isotope " + g.Isotope.Label + ", linkedMz " + g.Isotope.LinkedMz + "; ";
-                    }
-
-                    sw.WriteLine(g.MedianMz + "\t" + g.MedianIntensity + "\t" + g.Counter + "\t" + Math.Round(((double)g.Counter / (double)counter * 100.0), 1) + "\t" + comment);
+                    num++;
                 }
             }
+            var i = 0;
+            foreach (var comp in compounds)
+            {
+                foreach (var spec in comp.Spectra)
+                {
+                    var peaks = spec.Spectrum.OrderBy(n => n.Mz).ToList();
+                    var maxInt = peaks.Max(x => x.Intensity);
+                    foreach (var peak in peaks)
+                    {
+                        CheckPeak(MsGroupList, peak, num, i, maxInt);
+                    }
+                    i++;
+                }
+            }
+            Finalizer(MsGroupList);
+            var counter = num;
+            foreach (var g in MsGroupList)
+            {
+                var comment = "";
+                if (g.CommonSMILES != null)
+                {
+                    comment += "SMILES " + g.CommonSMILES.Smiles + ", NumSmiles " + g.SMILES.Count();
+                    if (g.SMILES.Count > 1)
+                    {
+                        comment += " {";
+                        var tmp = new List<string>();
+                        foreach (var s in g.SMILES)
+                        {
+                            tmp.Add(s.Smiles + "(" + s.Counter + ")");
+                        }
+                        comment += string.Join(", ", tmp);
+                        comment += "}; ";
+                    }
+                    else comment += "; ";
+                }
+                if (g.CommonFORMULA != null)
+                {
+                    comment += "Formula " + g.CommonFORMULA.Formula + ", numFormula " + g.Formula.Count();
+                    if (g.Formula.Count > 1)
+                    {
+                        comment += " {";
+                        var tmp = new List<string>();
+                        foreach (var f in g.Formula)
+                        {
+                            tmp.Add(f.Formula + "(" + f.Counter + ")");
+                        }
+                        comment += string.Join(", ", tmp);
+                        comment += "}; ";
+                    }
+                    else comment += "; ";
+                }
+                if (g.CommonAdduct != null)
+                {
+                    comment += "Adduct " + g.CommonAdduct.AdductName + ", linkedMz " + g.CommonAdduct.LinkedMz + "; ";
+                }
+                if (g.Isotope != null)
+                {
+                    comment += "Isotope " + g.Isotope.Label + ", linkedMz " + g.Isotope.LinkedMz + "; ";
+                }
+
+                sw.WriteLine(g.MedianMz + "\t" + g.MedianIntensity + "\t" + g.Counter + "\t" + Math.Round(((double)g.Counter / (double)counter * 100.0), 1) + "\t" + comment);
+            }
+            
         }
-        */
+        
 
         public static List<MsGroup> Excute(CompoundBean comp)
         {

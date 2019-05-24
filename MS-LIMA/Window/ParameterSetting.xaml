@@ -5,10 +5,72 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Metabolomics.MsLima"
+        xmlns:model="clr-namespace:Metabolomics.MsLima.Model"
         mc:Ignorable="d"
-        Title="Parameter setting" Height="450" Width="800">
+        Title="Parameter setting" Height="580" Width="550">
+
+
+    <Window.Resources>
+        <model:EnumToCllectionConverter x:Key="EnumConverter" />
+    </Window.Resources>
     <Grid>
-        <Label Content="In preparation"/>
-        <Button Name="ButtonCancel" Content="Cancel" Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=ParamWindow}" Width="50" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MinHeight="200"/>
+            <RowDefinition Height="50" MinHeight="50"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" MinWidth="250"/>
+                <ColumnDefinition Width="*" MinWidth="100"/>
+                <ColumnDefinition Width="100" MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5,5,0,0">
+                <TextBox Text="Basic settings" BorderThickness="0" IsReadOnly="True" Height="20" Margin="5,5,0,0" />
+                <TextBox Text="MS2 torelance: " BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
+                <TextBox Text="Min. number for consensus: " BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
+                <TextBox Text="Key of compound grouping: " BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
+
+                <TextBox Text="Visualization settings" BorderThickness="0" IsReadOnly="True" Height="20" Margin="5,20,0,0" />
+                <TextBox Text="Number of decimal places of m/z value: " BorderThickness="0" Height="20" IsReadOnly="True" Margin="10,5,0,5" />
+                <TextBox Text="Each spectrum height in multiple viewer: " BorderThickness="0" Height="20" IsReadOnly="True" Margin="10,5,0,5" />
+
+                <TextBox Text="Aditional settings" BorderThickness="0" IsReadOnly="True" Height="20" Margin="5,20,0,0" />
+                <TextBox Text="Interval time of auto export: " BorderThickness="0" Height="20" IsReadOnly="True" Margin="10,5,0,5" />
+
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,5,0,0">
+                <TextBox Text="" BorderThickness="0" Width="0"  Height="20" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding Ms2Tol}"  Height="20" Margin="0,5,0,5"/>
+                <TextBox Text="{Binding MinimumNumberOfSamplesForConsensus}"  Height="20" Margin="0,5,0,5"/>
+                <ComboBox ItemsSource="{Binding CompoundGroupingKey, Converter={StaticResource EnumConverter}}" SelectedIndex="{Binding SelectedId}" Height="20" Margin="0,5,0,5"/>
+                
+                <TextBox Text="" BorderThickness="0" Width="0"  Height="20" Margin="0,20,0,0"/>
+                <TextBox Text="{Binding NumberOfDecimalPlace}"  Height="20"  Margin="0,5,0,5"/>
+                <TextBox Text="{Binding GraphHeightInMultipleView}"  Height="20"  Margin="0,5,0,5"/>
+
+
+                <TextBox Text="" BorderThickness="0" Width="0"  Height="20" Margin="0,20,0,0"/>
+                <TextBox Text="{Binding AutoExportIntervalMillisecond}"  Height="20"  Margin="0,5,0,5"/>
+
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Vertical" Margin="0,5,0,0">
+                <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Width="0" Margin="0,5,0,0"/>
+                <TextBox Text="Da" BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
+                <TextBox Text="samples" BorderThickness="0" IsReadOnly="True"  Height="20" Margin="10,5,0,5" />
+                <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Width="0" Margin="0,5,0,5"/>
+   
+                <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Width="0" Margin="5,20,0,0"/>
+                <TextBox Text="samples" BorderThickness="0" IsReadOnly="True"  Height="20" Margin="10,5,0,5" />
+                <TextBox Text="pixel" BorderThickness="0" IsReadOnly="True"  Height="20" Margin="10,5,0,5" />
+
+                <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Width="0" Margin="5,20,0,0"/>
+                <TextBox Text="milliseconds" BorderThickness="0" IsReadOnly="True"  Height="20" Margin="10,5,0,5" />
+
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Button Name="ButtonSet" Content="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=ParamWindow}" Width="70" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,90,10"/>
+            <Button Name="ButtonCancel" Content="Cancel" Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=ParamWindow}" Width="70" Height="25" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10"/>
+        </Grid>
     </Grid>
 </Window>

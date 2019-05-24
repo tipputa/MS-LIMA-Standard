@@ -25,11 +25,7 @@ namespace Metabolomics.MsLima
         #endregion
         
         public MsLimaData() {
-            WriteParameterFile();
-            Console.WriteLine(ParameterFilePath);
             ReadParameterFile();
-
-            
         }
 
         public void ReadParameterFile()

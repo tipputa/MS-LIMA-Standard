@@ -30,5 +30,18 @@ namespace Metabolomics.MsLima.Model
         {
             spectrum.PrecursorMz = spectrum.TheoreticalMass;
         }
+
+        public static void RemoveUnannotatedPeaks(MassSpectrum spectrum)
+        {
+            var peaks = new List<AnnotatedPeak>();
+            foreach(var peak in spectrum.Spectrum)
+            {
+                if(peak.Comment != "")
+                {
+                    peaks.Add(peak);
+                }
+            }
+            spectrum.Spectrum = peaks;
+        }
     }
 }

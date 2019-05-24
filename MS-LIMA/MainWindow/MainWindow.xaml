@@ -91,6 +91,11 @@
             </MenuItem>
 
             <MenuItem Name="Utility" Header="_Utility">
+                <MenuItem Name="MenuItem_Utility_RemoveUnannotated" Header="Remove unannotated peaks" Command="{Binding RemoveUnannotatedCommand}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Unannotated peaks (comment filed is empty) will be removed"/>
+                    </ToolTipService.ToolTip>
+                </MenuItem>
                 <MenuItem Name="MenuItem_Utility_Convert2TheoreticalMass" Header="Convert precursor m/z as theoretical m/z" Command="{Binding ConvertAccurateMassToTheoreticalMass}">
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Accurate m/z of precursorMz will be converted to theoretical m/z"/>
@@ -99,6 +104,11 @@
                 <MenuItem Name="MenuItem_Utility_DropRt" Header="Remove all retention time" Command="{Binding DropRetentionTime}">
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Remove retention time in all records"/>
+                    </ToolTipService.ToolTip>
+                </MenuItem>
+                <MenuItem Name="MenuItem_Utility_SaveCommonProductIons" Header="Calc and save common product ions" Command="{Binding RemoveUnannotatedCommand}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Calculate the frequency of product ions in the library"/>
                     </ToolTipService.ToolTip>
                 </MenuItem>
 

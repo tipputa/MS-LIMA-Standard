@@ -217,7 +217,8 @@ namespace Metabolomics.MsLima
 
         public DelegateCommand ConvertAccurateMassToTheoreticalMass { get; set; }
         public DelegateCommand DropRetentionTime { get; set; }
-
+        public DelegateCommand RemoveUnannotatedCommand { get; set; }
+        public DelegateCommand SaveCommonProductIonCommand { get; set; }
         #endregion
 
 
@@ -270,6 +271,15 @@ namespace Metabolomics.MsLima
             DropRetentionTime = new DelegateCommand(
                 x => CompoundGroupUtility.DropRetentionTime(CompoundTable),
                 x => !IsDataLoaded());
+
+            RemoveUnannotatedCommand = new DelegateCommand(
+                x => CompoundGroupUtility.RemoveUnannotatedPeaks(CompoundTable),
+                x => !IsDataLoaded());
+
+            SaveCommonProductIonCommand = new DelegateCommand(                
+                x => ExportUtility.SaveCommonProductIonTable(CompoundTable),
+                x => !IsDataLoaded());
+
             #endregion
 
 
@@ -366,6 +376,7 @@ namespace Metabolomics.MsLima
         public void ImportFile()
         {
             ImportUtility.ImportFile(MsLimaData, AutoExporter);
+            if (MsLimaData.DataStorage.CompoundList == null) return;
             FilteredCompoundTable = new FilteredTable(this.CompoundTable);
             FilteredTableSetting = new FilterSettingsForLibrary(this.FilteredCompoundTable.View);
             FilteredCompoundTable.View.Filter = this.FilteredTableSetting.CompoundFilter;

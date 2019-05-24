@@ -10,7 +10,7 @@ namespace Metabolomics.MsLima
     {
         public static void ExportCompoundTableAsMsp(string filePath, List<CompoundBean> compounds)
         {
-            using(var sw = new StreamWriter(filePath, false, Encoding.UTF8))
+            using (var sw = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 foreach (var comp in compounds) {
                     Writer.MassSpectrumWriter.WriteMassSpectraAsMsp(sw, comp.Spectra);
@@ -42,5 +42,12 @@ namespace Metabolomics.MsLima
             }
         }
 
+        public static void CalculateConsensusPeakInLibrary(string filePath, List<CompoundBean> compounds)
+        {
+            using (var sw = new StreamWriter(filePath, false, Encoding.UTF8))
+            { 
+                MsGrouping.ExcuteAll(sw, compounds);
+            }
+        }
     }
 }
