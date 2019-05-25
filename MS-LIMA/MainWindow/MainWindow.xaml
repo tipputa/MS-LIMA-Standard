@@ -59,10 +59,17 @@
 
         <Menu Name="Menu_MainMenueBar" Height="25" DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Name="MenuItem_Import" Header="_Import" Command="{Binding ImportFileCommand}">
-                    <ToolTipService.ToolTip>
-                        <ToolTip Content="Import MSP file"/>
-                    </ToolTipService.ToolTip>
+                <MenuItem Name="Import" Header="_Import">
+                    <MenuItem Name="MenuItem_ImportMsp" Header="Import" Command="{Binding ImportFileCommand}">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="Import MSP/MGF file"/>
+                        </ToolTipService.ToolTip>
+                    </MenuItem>
+                    <MenuItem Name="MenuItem_Import" Header="Import MassBank" Command="{Binding ImportMassBankFileCommand}">
+                        <ToolTipService.ToolTip>
+                            <ToolTip Content="Import MassBank file"/>
+                        </ToolTipService.ToolTip>
+                    </MenuItem>
                 </MenuItem>
 
                 <MenuItem Name="Export" Header="_Export">

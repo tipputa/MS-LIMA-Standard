@@ -20,7 +20,7 @@ namespace Metabolomics.MsLima
         #region Single mass spectrum
         public DrawVisualMassSpectrum GetMassSpectrumDrawVisual(MassSpectrum spectrum)
         {
-            if (spectrum == null) return new DrawVisualMassSpectrum();
+            if (spectrum == null || spectrum.Spectrum == null || spectrum.Spectrum.Count == 0) return new DrawVisualMassSpectrum();
             var height = 200;
             var width = 500;
             var area = new Area()

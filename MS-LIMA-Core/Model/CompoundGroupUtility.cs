@@ -34,6 +34,9 @@ namespace Metabolomics.MsLima.Model
 
         public static List<CompoundBean> CreateCompoundListByShortInChIKey(List<MassSpectrum> rawLibraryFile)
         {
+            if (rawLibraryFile == null || rawLibraryFile.Count == 0)
+                return new List<CompoundBean>();
+
             CompoundBean comp;
             var dic = new Dictionary<string, CompoundBean>();
             var InchiKeys = new List<string>();

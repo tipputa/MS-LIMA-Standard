@@ -31,6 +31,16 @@ namespace Metabolomics.MsLima.Bean
             CompoundList = CompoundGroupUtility.CreateCompoundList(RawLibraryFile, key);
         }
 
+        public void SetMassBankLibrary(string filePath, CompoundGroupingKey key)
+        {
+            FilePath = filePath;
+            this.FileFormat = LibraryFileFormat.MassBank;
+            this.RawLibraryFile = ReadMassBankFile.ReadMassBankFileAsSpectrum(FilePath);
+            CompoundList = CompoundGroupUtility.CreateCompoundList(RawLibraryFile, key);
+        }
+
+
+
         public void ReadLibraryFile()
         {
             var extention = Path.GetExtension(FilePath).ToLower();

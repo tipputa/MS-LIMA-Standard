@@ -202,7 +202,8 @@ namespace Metabolomics.MsLima
         #endregion
         #region Menu Commands
         public DelegateCommand ImportFileCommand { get; set; }
-
+        public DelegateCommand ImportMassBankFileCommand { get; set; }
+        
         public DelegateCommand SaveAsMspCommand { get; set; }
         public DelegateCommand SaveAsMspWithoutRTCommand { get; set; }
         public DelegateCommand SaveAsMzMineCommand { get; set; }
@@ -249,8 +250,20 @@ namespace Metabolomics.MsLima
 
             #region MenuItems
             ImportFileCommand = new DelegateCommand(
-                x => ImportFile()
-                );
+                x =>
+                {
+                    ImportUtility.ImportFile(MsLimaData, AutoExporter);
+                    ImportFile();
+                }
+            );
+
+            ImportMassBankFileCommand = new DelegateCommand(
+                x =>
+                {
+                    ImportUtility.ImportMassBankFile(MsLimaData, AutoExporter);
+                    ImportFile();
+                }
+            );
 
             SaveAsMspCommand = new DelegateCommand(
                 x => ExportUtility.SaveAsMsp(CompoundTable),
@@ -375,8 +388,7 @@ namespace Metabolomics.MsLima
 
         public void ImportFile()
         {
-            ImportUtility.ImportFile(MsLimaData, AutoExporter);
-            if (MsLimaData.DataStorage.CompoundList == null) return;
+            if (MsLimaData.DataStorage.CompoundList == null || MsLimaData.DataStorage.CompoundList.Count == 0) return;
             FilteredCompoundTable = new FilteredTable(this.CompoundTable);
             FilteredTableSetting = new FilterSettingsForLibrary(this.FilteredCompoundTable.View);
             FilteredCompoundTable.View.Filter = this.FilteredTableSetting.CompoundFilter;

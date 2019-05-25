@@ -27,14 +27,9 @@ namespace Metabolomics.MsLima.Reader
                 spectra = ReadMspFile.ReadMspFileAsMsSpectrum(filePath);
                 return spectra;
             }
-            else if(extention == ".massbank")
-            {
-                spectra = ReadMassBankFileAsMsSpectrum(filePath);
-                return spectra;
-            }
             else if(extention == ".txt")
             {
-                spectra = ReadTextFileAsMsSpectrum(filePath);
+                spectra = ReadMassBankFile.ReadMassBankFileAsSpectrum(filePath);
                 return spectra;
             }
             else
@@ -149,6 +144,119 @@ namespace Metabolomics.MsLima.Reader
 
                 mspPeaks = mspPeaks.OrderBy(n => n.Mz).ToList();
             }
+
+            return mspPeaks;
+        }
+
+        public static List<AnnotatedPeak> ReadSpectrum(StreamReader sr, int peaknum)
+        {
+            var mspPeaks = new List<AnnotatedPeak>();
+
+            if (peaknum == 0) { return mspPeaks; }
+
+            var pairCount = 0;
+            var mspPeak = new AnnotatedPeak();
+            var wkstr = sr.ReadLine();
+
+            while (pairCount < peaknum)
+            {
+                wkstr = sr.ReadLine();
+                if (wkstr == string.Empty) break;
+                var numChar = string.Empty;
+                var mzFill = false;
+
+                for (int i = 0; i < wkstr.Length; i++)
+                {
+                    Console.WriteLine(i + " " + numChar);
+                    if (char.IsNumber(wkstr[i]) || wkstr[i] == '.')
+                    {
+                        numChar += wkstr[i];
+
+                        if (i == wkstr.Length - 1 && wkstr[i] != '"')
+                        {
+                            if (mzFill == false)
+                            {
+                                if (numChar != string.Empty)
+                                {
+                                    mspPeak.Mz = float.Parse(numChar);
+                                    mzFill = true;
+                                    numChar = string.Empty;
+                                }
+                            }
+                            else if (mzFill == true)
+                            {
+                                if (numChar != string.Empty)
+                                {
+                                    mspPeak.Intensity = float.Parse(numChar);
+                                    mzFill = false;
+                                    numChar = string.Empty;
+
+                                    if (mspPeak.Comment == null)
+                                        mspPeak.Comment = mspPeak.Mz.ToString();
+                                    mspPeaks.Add(mspPeak);
+                                    mspPeak = new AnnotatedPeak();
+                                    pairCount++;
+                                }
+                            }
+                        }
+                    }
+                    else if (wkstr[i] == '"')
+                    {
+                        i++;
+                        var letterChar = string.Empty;
+
+                        while (wkstr[i] != '"')
+                        {
+                            letterChar += wkstr[i];
+                            i++;
+                        }
+                        if (!letterChar.Contains("_f_"))
+                            mspPeaks[mspPeaks.Count - 1].Comment = letterChar;
+                        else
+                        {
+                            mspPeaks[mspPeaks.Count - 1].Comment = letterChar.Split(new string[] { "_f_" }, StringSplitOptions.None)[0];
+                            mspPeaks[mspPeaks.Count - 1].Frag = letterChar.Split(new string[] { "_f_" }, StringSplitOptions.None)[1];
+                        }
+
+                    }
+                    else
+                    {
+                        if (mzFill == false)
+                        {
+                            if (numChar != string.Empty || !string.IsNullOrWhiteSpace(numChar))
+                            {
+                                Console.WriteLine(numChar);
+                                mspPeak.Mz = float.Parse(numChar);
+                                mzFill = true;
+                                numChar = string.Empty;
+                            }
+                            else
+                            {
+                                numChar = string.Empty;
+                            }
+                        }
+                        else if (mzFill == true)
+                        {
+                            if (numChar != string.Empty)
+                            {
+                                mspPeak.Intensity = float.Parse(numChar);
+                                mzFill = false;
+                                numChar = string.Empty;
+
+                                if (mspPeak.Comment == null)
+                                    mspPeak.Comment = mspPeak.Mz.ToString();
+
+                                mspPeaks.Add(mspPeak);
+                                mspPeak = new AnnotatedPeak();
+                                pairCount++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            mspPeaks = mspPeaks.OrderBy(n => n.Mz).ToList();
+            
 
             return mspPeaks;
         }

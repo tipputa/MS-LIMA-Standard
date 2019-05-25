@@ -43,6 +43,14 @@ namespace Metabolomics.MsLima.Writer
             sw.WriteLine("INSTRUMENT: " + spec.Instrument);
             sw.WriteLine("INSTRUMENTTYPE: " + spec.InstrumentType);
             sw.WriteLine("LICENSE: " + spec.License);
+            
+            if(spec.OtherMetaData != null && spec.OtherMetaData.Count > 0)
+            {
+                foreach(var m in spec.OtherMetaData)
+                {
+                    sw.WriteLine(m);
+                }
+            }
             sw.WriteLine("COMMENT: " + spec.Comment);
             sw.WriteLine("Num Peaks:" + spec.PeakNumber);
 
