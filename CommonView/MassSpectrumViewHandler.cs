@@ -80,6 +80,7 @@ namespace Metabolomics.MsLima
         #region Consensus Mass Spectrum
         public DrawVisualMassSpectrum GetMassSpectrumDrawVisualFromConsensus(List<MsGroup> spectrum)
         {
+            if (spectrum == null || spectrum.Count == 0) return new DrawVisualMassSpectrum();
             var height = 200;
             var width = 500;
             var area = new Area()
