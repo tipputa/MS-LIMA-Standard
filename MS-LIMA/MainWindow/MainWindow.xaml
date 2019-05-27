@@ -14,7 +14,6 @@
             <i:InvokeCommandAction Command="{Binding WindowLoaded}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
     <Window.Resources>
         <model:TabMassSpectraViewIntConverter x:Key="TabMassSpectraViewIntConverter" />
         <model:TabMassSpectraTableIntConverter x:Key="TabMassSpectrumTableIntConverter" />
@@ -288,7 +287,7 @@
                             <TextBox Grid.Column="3" Text="{Binding Path=FilterInChIKeyText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
                         </Grid>
                         <Grid Name="Grid_Structure" Grid.Column="1">
-                            <Image Name="Image_Structure" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0"/>
+                            <Image Name="Image_Structure" Source="{Binding StructureImage}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0"/>
                         </Grid>
                     </Grid>
                 </Grid>

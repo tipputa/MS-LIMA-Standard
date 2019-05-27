@@ -19,22 +19,22 @@ namespace Metabolomics.MsLima.Reader
             var extention = Path.GetExtension(filePath);
             if(extention == ".mgf")
             {
-                spectra = ReadMgfFileAsMsSpectrum(filePath);
+                spectra = ReadMgfFile.ReadAsMsSpectra(filePath);
                 return spectra;
             }
             else if(extention == ".msp")
             {
-                spectra = ReadMspFile.ReadMspFileAsMsSpectrum(filePath);
+                spectra = ReadMspFile.ReadAsMsSpectra(filePath);
                 return spectra;
             }
             else if(extention == ".txt")
             {
-                spectra = ReadMassBankFile.ReadMassBankFileAsSpectrum(filePath);
+                spectra = ReadMassBankFile.ReadAsMsSpectra(filePath);
                 return spectra;
             }
             else
             {
-                spectra = ReadTextFileAsMsSpectrum(filePath);
+                spectra = ReadMassBankFile.ReadAsMsSpectra(filePath);
                 return spectra;
             }
         }
@@ -53,228 +53,213 @@ namespace Metabolomics.MsLima.Reader
 
                 while (pairCount < peaknum)
                 {
+                    double mz = -1;
+                    double intensity = -1;
+                    bool isCorrectForm = true;
                     var wkstr = sr.ReadLine();
                     if (wkstr == string.Empty) break;
-                    var numChar = string.Empty;
-                    var mzFill = false;
-
-                    for (int i = 0; i < wkstr.Length; i++)
+                    string[] peak;
+                    var str = wkstr.Trim();
+                    if (str.Contains("\t"))
                     {
-                        if (char.IsNumber(wkstr[i]) || wkstr[i] == '.')
-                        {
-                            numChar += wkstr[i];
+                        peak = str.Split('\t');
+                    }
+                    else if (str.Contains(" "))
+                    {
+                        peak = str.Split(' ');
+                    }
+                    else
+                    {
+                        peak = new string[0];
+                    }
 
-                            if (i == wkstr.Length - 1 && wkstr[i] != '"')
+                    if (peak.Length < 2) break;
+
+                    if (peak.Length >= 2)
+                    {
+                        if (double.TryParse(peak[0], out mz)) mspPeak.Mz = mz;
+                        else isCorrectForm = false;
+                        if (double.TryParse(peak[1], out intensity)) mspPeak.Intensity = intensity;
+                        else isCorrectForm = false;
+                        if (peak.Length == 3)
+                        {
+                            if (peak[2].Contains("\""))
                             {
-                                if (mzFill == false)
+                                mspPeak.Comment = peak[2].Split('\"')[1];
+                                if (!string.IsNullOrEmpty(mspPeak.Comment))
                                 {
-                                    if (numChar != string.Empty)
+                                    if (mspPeak.Comment.Contains("SMILES "))
                                     {
-                                        mspPeak.Mz = float.Parse(numChar);
-                                        mzFill = true;
-                                        numChar = string.Empty;
+                                        var tmp = mspPeak.Comment.Split(new string[] { "SMILES " }, StringSplitOptions.None)[1];
+                                        mspPeak.Smiles = tmp.Split(new string[] { "," }, StringSplitOptions.None)[0];
                                     }
-                                }
-                                else if (mzFill == true)
-                                {
-                                    if (numChar != string.Empty)
+                                    else if (mspPeak.Comment.Contains("SMILES: "))
                                     {
-                                        mspPeak.Intensity = float.Parse(numChar);
-                                        mzFill = false;
-                                        numChar = string.Empty;
-
-                                        if (mspPeak.Comment == null)
-                                            mspPeak.Comment = mspPeak.Mz.ToString();
-                                        mspPeaks.Add(mspPeak);
-                                        mspPeak = new AnnotatedPeak();
-                                        pairCount++;
+                                        var tmp = mspPeak.Comment.Split(new string[] { "SMILES: " }, StringSplitOptions.None)[1];
+                                        mspPeak.Smiles = tmp.Split(new string[] { "," }, StringSplitOptions.None)[0];
                                     }
-                                }
-                            }
-                        }
-                        else if (wkstr[i] == '"')
-                        {
-                            i++;
-                            var letterChar = string.Empty;
-
-                            while (wkstr[i] != '"')
-                            {
-                                letterChar += wkstr[i];
-                                i++;
-                            }
-                            if (!letterChar.Contains("_f_"))
-                                mspPeaks[mspPeaks.Count - 1].Comment = letterChar;
-                            else
-                            {
-                                mspPeaks[mspPeaks.Count - 1].Comment = letterChar.Split(new string[] { "_f_" }, StringSplitOptions.None)[0];
-                                mspPeaks[mspPeaks.Count - 1].Frag = letterChar.Split(new string[] { "_f_" }, StringSplitOptions.None)[1];
-                            }
-
-                        }
-                        else
-                        {
-                            if (mzFill == false)
-                            {
-                                if (numChar != string.Empty)
-                                {
-                                    mspPeak.Mz = float.Parse(numChar);
-                                    mzFill = true;
-                                    numChar = string.Empty;
-                                }
-                            }
-                            else if (mzFill == true)
-                            {
-                                if (numChar != string.Empty)
-                                {
-                                    mspPeak.Intensity = float.Parse(numChar);
-                                    mzFill = false;
-                                    numChar = string.Empty;
-
-                                    if (mspPeak.Comment == null)
-                                        mspPeak.Comment = mspPeak.Mz.ToString();
-
-                                    mspPeaks.Add(mspPeak);
-                                    mspPeak = new AnnotatedPeak();
-                                    pairCount++;
                                 }
                             }
                         }
                     }
+                    if (isCorrectForm) mspPeaks.Add(mspPeak);
+                    mspPeak = new AnnotatedPeak();
+                    pairCount++;
                 }
 
                 mspPeaks = mspPeaks.OrderBy(n => n.Mz).ToList();
             }
-
             return mspPeaks;
         }
 
         public static List<AnnotatedPeak> ReadSpectrum(StreamReader sr, int peaknum)
         {
             var mspPeaks = new List<AnnotatedPeak>();
-
+            var wkstr = sr.ReadLine();
             if (peaknum == 0) { return mspPeaks; }
 
             var pairCount = 0;
             var mspPeak = new AnnotatedPeak();
-            var wkstr = sr.ReadLine();
 
             while (pairCount < peaknum)
             {
+                double mz = -1;
+                double intensity = -1;
+                bool isCorrectForm = true;
                 wkstr = sr.ReadLine();
                 if (wkstr == string.Empty) break;
-                var numChar = string.Empty;
-                var mzFill = false;
-
-                for (int i = 0; i < wkstr.Length; i++)
+                var str = wkstr.Trim();
+                string[] peak;
+                if(str.Contains("\t"))
                 {
-                    Console.WriteLine(i + " " + numChar);
-                    if (char.IsNumber(wkstr[i]) || wkstr[i] == '.')
+                    peak = str.Split('\t');
+                }
+                else if (str.Contains(" "))
+                {
+                    peak = str.Split(' ');
+                }
+                else
+                {
+                    peak = new string[0];
+                }
+
+                if (peak.Length < 2) break;
+
+                if (peak.Length >= 2)
+                {
+                    if (double.TryParse(peak[0].Trim(), out mz)) mspPeak.Mz = mz;
+                    else isCorrectForm = false;
+                    if (double.TryParse(peak[1].Trim(), out intensity)) mspPeak.Intensity = intensity;
+                    else isCorrectForm = false;
+                    if (peak.Length >= 3)
                     {
-                        numChar += wkstr[i];
-
-                        if (i == wkstr.Length - 1 && wkstr[i] != '"')
-                        {
-                            if (mzFill == false)
+                        var com = "";
+                        if(peak.Length > 3){
+                            for(var i = 2; i < peak.Length - 1; i++)
                             {
-                                if (numChar != string.Empty)
-                                {
-                                    mspPeak.Mz = float.Parse(numChar);
-                                    mzFill = true;
-                                    numChar = string.Empty;
-                                }
-                            }
-                            else if (mzFill == true)
-                            {
-                                if (numChar != string.Empty)
-                                {
-                                    mspPeak.Intensity = float.Parse(numChar);
-                                    mzFill = false;
-                                    numChar = string.Empty;
-
-                                    if (mspPeak.Comment == null)
-                                        mspPeak.Comment = mspPeak.Mz.ToString();
-                                    mspPeaks.Add(mspPeak);
-                                    mspPeak = new AnnotatedPeak();
-                                    pairCount++;
-                                }
+                                com += peak[i] + " ";
                             }
                         }
-                    }
-                    else if (wkstr[i] == '"')
-                    {
-                        i++;
-                        var letterChar = string.Empty;
-
-                        while (wkstr[i] != '"')
-                        {
-                            letterChar += wkstr[i];
-                            i++;
-                        }
-                        if (!letterChar.Contains("_f_"))
-                            mspPeaks[mspPeaks.Count - 1].Comment = letterChar;
                         else
                         {
-                            mspPeaks[mspPeaks.Count - 1].Comment = letterChar.Split(new string[] { "_f_" }, StringSplitOptions.None)[0];
-                            mspPeaks[mspPeaks.Count - 1].Frag = letterChar.Split(new string[] { "_f_" }, StringSplitOptions.None)[1];
+                            com = peak[2];
                         }
 
-                    }
-                    else
-                    {
-                        if (mzFill == false)
+                        if (com.Contains("\""))
                         {
-                            if (numChar != string.Empty || !string.IsNullOrWhiteSpace(numChar))
+                            mspPeak.Comment = com.Split('\"')[1];
+                            if (!string.IsNullOrEmpty(mspPeak.Comment))
                             {
-                                Console.WriteLine(numChar);
-                                mspPeak.Mz = float.Parse(numChar);
-                                mzFill = true;
-                                numChar = string.Empty;
-                            }
-                            else
-                            {
-                                numChar = string.Empty;
-                            }
-                        }
-                        else if (mzFill == true)
-                        {
-                            if (numChar != string.Empty)
-                            {
-                                mspPeak.Intensity = float.Parse(numChar);
-                                mzFill = false;
-                                numChar = string.Empty;
-
-                                if (mspPeak.Comment == null)
-                                    mspPeak.Comment = mspPeak.Mz.ToString();
-
-                                mspPeaks.Add(mspPeak);
-                                mspPeak = new AnnotatedPeak();
-                                pairCount++;
+                                if (mspPeak.Comment.Contains("SMILES "))
+                                {
+                                    var tmp = mspPeak.Comment.Split(new string[] { "SMILES " }, StringSplitOptions.None)[1];
+                                    mspPeak.Smiles = tmp.Split(new string[] { "," }, StringSplitOptions.None)[0];
+                                }
+                                else if (mspPeak.Comment.Contains("SMILES: "))
+                                {
+                                    var tmp = mspPeak.Comment.Split(new string[] { "SMILES: " }, StringSplitOptions.None)[1];
+                                    mspPeak.Smiles = tmp.Split(new string[] { "," }, StringSplitOptions.None)[0];
+                                }
                             }
                         }
                     }
                 }
+                if (isCorrectForm) mspPeaks.Add(mspPeak);
+                mspPeak = new AnnotatedPeak();
+                pairCount++;
             }
 
             mspPeaks = mspPeaks.OrderBy(n => n.Mz).ToList();
             
-
             return mspPeaks;
         }
-        public static List<MassSpectrum> ReadMgfFileAsMsSpectrum(string filePath)
-        {
-            var spectra = new List<MassSpectrum>();
-            return spectra;
-        }
-        public static List<MassSpectrum> ReadMassBankFileAsMsSpectrum(string filePath)
-        {
-            var spectra = new List<MassSpectrum>();
-            return spectra;
-        }
-        public static List<MassSpectrum> ReadTextFileAsMsSpectrum(string filePath)
-        {
-            var spectra = new List<MassSpectrum>();
-            return spectra;
-        }
 
+
+        public static List<AnnotatedPeak> ReadSpectrum(StreamReader sr)
+        {
+            var mspPeaks = new List<AnnotatedPeak>();
+            var pairCount = 0;
+            var mspPeak = new AnnotatedPeak();
+            while (true)
+            {
+
+                double mz = -1;
+                double intensity = -1;
+                bool isCorrectForm = true;
+                var wkstr = sr.ReadLine();
+                if (wkstr == string.Empty) break;
+                if (Regex.IsMatch(wkstr, "END IONS")) break;
+                var str = wkstr.Trim();
+                string[] peak;
+                if (str.Contains("\t"))
+                {
+                    peak = str.Split('\t');
+                }
+                else if (str.Contains(" "))
+                {
+                    peak = str.Split(' ');
+                }
+                else
+                {
+                    peak = new string[0];
+                }
+
+                if (peak.Length < 2) break;
+
+                if (peak.Length >= 2)
+                {
+                    if (double.TryParse(peak[0].Trim(), out mz)) mspPeak.Mz = mz;
+                    else isCorrectForm = false;
+                    if (double.TryParse(peak[1].Trim(), out intensity)) mspPeak.Intensity = intensity;
+                    else isCorrectForm = false;
+                    if (peak.Length == 3)
+                    {
+                        if (peak[2].Contains("\""))
+                        {
+                            mspPeak.Comment = peak[2].Split('\"')[1];
+                            if (!string.IsNullOrEmpty(mspPeak.Comment))
+                            {
+                                if (mspPeak.Comment.Contains("SMILES "))
+                                {
+                                    var tmp = mspPeak.Comment.Split(new string[] { "SMILES " }, StringSplitOptions.None)[1];
+                                    mspPeak.Smiles = tmp.Split(new string[] { "," }, StringSplitOptions.None)[0];
+                                }
+                                else if (mspPeak.Comment.Contains("SMILES: "))
+                                {
+                                    var tmp = mspPeak.Comment.Split(new string[] { "SMILES: " }, StringSplitOptions.None)[1];
+                                    mspPeak.Smiles = tmp.Split(new string[] { "," }, StringSplitOptions.None)[0];
+                                }
+                            }
+                        }
+                    }
+                }
+                if (isCorrectForm) mspPeaks.Add(mspPeak);
+                mspPeak = new AnnotatedPeak();
+                pairCount++;
+            }
+
+            mspPeaks = mspPeaks.OrderBy(n => n.Mz).ToList();
+            return mspPeaks;
+        }
     }
 }

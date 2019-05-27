@@ -211,7 +211,8 @@ namespace ChartDrawing
             public bool IsMsGroup { get; set; } = false;
             public string MzRange { get; set; }
             public string IntRange { get; set; }
-            public string Frequency { get; set; }
+            public int Count { get; set; }
+            public float Frequency { get; set; }
         }
     }
 

@@ -86,6 +86,7 @@ namespace Metabolomics.MsLima.Bean
 
         public static string convertComment2Formulra(string comment)
         {
+            if (string.IsNullOrEmpty(comment)) return "";
             if (comment.Contains("Formula: "))
                 return comment.Split(new string[] { "Formula: " }, StringSplitOptions.None)[1];
             else if (comment.Contains("Formula "))
@@ -96,6 +97,7 @@ namespace Metabolomics.MsLima.Bean
 
         public static List<string> ConvertComment2Smiles(string comment)
         {
+            if (string.IsNullOrEmpty(comment)) return new List<string>();
             var results = new List<string>();
             if (comment.Contains("SMILES: "))
             {
@@ -124,6 +126,7 @@ namespace Metabolomics.MsLima.Bean
 
         public static Isotope ConvertComment2Isotope(string comment)
         {
+            if (string.IsNullOrEmpty(comment)) return null; 
             if (comment.Contains("Isotopic ion"))
             {
                 try
@@ -147,6 +150,7 @@ namespace Metabolomics.MsLima.Bean
 
         public static Adduct ConvertComment2Adduct(string comment)
         {
+            if (string.IsNullOrEmpty(comment)) return null;
             if (comment.Contains("Adduct ion"))
             {
                 try
@@ -296,87 +300,6 @@ namespace Metabolomics.MsLima.Bean
             return MsGroupList;
         }
 
-    /*
-        public static void Excute2(StreamWriter sw, MainWindow mainWindow, MainWindowVM mainWindowVM)
-        {
-            foreach (var raw in mainWindowVM.Data.rawData)
-            {
-                Excute3(sw, raw.DataList);
-            }
-        }
-        public static void Excute3(StreamWriter sw, List<MassSpectrum> msps)
-        {
-            var num = msps.Count;
-            var CeList = msps.Select(x => x.CollisionEnergy).Distinct().ToList();
-            foreach (var ce in CeList)
-            {
-                var MsGroupList = new List<MsGroup>();
-                var counter = 0;
-                for (var i = 0; i < num; i++)
-                {
-                    var rawData = (MassSpectrum)msps[i];
-                    if (ce != rawData.CollisionEnergy) continue;
-                    counter++;
-                    var peaks = rawData.Spectrum.OrderBy(n => n.Mz).ToList();
-                    if (peaks.Count == 0) continue;
-
-                    var maxInt = peaks.Max(x => x.Intensity);
-                    foreach (var peak in peaks)
-                    {
-                        CheckPeak(MsGroupList, peak, num, i, maxInt);
-                    }
-                }
-                Finalizer(MsGroupList);
-                MsGroupList = MsGroupList.OrderBy(x => x.MedianMz).ToList();
-                var targetMsGroupList = counter == 1 ? MsGroupList : MsGroupList.Where(x => x.Counter >= (float)counter / 2.0).ToList();
-                if (targetMsGroupList.Count == 0) continue;
-
-                var rawData2 = (MspFormatCompoundInformationBean)msps[0];
-                sw.WriteLine("NAME: " + rawData2.Name);
-                sw.WriteLine("RETENTIONTIME: " + rawData2.RetentionTime);
-                sw.WriteLine("PRECURSORMZ: " + rawData2.PrecursorMz);
-                sw.WriteLine("PRECURSORTYPE: " + rawData2.AdductIonBean.AdductIonName);
-                sw.WriteLine("IONMODE: " + rawData2.IonMode);
-                sw.WriteLine("COLLISIONENERGY: " + ce);
-                sw.WriteLine("FORMULA: " + rawData2.Formula);
-                sw.WriteLine("SMILES: " + rawData2.Smiles);
-                sw.WriteLine("INCHIKEY: " + rawData2.InchiKey);
-                sw.WriteLine("INCHI: " + rawData2.InChI);
-                sw.WriteLine("SPECTRUMTYPE: " + rawData2.SpectrumType);
-                sw.WriteLine("AUTHORS: " + rawData2.Authors);
-                sw.WriteLine("INSTRUMENT: " + rawData2.Instrument);
-                sw.WriteLine("INSTRUMENTTYPE: " + rawData2.InstrumentType);
-                sw.WriteLine("LICENSE: " + rawData2.License);
-                sw.WriteLine("COMMENT: " + counter + " spectra were merged");
-                sw.WriteLine("Num Peaks: " + targetMsGroupList.Count);
-                foreach (var g in targetMsGroupList)
-                {
-                    if (g.CommonSMILES != null)
-                    {
-                        sw.WriteLine(g.MedianMz + "\t" + g.MedianIntensity + "\t\"" + g.Counter + " spectra (" + Math.Round(((double)g.Counter / (double)counter * 100.0), 1) + "%), " + g.CommonSMILES.Smiles + "\"");
-                    }
-                    else if (g.CommonFORMULA != null)
-                    {
-                        sw.WriteLine(g.MedianMz + "\t" + g.MedianIntensity + "\t\"" + g.Counter + " spectra (" + Math.Round(((double)g.Counter / (double)counter * 100.0), 1) + "%), " + g.CommonFORMULA.Formula + "\"");
-                    }
-                    else if (g.CommonAdduct != null)
-                    {
-                        sw.WriteLine(g.MedianMz + "\t" + g.MedianIntensity + "\t\"" + g.Counter + " spectra (" + Math.Round(((double)g.Counter / (double)counter * 100.0), 1) + "%), " + g.CommonAdduct.AdductName + ", linkedMz " + g.CommonAdduct.LinkedMz + "\"");
-                    }
-                    else if (g.Isotope != null)
-                    {
-                        sw.WriteLine(g.MedianMz + "\t" + g.MedianIntensity + "\t\"" + g.Counter + " spectra (" + Math.Round(((double)g.Counter / (double)counter * 100.0), 1) + "%), " + g.Isotope.Label + ", linkedMz " + g.Isotope.LinkedMz + "\"");
-                    }
-                    else
-                    {
-                        sw.WriteLine(g.MedianMz + "\t" + g.MedianIntensity + "\t\"" + g.Counter + " spectra (" + Math.Round(((double)g.Counter / (double)counter * 100.0), 1) + "%)\"");
-                    }
-                }
-                sw.WriteLine("");
-            }
-        }
-
-    */
         public static void CheckPeak(List<MsGroup> msGroupList, AnnotatedPeak peak, int num, int id, double maxIntensity)
         {
             var checker = false;

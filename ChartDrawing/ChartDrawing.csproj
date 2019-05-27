@@ -36,6 +36,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.5.1\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -58,6 +61,7 @@
     <Compile Include="DrawVisual\DrawVisual.cs" />
     <Compile Include="DrawVisual\DrawVisualManualPeakModification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmilesUtility.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +70,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CommonWindows\CommonWindows.csproj">
       <Project>{691f7770-0efb-4761-97db-205f56c3e848}</Project>
@@ -76,6 +79,13 @@
       <Project>{6d8d81ca-8d7c-4799-a58b-58fc0bec651c}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SmilesGenerator\SmilesGenerator.csproj">
+      <Project>{88c4c0a8-46ad-4c9f-8a61-802e22f4011f}</Project>
+      <Name>SmilesGenerator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

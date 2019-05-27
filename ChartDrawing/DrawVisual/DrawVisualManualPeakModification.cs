@@ -796,8 +796,6 @@ namespace ChartDrawing
 
             InitializeGetChart(drawingVisual);
 
-            Console.WriteLine(this.drawingContext);
-
             #region manual peak modification      
             if (IsTargetManualPickMode) {
                 var series = SeriesList.Series[0];

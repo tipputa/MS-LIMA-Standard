@@ -7,7 +7,7 @@ using Metabolomics.Core.Handler;
 
 namespace Metabolomics.MsLima.Bean
 {
-    public enum CompoundGroupingKey { InChI, InChIKey, ShortInChIKey }
+    public enum CompoundGroupingKey { InChI, InChIKey, ShortInChIKey, None }
     [MessagePackObject]
     public class WindowParameterBean
     {
@@ -76,6 +76,16 @@ namespace Metabolomics.MsLima.Bean
                     AutoExportIntervalMillisecond = this.WinParam.AutoExportIntervalMillisecond
                 }
             };
+        }
+
+        public void Update(ParameterBean param)
+        {
+            this.MS2Tol = param.MS2Tol;
+            this.NumberOfDecimalPlaces = param.NumberOfDecimalPlaces;
+            this.MinimumNumberOfSamplesForConsensus = param.MinimumNumberOfSamplesForConsensus;
+            this.CompoundGroupingKey = param.CompoundGroupingKey;
+            this.WinParam.GraphHeightInMultipleView = param.WinParam.GraphHeightInMultipleView;
+            this.WinParam.AutoExportIntervalMillisecond = param.WinParam.AutoExportIntervalMillisecond;            
         }
     }
 

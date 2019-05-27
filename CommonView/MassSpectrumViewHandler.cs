@@ -100,7 +100,7 @@ namespace Metabolomics.MsLima
             area.AxisX.MinorScaleEnabled = false;
             var title = Utility.GetDefaultTitleV1();
             var slist = GetMassSpectrumSeriesList(spectrum);
-            var dv = new DrawVisualMassSpectrum(area, title, slist);
+            var dv = new DrawVisualMassSpectrum(area, title, slist, null, Param.MS2Tol, NumDecimalPlaces, 1);
             dv.SeriesList.MinY = 0;
             if (slist.Series[0].Points.Count > 1)
             {
@@ -119,9 +119,12 @@ namespace Metabolomics.MsLima
         {
             var slist = new SeriesList();
             var s = new Series() { ChartType = ChartType.MS, MarkerType = MarkerType.None, Pen = new System.Windows.Media.Pen(Brushes.Black, 1), FontType = new Typeface("Arial") };
+            var maxInt = spectrum.Max(x => x.MedianIntensity);
             foreach (var peak in spectrum)
             {
-                s.AddPoint((float)peak.MedianMz, (float)peak.MedianIntensity, Math.Round(peak.MedianMz, NumDecimalPlaces).ToString());
+                var peakAnnotation = GetMsPeakAnnotation(peak, maxInt);
+                s.AddPoint((float)peak.MedianMz, (float)peak.MedianIntensity, Math.Round(peak.MedianMz, NumDecimalPlaces).ToString(), 
+                                    new Accessory() { PeakAnnotation = peakAnnotation });
 
             }
             s.IsLabelVisible = true;
@@ -204,12 +207,28 @@ namespace Metabolomics.MsLima
         {
             return new Accessory.MsPeakAnnotation()
             {
-                RelInt = (peak.Intensity / maxInt) * 100,
+                RelInt = Math.Round((peak.Intensity / maxInt) * 100, 2),
                 IsMsGroup = false,
                 Formula = peak.Formula,
                 Smiles = peak.Smiles
             };
         }
+
+        public Accessory.MsPeakAnnotation GetMsPeakAnnotation(MsGroup peak, double maxInt)
+        {
+            return new Accessory.MsPeakAnnotation()
+            {
+                RelInt = Math.Round((peak.MedianIntensity / maxInt) * 100, 2),
+                IsMsGroup = true,
+                Count = peak.Counter,
+                Frequency = (float)Math.Round((((double)peak.Counter)/((double)peak.IntList.Length) * 100), 1),
+                Formula = peak.CommonFORMULA?.Formula,
+                Smiles = peak.CommonSMILES?.Smiles,
+                MzRange = Math.Round(peak.MinMz, NumDecimalPlaces) + "-" + Math.Round(peak.MaxMz, NumDecimalPlaces),
+                IntRange = Math.Round(peak.MinIntensity, 1) + "-" + Math.Round(peak.MaxIntensity,1) + "%"
+            };
+        }
+
 
         #endregion
     }

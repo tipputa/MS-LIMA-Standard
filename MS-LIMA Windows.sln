@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartDrawing", "ChartDrawin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MS-LIMA-CommonView", "CommonView\MS-LIMA-CommonView.csproj", "{E4626675-9F5A-4EBE-9433-6E46413262AB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmilesGenerator", "SmilesGenerator\SmilesGenerator.csproj", "{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +177,30 @@ Global
 		{E4626675-9F5A-4EBE-9433-6E46413262AB}.Release|x64.Build.0 = Release|Any CPU
 		{E4626675-9F5A-4EBE-9433-6E46413262AB}.Release|x86.ActiveCfg = Release|Any CPU
 		{E4626675-9F5A-4EBE-9433-6E46413262AB}.Release|x86.Build.0 = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|ARM.Build.0 = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|x64.Build.0 = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Debug|x86.Build.0 = Debug|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|ARM.ActiveCfg = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|ARM.Build.0 = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|iPhone.Build.0 = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|x64.ActiveCfg = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|x64.Build.0 = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|x86.ActiveCfg = Release|Any CPU
+		{88C4C0A8-46AD-4C9F-8A61-802E22F4011F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

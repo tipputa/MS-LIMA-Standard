@@ -75,12 +75,12 @@ namespace Metabolomics.MsLima.Bean
         public int Order { get; set; }
         [Key(28)]
 
-        public List<string> OtherMetaData { get; set; }
+        public List<string> OtherMetaData { get; set; } = new List<string>();
         [Key(29)]
 
         public int PeakNumber { get => Spectrum.Count; }
         [Key(30)]
-        public List<AnnotatedPeak> Spectrum { get; set; }
+        public List<AnnotatedPeak> Spectrum { get; set; } 
 
         public MassSpectrum Copy()
         {

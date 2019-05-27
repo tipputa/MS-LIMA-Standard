@@ -9,6 +9,7 @@ namespace Metabolomics.Core.Utility
     {
         public static double GetMass(string formula)
         {
+            if (string.IsNullOrEmpty(formula)) return -1;
             double res = 0.0;
             string elementRegex = "([A-Z][a-z]*)([0-9]*)";
             var dic = new Dictionary<string, int>();

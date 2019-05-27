@@ -88,7 +88,7 @@ namespace Metabolomics.MsLima.ViewModel
 
         public void Save()
         {
-            MsLimaData.Parameter = CopyParam;
+            MsLimaData.Parameter.Update(CopyParam);
             MsLimaData.WriteParameterFile();
         }
 

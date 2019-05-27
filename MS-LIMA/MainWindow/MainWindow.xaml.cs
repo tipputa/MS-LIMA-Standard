@@ -29,6 +29,7 @@ namespace Metabolomics.MsLima {
         {
             InitializeComponent();
             this.DataContext = new MainWindowVM();
+            //Image_Structure.Source = SmilesUtility.ConvertDrawingImageToBitmap(SmilesUtility.SmilesToImage("C", 300, 300));
         }
     }
 }

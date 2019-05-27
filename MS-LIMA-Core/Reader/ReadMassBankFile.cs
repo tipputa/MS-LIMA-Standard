@@ -14,11 +14,10 @@ namespace Metabolomics.MsLima.Reader
 {
     public static class ReadMassBankFile
     {
-        public static List<MassSpectrum> ReadMassBankFileAsSpectrum(string filePath)
+        public static List<MassSpectrum> ReadAsMsSpectra(string filePath)
         {
             var spectra = new List<MassSpectrum>();
             var spectrum = new MassSpectrum();
-            spectrum.OtherMetaData = new List<string>();
             string wkstr;
             int counter = 0;
 
@@ -46,7 +45,7 @@ namespace Metabolomics.MsLima.Reader
                                 }
                                 else
                                 {
-                                    spectrum.Comment += ";" + wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim();
+                                    spectrum.Comment += "; " + wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim();
                                 }
                                 continue;
                             }
@@ -322,11 +321,6 @@ namespace Metabolomics.MsLima.Reader
                                 spectrum.Links = wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim();
                                 continue;
                             }
-                            else if (Regex.IsMatch(wkstr, "Num Peaks:.*", RegexOptions.IgnoreCase))
-                            {
-                                spectrum.Spectrum = ReadFile.ReadSpectrum(sr, wkstr, out int peakNum);
-                                continue;
-                            }
                             else if (wkstr.Contains(':'))
                             {
                                 spectrum.OtherMetaData.Add(wkstr);
@@ -348,7 +342,6 @@ namespace Metabolomics.MsLima.Reader
                         }
                         spectra.Add(spectrum);
                         spectrum = new MassSpectrum();
-                        spectrum.OtherMetaData = new List<string>();
                         counter++;
                     }
                 }

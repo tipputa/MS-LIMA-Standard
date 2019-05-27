@@ -41,7 +41,7 @@ namespace Metabolomics.MsLima.Model
             }
             else if(tab == TabMassSpectraView.ConsensusMS)
             {
-
+                mainWindowVM.ConsensusSpectrumUI.UpdateSelectedPeak(mainWindowVM.SelectedPeak.Mz);
             }
 
         }
@@ -66,7 +66,7 @@ namespace Metabolomics.MsLima.Model
             }
             else if (tab == TabMassSpectraView.ConsensusMS)
             {
-
+                mainWindowVM.ConsensusSpectrumUI.UpdateSelectedPeak(mainWindowVM.SelectedMsGroup.MedianMz);
             }
 
 

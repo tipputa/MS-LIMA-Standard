@@ -14,7 +14,7 @@ namespace Metabolomics.MsLima.Reader
     public static class ReadMspFile
     {
 
-        public static List<MassSpectrum> ReadMspFileAsMsSpectrum(string filePath)
+        public static List<MassSpectrum> ReadAsMsSpectra(string filePath)
         {
             var spectra = new List<MassSpectrum>();
             var spectrum = new MassSpectrum();
@@ -28,6 +28,7 @@ namespace Metabolomics.MsLima.Reader
                 while (sr.Peek() > -1)
                 {
                     wkstr = sr.ReadLine();
+
                     if (Regex.IsMatch(wkstr, "^NAME:.*", RegexOptions.IgnoreCase))
                     {
                         spectrum.Id = counter;
@@ -147,6 +148,11 @@ namespace Metabolomics.MsLima.Reader
                             else if (Regex.IsMatch(wkstr, "Num Peaks:.*", RegexOptions.IgnoreCase))
                             {
                                 spectrum.Spectrum = ReadFile.ReadSpectrum(sr, wkstr, out int peakNum);
+                                continue;
+                            }
+                            else
+                            {
+                                spectrum.OtherMetaData.Add(wkstr);
                                 continue;
                             }
                         }

@@ -25,13 +25,45 @@ namespace Metabolomics.MsLima.Model
             {
                 return CreateCompoundListByInChI(rawLibraryFile);
             }
-            else
+            else if(key == CompoundGroupingKey.None)
+            {
+                return CreateCompoundListByNone(rawLibraryFile);
+
+            }
+            else 
             {
                 return null;
             }
 
         }
 
+        public static List<CompoundBean> CreateCompoundListByNone(List<MassSpectrum> rawLibraryFile)
+        {
+            if (rawLibraryFile == null || rawLibraryFile.Count == 0)
+                return new List<CompoundBean>();
+            var counter = 0;
+            List<CompoundBean> comps = new List<CompoundBean>();
+            CompoundBean comp;
+            foreach (var spectrum in rawLibraryFile)
+            {
+                comp = new CompoundBean
+                {
+                    Id = counter,
+                    InChIKey = spectrum.InChiIKey,
+                    InChI = spectrum.InChI
+                };
+                comp.NumSpectra++;
+                comp.Spectra.Add(spectrum);
+                comp.MolecularWeight = FormulaUtility.GetMass(spectrum.Formula);
+                comp.Name = spectrum.Name;
+                comp.Formula = spectrum.Formula;
+                comp.Smiles = spectrum.Smiles;
+                counter++;
+                comps.Add(comp);
+            }
+            return comps;
+
+        }
         public static List<CompoundBean> CreateCompoundListByShortInChIKey(List<MassSpectrum> rawLibraryFile)
         {
             if (rawLibraryFile == null || rawLibraryFile.Count == 0)
@@ -63,6 +95,7 @@ namespace Metabolomics.MsLima.Model
                     comp.MolecularWeight = FormulaUtility.GetMass(spectrum.Formula);
                     comp.Name = spectrum.Name;
                     comp.Formula = spectrum.Formula;
+                    comp.Smiles = spectrum.Smiles;
                     dic.Add(Inchikey, comp);
                     InchiKeys.Add(Inchikey);
                     counter++;
@@ -100,6 +133,7 @@ namespace Metabolomics.MsLima.Model
                     comp.MolecularWeight = FormulaUtility.GetMass(spectrum.Formula);
                     comp.Name = spectrum.Name;
                     comp.Formula = spectrum.Formula;
+                    comp.Smiles = spectrum.Smiles;
                     dic.Add(InChiIKey, comp);
                     InchiKeys.Add(InChiIKey);
                     counter++;
@@ -137,6 +171,7 @@ namespace Metabolomics.MsLima.Model
                     comp.MolecularWeight = FormulaUtility.GetMass(spectrum.Formula);
                     comp.Name = spectrum.Name;
                     comp.Formula = spectrum.Formula;
+                    comp.Smiles = spectrum.Smiles;
                     dic.Add(InChI, comp);
                     InChIs.Add(InChI);
                     counter++;

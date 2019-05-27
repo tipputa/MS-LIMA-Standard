@@ -35,7 +35,7 @@ namespace Metabolomics.MsLima.Bean
         {
             FilePath = filePath;
             this.FileFormat = LibraryFileFormat.MassBank;
-            this.RawLibraryFile = ReadMassBankFile.ReadMassBankFileAsSpectrum(FilePath);
+            this.RawLibraryFile = ReadMassBankFile.ReadAsMsSpectra(FilePath);
             CompoundList = CompoundGroupUtility.CreateCompoundList(RawLibraryFile, key);
         }
 
@@ -47,27 +47,22 @@ namespace Metabolomics.MsLima.Bean
             if (extention == ".mgf")
             {
                 this.FileFormat = LibraryFileFormat.Mgf;
-                this.RawLibraryFile = ReadFile.ReadMgfFileAsMsSpectrum(FilePath);
+                this.RawLibraryFile = ReadMgfFile.ReadAsMsSpectra(FilePath);
             }
             else if (extention == ".msp")
             {
                 this.FileFormat = LibraryFileFormat.Msp;
-                this.RawLibraryFile = ReadMspFile.ReadMspFileAsMsSpectrum(FilePath);
-            }
-            else if (extention == ".massbank")
-            {
-                this.FileFormat = LibraryFileFormat.MassBank;
-                this.RawLibraryFile = ReadFile.ReadMassBankFileAsMsSpectrum(FilePath);
+                this.RawLibraryFile = ReadMspFile.ReadAsMsSpectra(FilePath);
             }
             else if (extention == ".txt")
             {
                 this.FileFormat = LibraryFileFormat.Text;
-                this.RawLibraryFile = ReadFile.ReadTextFileAsMsSpectrum(FilePath);
+                this.RawLibraryFile = ReadMassBankFile.ReadAsMsSpectra(FilePath);
             }
             else
             {
                 this.FileFormat = LibraryFileFormat.Text;
-                this.RawLibraryFile = ReadFile.ReadTextFileAsMsSpectrum(FilePath);
+                this.RawLibraryFile = ReadMassBankFile.ReadAsMsSpectra(FilePath);
             }
         }        
     }
