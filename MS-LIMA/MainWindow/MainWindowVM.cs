@@ -412,8 +412,6 @@ namespace Metabolomics.MsLima
             OnPropertyChangedAfterFileImported();
         }
 
-
-
         #endregion
 
         #region Utilities
