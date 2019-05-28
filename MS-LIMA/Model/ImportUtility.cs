@@ -36,13 +36,13 @@ namespace Metabolomics.MsLima.Model
                     System.IO.File.Copy(ofd.FileName, newFilePath, true);
                     msLimaData.DataStorage.SetLibrary(newFilePath, msLimaData.Parameter.CompoundGroupingKey);
                     msLimaData.DataStorage.OriginalFilePath = ofd.FileName;
-                    WindowUtility.CheckCompoundGroup(msLimaData.DataStorage.CompoundList);
+                    WindowUtility.CheckCompoundGroup(msLimaData.DataStorage.CompoundList, msLimaData.Parameter.RtTol);
                     exporter.Start();
                 }
                 else
                 {
                     msLimaData.DataStorage.SetLibrary(ofd.FileName, msLimaData.Parameter.CompoundGroupingKey);
-                    WindowUtility.CheckCompoundGroup(msLimaData.DataStorage.CompoundList);
+                    WindowUtility.CheckCompoundGroup(msLimaData.DataStorage.CompoundList, msLimaData.Parameter.RtTol);
                 }
                 Mouse.OverrideCursor = null;
             }
@@ -71,13 +71,13 @@ namespace Metabolomics.MsLima.Model
                     System.IO.File.Copy(ofd.FileName, newFilePath, true);
                     msLimaData.DataStorage.SetMassBankLibrary(newFilePath, msLimaData.Parameter.CompoundGroupingKey);
                     msLimaData.DataStorage.OriginalFilePath = ofd.FileName;
-                    WindowUtility.CheckCompoundGroup(msLimaData.DataStorage.CompoundList);
+                    WindowUtility.CheckCompoundGroup(msLimaData.DataStorage.CompoundList, msLimaData.Parameter.RtTol);
                     exporter.Start();
                 }
                 else
                 {
                     msLimaData.DataStorage.SetMassBankLibrary(ofd.FileName, msLimaData.Parameter.CompoundGroupingKey);
-                    WindowUtility.CheckCompoundGroup(msLimaData.DataStorage.CompoundList);
+                    WindowUtility.CheckCompoundGroup(msLimaData.DataStorage.CompoundList, msLimaData.Parameter.RtTol);
                 }
                 Mouse.OverrideCursor = null;
             }

@@ -52,6 +52,15 @@ namespace Metabolomics.MsLima.ViewModel
             }
         }
 
+        public float RetentionTimeTol {
+            get => CopyParam.RtTol;
+            set {
+                if (CopyParam.RtTol == value) return;
+                CopyParam.RtTol = value;
+                OnPropertyChanged(nameof(RetentionTimeTol));
+            }
+        }
+
         private int selectedId;
         public int SelectedId {
             get {

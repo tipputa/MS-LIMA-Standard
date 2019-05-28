@@ -35,7 +35,8 @@ namespace Metabolomics.MsLima.Bean
         public int NumberOfDecimalPlaces { get; set; } = 3;
         [Key(4)]
         public int MinimumNumberOfSamplesForConsensus { get; set; } = 1;
-        
+        [Key(5)]
+        public float RtTol { get; set; } = 1;
         #endregion
         public ParameterBean() { }
         public ParameterBean(bool IsWindow = true)
@@ -67,6 +68,7 @@ namespace Metabolomics.MsLima.Bean
             return new ParameterBean()
             {
                 MS2Tol = this.MS2Tol,
+                RtTol = this.RtTol,
                 NumberOfDecimalPlaces = this.NumberOfDecimalPlaces,
                 MinimumNumberOfSamplesForConsensus = this.MinimumNumberOfSamplesForConsensus,
                 CompoundGroupingKey = this.CompoundGroupingKey, 
@@ -81,6 +83,7 @@ namespace Metabolomics.MsLima.Bean
         public void Update(ParameterBean param)
         {
             this.MS2Tol = param.MS2Tol;
+            this.RtTol = param.RtTol;
             this.NumberOfDecimalPlaces = param.NumberOfDecimalPlaces;
             this.MinimumNumberOfSamplesForConsensus = param.MinimumNumberOfSamplesForConsensus;
             this.CompoundGroupingKey = param.CompoundGroupingKey;

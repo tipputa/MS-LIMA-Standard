@@ -180,13 +180,12 @@ namespace Metabolomics.MsLima.Model
             return new List<CompoundBean>(dic.Values);
         }
 
-        public static void CheckCompoundList(List<CompoundBean> compounds, ref string rtString, ref string formulaString, ref string InChIKeyString)
+        public static void CheckCompoundList(List<CompoundBean> compounds, float minRtDiff, ref string rtString, ref string formulaString, ref string InChIKeyString)
         {            
             var missFormula = new List<string>();
             var missInChIKeys = new List<string>();
             var missRts = new List<string>();
-                        float minRtDiff = 1.0f;
-           foreach (var compound in compounds)
+            foreach (var compound in compounds)
             {
                 var formulas = compound.Spectra.Select(x => x.Formula).Distinct().ToList();
                 if (formulas.Count > 1)

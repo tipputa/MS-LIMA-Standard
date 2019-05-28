@@ -49,12 +49,12 @@ namespace Metabolomics.MsLima.Model
             window.Show();
         }
 
-        public static void CheckCompoundGroup(List<CompoundBean> compounds)
+        public static void CheckCompoundGroup(List<CompoundBean> compounds, float minRtDiff)
         {
             var rtString = "";
             var formulaString = "";
             var InChIKeyString = "";
-            CompoundGroupUtility.CheckCompoundList(compounds, ref rtString, ref formulaString, ref InChIKeyString);
+            CompoundGroupUtility.CheckCompoundList(compounds, minRtDiff, ref rtString, ref formulaString, ref InChIKeyString);
             StartUpErrorMessageWindow("RT differece", rtString);
             StartUpErrorMessageWindow("Formula difference", formulaString);
             StartUpErrorMessageWindow("InChIKey differece", InChIKeyString);

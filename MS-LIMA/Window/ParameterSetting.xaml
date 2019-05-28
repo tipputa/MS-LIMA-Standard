@@ -27,6 +27,7 @@
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5,5,0,0">
                 <TextBox Text="Basic settings" BorderThickness="0" IsReadOnly="True" Height="20" Margin="5,5,0,0" />
                 <TextBox Text="MS2 torelance: " BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
+                <TextBox Text="RT torelance for difference checking: " BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
                 <TextBox Text="Min. number for consensus: " BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
                 <TextBox Text="Key of compound grouping: " BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
 
@@ -41,6 +42,7 @@
             <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,5,0,0">
                 <TextBox Text="" BorderThickness="0" Width="0"  Height="20" Margin="0,5,0,0"/>
                 <TextBox Text="{Binding Ms2Tol}"  Height="20" Margin="0,5,0,5"/>
+                <TextBox Text="{Binding RetentionTimeTol}"  Height="20" Margin="0,5,0,5"/>
                 <TextBox Text="{Binding MinimumNumberOfSamplesForConsensus}"  Height="20" Margin="0,5,0,5"/>
                 <ComboBox ItemsSource="{Binding CompoundGroupingKey, Converter={StaticResource EnumConverter}}" SelectedIndex="{Binding SelectedId}" Height="20" Margin="0,5,0,5"/>
                 
@@ -56,11 +58,12 @@
             <StackPanel Grid.Column="2" Orientation="Vertical" Margin="0,5,0,0">
                 <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Width="0" Margin="0,5,0,0"/>
                 <TextBox Text="Da" BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
+                <TextBox Text="min." BorderThickness="0" IsReadOnly="True" Height="20" Margin="10,5,0,5" />
                 <TextBox Text="samples" BorderThickness="0" IsReadOnly="True"  Height="20" Margin="10,5,0,5" />
                 <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Width="0" Margin="0,5,0,5"/>
    
                 <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Width="0" Margin="5,20,0,0"/>
-                <TextBox Text="samples" BorderThickness="0" IsReadOnly="True"  Height="20" Margin="10,5,0,5" />
+                <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Margin="10,5,0,5" />
                 <TextBox Text="pixel" BorderThickness="0" IsReadOnly="True"  Height="20" Margin="10,5,0,5" />
 
                 <TextBox Text="" BorderThickness="0" IsReadOnly="True"  Height="20" Width="0" Margin="5,20,0,0"/>
