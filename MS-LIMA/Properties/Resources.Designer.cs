@@ -61,7 +61,7 @@ namespace Metabolomics.MsLima.Properties {
         }
         
         /// <summary>
-        ///   MS-LIMA ver. 1.42 に類似しているローカライズされた文字列を検索します。
+        ///   MS-LIMA ver. 1.44 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Version {
             get {

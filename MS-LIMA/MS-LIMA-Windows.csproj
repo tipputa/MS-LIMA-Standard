@@ -169,10 +169,6 @@
       <Project>{6131640b-30e6-4606-a394-be953590f3e9}</Project>
       <Name>ChartDrawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommonView\MS-LIMA-CommonView.csproj">
-      <Project>{e4626675-9f5a-4ebe-9433-6e46413262ab}</Project>
-      <Name>MS-LIMA-CommonView</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CommonWindows\CommonWindows.csproj">
       <Project>{691f7770-0efb-4761-97db-205f56c3e848}</Project>
       <Name>CommonWindows</Name>
@@ -180,6 +176,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{6d8d81ca-8d7c-4799-a58b-58fc0bec651c}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MS-LIMA-CommonView\MS-LIMA-CommonView.csproj">
+      <Project>{e4626675-9f5a-4ebe-9433-6e46413262ab}</Project>
+      <Name>MS-LIMA-CommonView</Name>
     </ProjectReference>
     <ProjectReference Include="..\MS-LIMA-Core\MS-LIMA-Core.csproj">
       <Project>{fc4631e8-01dc-4498-a6a9-3cff0287ca3a}</Project>

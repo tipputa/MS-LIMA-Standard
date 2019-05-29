@@ -79,9 +79,9 @@
       <Project>{6d8d81ca-8d7c-4799-a58b-58fc0bec651c}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SmilesGenerator\SmilesGenerator.csproj">
-      <Project>{88c4c0a8-46ad-4c9f-8a61-802e22f4011f}</Project>
-      <Name>SmilesGenerator</Name>
+    <ProjectReference Include="..\ViewFromSmiles\ViewFromSmiles.csproj">
+      <Project>{66163ad9-3884-4150-adac-0b2402b1a001}</Project>
+      <Name>ViewFromSmiles</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
