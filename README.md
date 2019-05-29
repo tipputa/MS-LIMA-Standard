@@ -36,9 +36,9 @@ You can visually chack mass spectrum one by one or simultaneously.
 ![Multiple viewer](https://github.com/tipputa/MS-LIMA-Standard/blob/master/MS-LIMA/Pic/190529_MS-LIMA_2.PNG?raw=true)
 
 Also you can see the consensus spectrum of a selected compound. Peak colors indicates as following:
-Black: 1 spectrum has this peak
-Blue: >1 spectrum and <50% of spectra have this peak
-Red: >50% of spectra have this peak
++ Black: 1 spectrum has this peak
++ Blue: >1 spectrum and <50% of spectra have this peak
++ Red: >50% of spectra have this peak
 ![Consensus viewer](https://github.com/tipputa/MS-LIMA-Standard/blob/master/MS-LIMA/Pic/190529_MS-LIMA_3.PNG?raw=true)
 
 
@@ -60,14 +60,17 @@ This window cannot affect the main window if you changed imported library.
 ## Menubar Utilities
 ### Remove unannotated peaks
 All peaks which have comments will be removed from the library.
+
 If you want to save modified library, please export it.
 
 ### Convert precursor m/z as theoretical m/z
 In all spectra, precursor m/z value will be comverted as theoretical m/z calculated by formula and adduct type.
+
 If you want to save modified library, please export it.
 
 ### Remove all retention time
 Retention time will be removed in all spectra.
+
 If you want to save modified library, please export it.
 
 ### Calc and save common product ions
