@@ -48,8 +48,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="XamlToys">
-      <HintPath>..\Assemblies\XamlToys.dll</HintPath>
+    <Reference Include="XamlToys, Version=1.0.5314.28171, Culture=neutral, PublicKeyToken=785f4aec9c0b7104, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assembly\XamlToys.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
