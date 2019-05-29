@@ -9,6 +9,7 @@ namespace Metabolomics.Core
         public AutoRepeater(int exportIntervalMillisecond)
         {
             this.ExportIntervalMillisecond = exportIntervalMillisecond;
+            ExportTimer = new System.Timers.Timer(ExportIntervalMillisecond);
         }
 
         public int ExportIntervalMillisecond { get; set; } = 10000;
@@ -18,7 +19,6 @@ namespace Metabolomics.Core
 
         public void Start()
         {
-            ExportTimer = new System.Timers.Timer(ExportIntervalMillisecond);
             ExportTimer.Elapsed += OnTimedEvent;
             ExportTimer.Enabled = true;
         }

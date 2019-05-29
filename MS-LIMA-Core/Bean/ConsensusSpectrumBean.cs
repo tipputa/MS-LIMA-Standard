@@ -231,6 +231,8 @@ namespace Metabolomics.MsLima.Bean
             }
             Finalizer(MsGroupList);
             var counter = num;
+            sw.WriteLine("MedianMz\tMedianIntensity\tNumPeaks\tPercent\tComments");
+            MsGroupList = MsGroupList.OrderByDescending(x => x.Counter).ToList();
             foreach (var g in MsGroupList)
             {
                 var comment = "";

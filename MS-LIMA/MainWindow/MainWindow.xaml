@@ -112,7 +112,7 @@
                         <ToolTip Content="Remove retention time in all records"/>
                     </ToolTipService.ToolTip>
                 </MenuItem>
-                <MenuItem Name="MenuItem_Utility_SaveCommonProductIons" Header="Calc and save common product ions" Command="{Binding RemoveUnannotatedCommand}">
+                <MenuItem Name="MenuItem_Utility_SaveCommonProductIons" Header="Calc and save common product ions" Command="{Binding SaveCommonProductIonCommand}">
                     <ToolTipService.ToolTip>
                         <ToolTip Content="Calculate the frequency of product ions in the library"/>
                     </ToolTipService.ToolTip>

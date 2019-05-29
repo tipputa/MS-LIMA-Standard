@@ -76,18 +76,12 @@ namespace Metabolomics.MsLima.Model
             var counter = 1;
             foreach (var spectrum in rawLibraryFile)
             {
-                var Inchikey = spectrum.InChiIKey.Split('-')[0];
-                if (InchiKeys.Contains(Inchikey))
-                {
-                    dic[Inchikey].Spectra.Add(spectrum);
-                    dic[Inchikey].NumSpectra++;
-                }
-                else
+                if (string.IsNullOrEmpty(spectrum.InChiIKey))
                 {
                     comp = new CompoundBean
                     {
                         Id = counter,
-                        InChIKey = spectrum.InChiIKey,
+                        InChIKey = "",
                         InChI = spectrum.InChI
                     };
                     comp.NumSpectra++;
@@ -96,9 +90,35 @@ namespace Metabolomics.MsLima.Model
                     comp.Name = spectrum.Name;
                     comp.Formula = spectrum.Formula;
                     comp.Smiles = spectrum.Smiles;
-                    dic.Add(Inchikey, comp);
-                    InchiKeys.Add(Inchikey);
+                    dic.Add(counter.ToString(), comp);
                     counter++;
+                }
+                else
+                {
+                    var Inchikey = spectrum.InChiIKey.Split('-')[0];
+                    if (InchiKeys.Contains(Inchikey))
+                    {
+                        dic[Inchikey].Spectra.Add(spectrum);
+                        dic[Inchikey].NumSpectra++;
+                    }
+                    else
+                    {
+                        comp = new CompoundBean
+                        {
+                            Id = counter,
+                            InChIKey = spectrum.InChiIKey,
+                            InChI = spectrum.InChI
+                        };
+                        comp.NumSpectra++;
+                        comp.Spectra.Add(spectrum);
+                        comp.MolecularWeight = FormulaUtility.GetMass(spectrum.Formula);
+                        comp.Name = spectrum.Name;
+                        comp.Formula = spectrum.Formula;
+                        comp.Smiles = spectrum.Smiles;
+                        dic.Add(Inchikey, comp);
+                        InchiKeys.Add(Inchikey);
+                        counter++;
+                    }
                 }
             }
             return new List<CompoundBean>(dic.Values);
@@ -114,18 +134,12 @@ namespace Metabolomics.MsLima.Model
             var counter = 1;
             foreach (var spectrum in rawLibraryFile)
             {
-                var InChiIKey = spectrum.InChiIKey;
-                if (InchiKeys.Contains(InChiIKey))
-                {
-                    dic[InChiIKey].Spectra.Add(spectrum);
-                    dic[InChiIKey].NumSpectra++;
-                }
-                else
+                if (string.IsNullOrEmpty(spectrum.InChiIKey))
                 {
                     comp = new CompoundBean
                     {
                         Id = counter,
-                        InChIKey = spectrum.InChiIKey,
+                        InChIKey = "",
                         InChI = spectrum.InChI
                     };
                     comp.NumSpectra++;
@@ -134,9 +148,35 @@ namespace Metabolomics.MsLima.Model
                     comp.Name = spectrum.Name;
                     comp.Formula = spectrum.Formula;
                     comp.Smiles = spectrum.Smiles;
-                    dic.Add(InChiIKey, comp);
-                    InchiKeys.Add(InChiIKey);
+                    dic.Add(counter.ToString(), comp);
                     counter++;
+                }
+                else
+                {
+                    var InChiIKey = spectrum.InChiIKey;
+                    if (InchiKeys.Contains(InChiIKey))
+                    {
+                        dic[InChiIKey].Spectra.Add(spectrum);
+                        dic[InChiIKey].NumSpectra++;
+                    }
+                    else
+                    {
+                        comp = new CompoundBean
+                        {
+                            Id = counter,
+                            InChIKey = spectrum.InChiIKey,
+                            InChI = spectrum.InChI
+                        };
+                        comp.NumSpectra++;
+                        comp.Spectra.Add(spectrum);
+                        comp.MolecularWeight = FormulaUtility.GetMass(spectrum.Formula);
+                        comp.Name = spectrum.Name;
+                        comp.Formula = spectrum.Formula;
+                        comp.Smiles = spectrum.Smiles;
+                        dic.Add(InChiIKey, comp);
+                        InchiKeys.Add(InChiIKey);
+                        counter++;
+                    }
                 }
             }
             return new List<CompoundBean>(dic.Values);
@@ -152,19 +192,13 @@ namespace Metabolomics.MsLima.Model
             var counter = 1;
             foreach (var spectrum in rawLibraryFile)
             {
-                var InChI = spectrum.InChI;
-                if (InChIs.Contains(InChI))
-                {
-                    dic[InChI].Spectra.Add(spectrum);
-                    dic[InChI].NumSpectra++;
-                }
-                else
+                if (string.IsNullOrEmpty(spectrum.InChI))
                 {
                     comp = new CompoundBean
                     {
                         Id = counter,
                         InChIKey = spectrum.InChiIKey,
-                        InChI = spectrum.InChI
+                        InChI = ""
                     };
                     comp.NumSpectra++;
                     comp.Spectra.Add(spectrum);
@@ -172,9 +206,35 @@ namespace Metabolomics.MsLima.Model
                     comp.Name = spectrum.Name;
                     comp.Formula = spectrum.Formula;
                     comp.Smiles = spectrum.Smiles;
-                    dic.Add(InChI, comp);
-                    InChIs.Add(InChI);
+                    dic.Add(counter.ToString(), comp);
                     counter++;
+                }
+                else
+                {
+                    var InChI = spectrum.InChI;
+                    if (InChIs.Contains(InChI))
+                    {
+                        dic[InChI].Spectra.Add(spectrum);
+                        dic[InChI].NumSpectra++;
+                    }
+                    else
+                    {
+                        comp = new CompoundBean
+                        {
+                            Id = counter,
+                            InChIKey = spectrum.InChiIKey,
+                            InChI = spectrum.InChI
+                        };
+                        comp.NumSpectra++;
+                        comp.Spectra.Add(spectrum);
+                        comp.MolecularWeight = FormulaUtility.GetMass(spectrum.Formula);
+                        comp.Name = spectrum.Name;
+                        comp.Formula = spectrum.Formula;
+                        comp.Smiles = spectrum.Smiles;
+                        dic.Add(InChI, comp);
+                        InChIs.Add(InChI);
+                        counter++;
+                    }
                 }
             }
             return new List<CompoundBean>(dic.Values);

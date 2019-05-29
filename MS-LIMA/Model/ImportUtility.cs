@@ -28,6 +28,7 @@ namespace Metabolomics.MsLima.Model
             if (ofd.ShowDialog() == true)
             {
                 Mouse.OverrideCursor = Cursors.Wait;
+                if (exporter.ExportTimer.Enabled) exporter.Stop();
                 if (res == MessageBoxResult.Yes)
                 {
                     var dt = DateTime.Now;

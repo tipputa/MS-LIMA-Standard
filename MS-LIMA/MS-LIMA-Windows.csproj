@@ -42,9 +42,6 @@
     <ApplicationIcon>MSP-Viewer2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IKVM.AWT.WinForms, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
-      <HintPath>..\packages\IKVM.7.4.5196.0\lib\IKVM.AWT.WinForms.dll</HintPath>
-    </Reference>
     <Reference Include="IKVM.OpenJDK.XML.Parse, Version=7.4.5196.0, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
       <HintPath>..\packages\IKVM.7.4.5196.0\lib\IKVM.OpenJDK.XML.Parse.dll</HintPath>
     </Reference>
