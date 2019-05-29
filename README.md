@@ -1,12 +1,13 @@
 # MS-LIMA 
 
-MS-LIMA is a software for mass spectral library management.
 [Download](https://github.com/tipputa/MS-LIMA-Standard//releases/latest)
 
+MS-LIMA is a software for mass spectral library management.
+
 ## Acceptable formats
-MSP formats (.msp; from RIKEN CSRS, MoNA)
-MGF format (.mgf)
-MassBank format (.txt)
++ MSP formats (.msp; from RIKEN CSRS, MoNA)
++ MGF format (.mgf)
++ MassBank format (.txt)
 
 ## How to use
 Please import your mass spectral library file from menu.
@@ -16,6 +17,7 @@ MS-LIMA automatically makes compound groups based on meta data (InChI, InChIKey,
 
 
 ## MainWindow
+![MainWindow](https://github.com/tipputa/MS-LIMA-Standard/blob/master/MS-LIMA/Pic/190529_MS-LIMA.PNG?raw=true)
 It consists of Mass spectrum view and 3 tables, compound table, mass spectra table, and peak table.
 If users change selected compound, spectra table and peak informations are automatically changed.
 Users can directly change peak tables for curation. 
