@@ -79,4 +79,4 @@ Exported format is as following;
 |--:|--:|--:|--:|--:|
 |56.04 |11.6 |151 |18.6 |SMILES NCCC |
 |41.03 |8.7 |137 |16.8 |SMILES CCC |
-|58.06 |18.3 |84 | 10.3 |SMILES C[N+](C)C |
+|42.03 |13.7 |126 | 15.5 |SMILES NCC |
