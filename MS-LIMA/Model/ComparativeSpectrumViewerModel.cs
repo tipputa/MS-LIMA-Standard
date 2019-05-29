@@ -15,7 +15,7 @@ namespace Metabolomics.MsLima.Model
 {
     public static class ComparativeSpectrumViewerModel
     {
-        public static List<MassSpectrum> ImportFile()
+        public static List<MassSpectrum> ImportFile(out string fileName)
         {
             List<MassSpectrum> res;
             OpenFileDialog ofd = new OpenFileDialog
@@ -29,11 +29,13 @@ namespace Metabolomics.MsLima.Model
             if (ofd.ShowDialog() == true)
             {
                 Mouse.OverrideCursor = Cursors.Wait;
+                fileName = ofd.FileName;
                 res = ReadFile.ReadLibraryFiles(ofd.FileName);
                 Mouse.OverrideCursor = null;
             }
             else
             {
+                fileName = "";
                 res = new List<MassSpectrum>();
             }
             return res;

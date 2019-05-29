@@ -31,24 +31,25 @@
                 <RowDefinition Height="*" MinHeight="100"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <TextBox Name="TextBox_LeftMsp" Text="{Binding Path=LeftFileName}" Margin="5,5,45,5" VerticalAlignment="Top" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+                <TextBox Name="TextBox_LeftMsp" Text="{Binding Path=LeftFilePath}" Margin="5,5,45,5" VerticalAlignment="Top" HorizontalAlignment="Stretch" IsReadOnly="True"/>
                 <Button Name="Button_ImportLeftMsp" Command="{Binding ImportLeftFileCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Import" Width="40" Height="25" FontSize="10"/>
                 <Label Content="Search function; Share filters for both msp files : " Margin="5,22,0,0"/>
-                <CheckBox Content="" IsChecked="True" Margin="280,28,0,0"/>
+                <CheckBox Content="" IsChecked="{Binding Share}" Margin="280,28,0,0"/>
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" MinWidth="30"/>
-                    <ColumnDefinition Width="*" MinWidth="30"/>
-                    <ColumnDefinition Width="*" MinWidth="30"/>
+                    <ColumnDefinition Width="198*" MinWidth="30"/>
+                    <ColumnDefinition Width="85*" MinWidth="30"/>
+                    <ColumnDefinition Width="16*"/>
+                    <ColumnDefinition Width="99*" MinWidth="30"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="Name" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <Label Grid.Column="1" Content="Mz"  HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <Label Grid.Column="2" Content="RT" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Label Grid.Column="0" Content="Name" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="78,0"/>
+                <Label Grid.Column="1" Content="Mz"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="37,0,21.5,0"/>
+                <Label Grid.Column="3" Content="RT" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="38,0"/>
 
                 <TextBox Grid.Column="0" Text="{Binding Path=LeftNameText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
-                <TextBox Grid.Column="1" Text="{Binding Path=LeftMzText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
-                <TextBox Grid.Column="2" Text="{Binding Path=LeftRtText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
+                <TextBox Grid.Column="1" Text="{Binding Path=LeftMzText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5" Grid.ColumnSpan="2"/>
+                <TextBox Grid.Column="3" Text="{Binding Path=LeftRtText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="3,0,3,5"/>
             </Grid>
             <Grid Grid.Row="2">
                 <DataGrid Name="DataGrid_Msp_Left" ItemsSource="{Binding Path=LeftSpectraTable}" SelectedItem="{Binding SelectedMassSpectrumLeft}"
@@ -82,10 +83,10 @@
                 <RowDefinition Height="*" MinHeight="100"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <TextBox Text="{Binding Path=Right}" Margin="5,5,45,5" VerticalAlignment="Top" HorizontalAlignment="Stretch" IsReadOnly="True"/>
+                <TextBox Text="{Binding Path=RightFilePath}" Margin="5,5,45,5" VerticalAlignment="Top" HorizontalAlignment="Stretch" IsReadOnly="True"/>
                 <Button  Command="{Binding ImportRightFileCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Import" Width="40" Height="25" FontSize="10"/>
-                <Label Content="Filtere based on selected compound: " Margin="5,22,0,0"/>
-                <CheckBox Content="" IsChecked="True"  Margin="210,28,0,0"/>
+                <!--<Label Content="Filtere based on selected compound: " Margin="5,22,0,0"/>
+                <CheckBox Content="" IsChecked="True"  Margin="210,28,0,0"/> -->
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>

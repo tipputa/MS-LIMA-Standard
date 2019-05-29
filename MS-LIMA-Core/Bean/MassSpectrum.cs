@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Metabolomics.Core;
+using Metabolomics.Core.Utility;
 using MessagePack;
 
 namespace Metabolomics.MsLima.Bean
@@ -30,9 +31,9 @@ namespace Metabolomics.MsLima.Bean
         [Key(9)]
         public string Smiles { get; set; }
         [Key(10)]
-        public string InChiIKey { get; set; }
+        public string InChIKey { get; set; }
         [Key(11)]
-        public string ShortInChiIKey { get; set; }
+        public string ShortInChIKey { get; set; }
         [Key(12)]
         public string InChI { get; set; }
         [Key(13)]
@@ -70,7 +71,7 @@ namespace Metabolomics.MsLima.Bean
         public double TheoreticalMass { get; set; }
 
         [Key(26)]
-        public float DiffPpm { get; set; }
+        public float DiffPpm { get => (float)CommonUtility.PpmCalculator(this.TheoreticalMass, this.PrecursorMz); }
         [Key(27)]
         public int Order { get; set; }
         [Key(28)]
@@ -96,8 +97,8 @@ namespace Metabolomics.MsLima.Bean
                 Formula = this.Formula,
                 IonMode = this.IonMode,
                 Smiles = this.Smiles,
-                InChiIKey = this.InChiIKey,
-                ShortInChiIKey = this.ShortInChiIKey,
+                InChIKey = this.InChIKey,
+                ShortInChIKey = this.ShortInChIKey,
                 InChI = this.InChI,
                 Target = this.Target,
                 Authors = this.Authors,
@@ -111,7 +112,6 @@ namespace Metabolomics.MsLima.Bean
                 Ontology = this.Ontology,
                 Intensity = this.Intensity,
                 TheoreticalMass = this.TheoreticalMass,
-                DiffPpm = this.DiffPpm,
                 Order = this.Order,
                 AdductIon = Metabolomics.Core.Parser.AdductIonParser.GetAdductIon(this.AdductIon.AdductIonName),
                 Spectrum = new List<AnnotatedPeak>()

@@ -72,7 +72,7 @@ namespace Metabolomics.MsLima.ViewModel
             set { if (OnPropertyChangedIfSet(ref leftNameText, value, nameof(LeftNameText)))
                 {
                     this.FilterSettingLeft.MetaboliteNameFilter = value;
-                    if (share)
+                    if (Share)
                     {
                         this.RightNameText = value;
                     }
@@ -86,7 +86,7 @@ namespace Metabolomics.MsLima.ViewModel
                 if (OnPropertyChangedIfSet(ref rightNameText, value, nameof(RightNameText)))
                 {
                     this.FilterSettingRight.MetaboliteNameFilter = value;
-                    if (share)
+                    if (Share)
                     {
                         this.LeftNameText = value;
                     }
@@ -99,8 +99,8 @@ namespace Metabolomics.MsLima.ViewModel
             set {
                 if (OnPropertyChangedIfSet(ref leftMzText, value, nameof(LeftMzText)))
                 {
-                    this.FilterSettingLeft.MetaboliteNameFilter = value;
-                    if (share)
+                    this.FilterSettingLeft.MzFilter = value;
+                    if (Share)
                     {
                         this.RightMzText = value;
                     }
@@ -112,8 +112,8 @@ namespace Metabolomics.MsLima.ViewModel
             set {
                 if (OnPropertyChangedIfSet(ref rightMzText, value, nameof(RightMzText)))
                 {
-                    this.FilterSettingRight.MetaboliteNameFilter = value;
-                    if (share)
+                    this.FilterSettingRight.MzFilter = value;
+                    if (Share)
                     {
                         this.LeftMzText = value;
                     }
@@ -126,8 +126,8 @@ namespace Metabolomics.MsLima.ViewModel
             set {
                 if (OnPropertyChangedIfSet(ref leftRtText, value, nameof(LeftRtText)))
                 {
-                    this.FilterSettingLeft.MetaboliteNameFilter = value;
-                    if (share)
+                    this.FilterSettingLeft.RetentionTimeFilter = value;
+                    if (Share)
                         this.RightRtText = value;
                 }
             }
@@ -138,8 +138,8 @@ namespace Metabolomics.MsLima.ViewModel
             set {
                 if (OnPropertyChangedIfSet(ref rightRtText, value, nameof(RightRtText)))
                 {
-                    this.FilterSettingRight.MetaboliteNameFilter = value;
-                    if (share)
+                    this.FilterSettingRight.RetentionTimeFilter = value;
+                    if (Share)
                         this.LeftRtText = value;
                 }
             }
@@ -203,18 +203,33 @@ namespace Metabolomics.MsLima.ViewModel
             Param = data.Parameter;
             MsHandler = new MassSpectrumViewHandler(data.Parameter);
             var spectra = ComparativeSpectrumViewerModel.ConvertCompoundDataToSpectra(data);
+            var spectra2 = ComparativeSpectrumViewerModel.ConvertCompoundDataToSpectra(data);
             MassSpectrumWithRef = new DefaultUC(MassSpectrumVM);
+            LeftFilePath = data.DataStorage.FilePath;
+            RightFilePath = data.DataStorage.FilePath;
             LeftFilterUpdate(spectra);
-            RightFilterUpdate(spectra);
+            RightFilterUpdate(spectra2);
             SetCommands();
         }
 
         public void SetCommands() {
             ImportLeftFileCommand = new DelegateCommand(
-                x => LeftFilterUpdate(ComparativeSpectrumViewerModel.ImportFile()));
+                x => {
+                    var spectra = ComparativeSpectrumViewerModel.ImportFile(out string path);
+                    if (spectra != null && spectra.Count > 0) {
+                        LeftFilePath = path;
+                        LeftFilterUpdate(spectra);
+                } });
                     
             ImportRightFileCommand = new DelegateCommand(
-                x => RightFilterUpdate(ComparativeSpectrumViewerModel.ImportFile()));
+                x => {
+                    var spectra = ComparativeSpectrumViewerModel.ImportFile(out string path);
+                    if (spectra != null && spectra.Count > 0)
+                    {
+                        RightFilePath = path;
+                        RightFilterUpdate(spectra);
+                    }
+                });
             SpectraSelectionChangedCommand = new DelegateCommand(
                 x =>
                 {

@@ -79,7 +79,7 @@ namespace Metabolomics.MsLima.Reader
                                     var links = wkstr2.Split(' ');
                                     if (links[0].Contains("INCHIKEY"))
                                     {
-                                        spectrum.InChiIKey = links[1];
+                                        spectrum.InChIKey = links[1];
                                         continue;
                                     }
                                     else
@@ -268,7 +268,7 @@ namespace Metabolomics.MsLima.Reader
                             }
                             else if (Regex.IsMatch(wkstr, "INCHIKEY:.*", RegexOptions.IgnoreCase))
                             {
-                                spectrum.InChiIKey = wkstr.Split(':')[1].Trim();
+                                spectrum.InChIKey = wkstr.Split(':')[1].Trim();
                                 continue;
                             }
                             else if (Regex.IsMatch(wkstr, "INCHI:.*", RegexOptions.IgnoreCase))
@@ -333,12 +333,10 @@ namespace Metabolomics.MsLima.Reader
                             {
                                 spectrum.TheoreticalMass = MspParser.ConvertFormulaToAdductMass(spectrum.AdductIon, spectrum.Formula, spectrum.IonMode);
                             }
-                            spectrum.DiffPpm = (float)CommonUtility.PpmCalculator(spectrum.TheoreticalMass, spectrum.PrecursorMz);
                         }
                         catch
                         {
                             spectrum.TheoreticalMass = -1;
-                            spectrum.DiffPpm = 0;
                         }
                         spectra.Add(spectrum);
                         spectrum = new MassSpectrum();

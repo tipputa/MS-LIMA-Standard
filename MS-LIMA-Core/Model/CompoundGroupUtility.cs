@@ -49,7 +49,7 @@ namespace Metabolomics.MsLima.Model
                 comp = new CompoundBean
                 {
                     Id = counter,
-                    InChIKey = spectrum.InChiIKey,
+                    InChIKey = spectrum.InChIKey,
                     InChI = spectrum.InChI
                 };
                 comp.NumSpectra++;
@@ -76,7 +76,7 @@ namespace Metabolomics.MsLima.Model
             var counter = 1;
             foreach (var spectrum in rawLibraryFile)
             {
-                if (string.IsNullOrEmpty(spectrum.InChiIKey))
+                if (string.IsNullOrEmpty(spectrum.InChIKey))
                 {
                     comp = new CompoundBean
                     {
@@ -95,7 +95,7 @@ namespace Metabolomics.MsLima.Model
                 }
                 else
                 {
-                    var Inchikey = spectrum.InChiIKey.Split('-')[0];
+                    var Inchikey = spectrum.InChIKey.Split('-')[0];
                     if (InchiKeys.Contains(Inchikey))
                     {
                         dic[Inchikey].Spectra.Add(spectrum);
@@ -106,7 +106,7 @@ namespace Metabolomics.MsLima.Model
                         comp = new CompoundBean
                         {
                             Id = counter,
-                            InChIKey = spectrum.InChiIKey,
+                            InChIKey = spectrum.InChIKey,
                             InChI = spectrum.InChI
                         };
                         comp.NumSpectra++;
@@ -134,7 +134,7 @@ namespace Metabolomics.MsLima.Model
             var counter = 1;
             foreach (var spectrum in rawLibraryFile)
             {
-                if (string.IsNullOrEmpty(spectrum.InChiIKey))
+                if (string.IsNullOrEmpty(spectrum.InChIKey))
                 {
                     comp = new CompoundBean
                     {
@@ -153,18 +153,18 @@ namespace Metabolomics.MsLima.Model
                 }
                 else
                 {
-                    var InChiIKey = spectrum.InChiIKey;
-                    if (InchiKeys.Contains(InChiIKey))
+                    var InChIKey = spectrum.InChIKey;
+                    if (InchiKeys.Contains(InChIKey))
                     {
-                        dic[InChiIKey].Spectra.Add(spectrum);
-                        dic[InChiIKey].NumSpectra++;
+                        dic[InChIKey].Spectra.Add(spectrum);
+                        dic[InChIKey].NumSpectra++;
                     }
                     else
                     {
                         comp = new CompoundBean
                         {
                             Id = counter,
-                            InChIKey = spectrum.InChiIKey,
+                            InChIKey = spectrum.InChIKey,
                             InChI = spectrum.InChI
                         };
                         comp.NumSpectra++;
@@ -173,8 +173,8 @@ namespace Metabolomics.MsLima.Model
                         comp.Name = spectrum.Name;
                         comp.Formula = spectrum.Formula;
                         comp.Smiles = spectrum.Smiles;
-                        dic.Add(InChiIKey, comp);
-                        InchiKeys.Add(InChiIKey);
+                        dic.Add(InChIKey, comp);
+                        InchiKeys.Add(InChIKey);
                         counter++;
                     }
                 }
@@ -197,7 +197,7 @@ namespace Metabolomics.MsLima.Model
                     comp = new CompoundBean
                     {
                         Id = counter,
-                        InChIKey = spectrum.InChiIKey,
+                        InChIKey = spectrum.InChIKey,
                         InChI = ""
                     };
                     comp.NumSpectra++;
@@ -222,7 +222,7 @@ namespace Metabolomics.MsLima.Model
                         comp = new CompoundBean
                         {
                             Id = counter,
-                            InChIKey = spectrum.InChiIKey,
+                            InChIKey = spectrum.InChIKey,
                             InChI = spectrum.InChI
                         };
                         comp.NumSpectra++;
@@ -255,7 +255,7 @@ namespace Metabolomics.MsLima.Model
                     missFormula.Add(str);
                 }
 
-                var InChIKey = compound.Spectra.Select(x => x.InChiIKey).Distinct().ToList();
+                var InChIKey = compound.Spectra.Select(x => x.InChIKey).Distinct().ToList();
                 if (InChIKey.Count > 1)
                 {
                     var counter2 = 0;

@@ -92,7 +92,7 @@ namespace Metabolomics.MsLima.Reader
                             }
                             else if (Regex.IsMatch(wkstr, "INCHIKEY:.*", RegexOptions.IgnoreCase))
                             {
-                                spectrum.InChiIKey = wkstr.Split(':')[1].Trim();
+                                spectrum.InChIKey = wkstr.Split(':')[1].Trim();
                                 continue;
                             }
                             else if (Regex.IsMatch(wkstr, "INCHI:.*", RegexOptions.IgnoreCase))
@@ -159,12 +159,10 @@ namespace Metabolomics.MsLima.Reader
                         try
                         {
                             spectrum.TheoreticalMass = MspParser.ConvertFormulaToAdductMass(spectrum.AdductIon, spectrum.Formula, spectrum.IonMode);
-                            spectrum.DiffPpm = (float)CommonUtility.PpmCalculator(spectrum.TheoreticalMass, spectrum.PrecursorMz);
                         }
                         catch
                         {
                             spectrum.TheoreticalMass = -1;
-                            spectrum.DiffPpm = 0;
                         }
                         spectra.Add(spectrum);
                         spectrum = new MassSpectrum();

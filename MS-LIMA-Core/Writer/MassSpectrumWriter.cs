@@ -37,7 +37,7 @@ namespace Metabolomics.MsLima.Writer
             sw.WriteLine("COLLISIONENERGY: " + spec.CollisionEnergy);
             sw.WriteLine("FORMULA: " + spec.Formula);
             sw.WriteLine("SMILES: " + spec.Smiles);
-            sw.WriteLine("INCHIKEY: " + spec.InChiIKey);
+            sw.WriteLine("INCHIKEY: " + spec.InChIKey);
             sw.WriteLine("INCHI: " + spec.InChI);
             sw.WriteLine("SPECTRUMTYPE: " + spec.SpectrumType);
             sw.WriteLine("AUTHORS: " + spec.Authors);
@@ -76,7 +76,7 @@ namespace Metabolomics.MsLima.Writer
             var exported = new List<string>();
             foreach(var spec in compound.Spectra){
                 if (exported.Contains(spec.AdductIon.AdductIonName) == true) continue;
-                sw.WriteLine(Math.Round(spec.TheoreticalMass, 6) + "\t" + spec.RetentionTime + "\t" + spec.InChiIKey + "\t" + spec.Name + "\t" + spec.AdductIon.AdductIonName);
+                sw.WriteLine(Math.Round(spec.TheoreticalMass, 6) + "\t" + spec.RetentionTime + "\t" + spec.InChIKey + "\t" + spec.Name + "\t" + spec.AdductIon.AdductIonName);
                 exported.Add(spec.AdductIon.AdductIonName);
             }
         }
