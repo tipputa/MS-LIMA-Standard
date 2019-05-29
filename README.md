@@ -28,7 +28,10 @@ Consensus Peak table automatically made from all spectra in a selected compound 
 
 If you select any row in peak table, the selected peak will be highlighted in MS view.
 
-### three MS viewers 
+#### Filtering by compound name, retention time, molecular weight, and InChIKey
+Please use this function for searching and filtering compounds
+
+### Three MS viewers 
 You can visually chack mass spectrum one by one or simultaneously.
 ![Multiple viewer](https://github.com/tipputa/MS-LIMA-Standard/blob/master/MS-LIMA/Pic/190529_MS-LIMA_2.PNG?raw=true)
 
@@ -38,17 +41,42 @@ Blue: >1 spectrum and <50% of spectra have this peak
 Red: >50% of spectra have this peak
 ![Consensus viewer](https://github.com/tipputa/MS-LIMA-Standard/blob/master/MS-LIMA/Pic/190529_MS-LIMA_3.PNG?raw=true)
 
-### Filtering by compound name, retention time, molecular weight, and InChIKey
-Please use this function for searching and filtering compounds
-
 
 ## Additional windows
+You can open additional windows by clicking Viewer in Menubar
+### Meta data of all spectra
 ![Metadata Window](https://github.com/tipputa/MS-LIMA-Standard/blob/master/MS-LIMA/Pic/190529_MetaInformation.PNG?raw=true)
-
+You can directly change almost all metadata from this window. 
 
 ![Comparative Window](https://github.com/tipputa/MS-LIMA-Standard/blob/master/MS-LIMA/Pic/190529_ComparativeViewer.PNG?raw=true)
+You can compare two spectra using this window. 
 
+Spectrum selected in left table will be shown as upper part, selected in right table will be shown as lower part.
 
+You can import different library from the button.
+
+This window cannot affect the main window if you changed imported library.
 
 ## Menubar Utilities
-### 
+### Remove unannotated peaks
+All peaks which have comments will be removed from the library.
+If you want to save modified library, please export it.
+
+### Convert precursor m/z as theoretical m/z
+In all spectra, precursor m/z value will be comverted as theoretical m/z calculated by formula and adduct type.
+If you want to save modified library, please export it.
+
+### Remove all retention time
+Retention time will be removed in all spectra.
+If you want to save modified library, please export it.
+
+### Calc and save common product ions
+MS-LIMA can calculate common product ions in whole library. 
+
+Exported format is as following;
+
+|MedianMz |MedianIntensity |NumPeaks |Percent |Comments |
+|--:|--:|--:|--:|--:|
+|56.04 |11.6 |151 |18.6 |SMILES NCCC |
+|41.03 |8.7 |137 |16.8 |SMILES CCC |
+|58.06 |18.3 |84 | 10.3 |SMILES C[N+](C)C |
