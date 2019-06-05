@@ -2,7 +2,7 @@
 
 [Download the latest release](https://github.com/tipputa/MS-LIMA-Standard//releases/latest)
 
-MS-LIMA is a software for mass spectral library management.
+MS-LIMA is mass spectral library management software.
 
 ## Acceptable formats
 + MSP formats (.msp; from RIKEN CSRS, MoNA)
@@ -12,19 +12,19 @@ MS-LIMA is a software for mass spectral library management.
 ## How to use
 Please import a mass spectral library file from menu.
 
-MS-LIMA automatically makes compound groups based on meta data (InChI, InChIKey, or ShortInChIKey), and investigate the library errors about retention time (large difference), InChIKey, and formaula in each compound group.
+MS-LIMA automatically makes compound groups based on meta data (InChI, InChIKey, or ShortInChIKey), and investigates the library errors about retention time (large difference), InChIKey, and formaula in each compound group.
 
-Please export the library if you changed.
+Please export the library if you changed in MS-LIMA.
 
 ## MainWindow
 ![MainWindow](https://github.com/tipputa/MS-LIMA-Standard/blob/master/MS-LIMA/Pic/190529_MS-LIMA.PNG?raw=true)
 It consists of mass spectrum view (MS view) and 3 tables, compound table, mass spectra table, and peak table.
 
-If you change selected compound, spectra table and peak informations are automatically changed.
+If you change selected compound, spectra table and peak informations will be automatically changed.
 
 You can directly change peak tables for curation. 
 
-Consensus Peak table automatically made from all spectra in a selected compound group.
+Consensus peak table automatically made from all spectra in a selected compound group.
 
 If you select any row in peak table, the selected peak will be highlighted in MS view.
 
@@ -83,3 +83,23 @@ Exported format is as following;
 |56.04 |11.6 |151 |18.6 |SMILES NCCC |
 |41.03 |8.7 |137 |16.8 |SMILES CCC |
 |42.03 |13.7 |126 | 15.5 |SMILES NCC |
+
+### Update SMILES and InChI based on InChIKey
+You can update SMILES and InCHi in all spectra based on InChIKey.
+
+Please use following file format. The demo file locates ./demo/InChIKey_InChI_SMILES.txt
+
+|InChIKey |InChI |SMILES |
+|--:|--:|--:|
+|AAA-AAA-A|InChI=/AA/AAA|CCCC|
+|BBB-BBB-B|InChI=/BB/BBB|NCCC|
+
+### Update common meta data
+You can update common meta data, such as INSTRUMENT, INSTRUMENTTYPE, MSLEVEL, SPECTRUMTYPE, and so on.
+
+Please use following file format. The demo file locates ./demo/CommonMetaData.txt
+
+|Header|
+|---|
+|INSTRUMENT: YourSetting|
+|INSTRUMENTTYPE: YourSetting|
