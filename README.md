@@ -4,6 +4,8 @@
 
 MS-LIMA is mass spectral library management software.
 
+It supports MS2 peak annotations by MS-FINDER. Please also check [MS-FINDER](http://prime.psc.riken.jp/Metabolomics_Software/MS-FINDER/).
+
 ## Acceptable formats
 + MSP formats (.msp; from RIKEN CSRS, MoNA)
 + MGF format (.mgf)
