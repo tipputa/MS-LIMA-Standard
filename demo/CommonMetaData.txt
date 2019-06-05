@@ -1,0 +1,7 @@
+Header
+MSLEVEL: MS2
+INSTRUMENT: Agilent 6550 Q-TOF-MS 
+INSTRUMENTTYPE: LC-ESI-QTOF
+AUTHOR: Ipputa Tada, Hiroshi Tsugawa, Isabel Meister, Pei Zhang, Rie Shu, Riho Katsumi, Craig E. Wheelock, Masanori Arita, Romanas Chaleckis
+LICENSE: CC-BY
+SPECTRUMTYPE: Centroid

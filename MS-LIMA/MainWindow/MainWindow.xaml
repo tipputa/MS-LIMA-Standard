@@ -117,6 +117,17 @@
                         <ToolTip Content="Calculate the frequency of product ions in the library"/>
                     </ToolTipService.ToolTip>
                 </MenuItem>
+                <MenuItem Name="MenuItem_Utility_UpdateSmilesAndInchi" Header="Update SMILES and InChI based on InChIKey" Command="{Binding UpdateSmilesAndInChiBasedOnInChIKeyCommand}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Using additional files (InChIKey InChI SMILES)"/>
+                    </ToolTipService.ToolTip>
+                </MenuItem>
+                <MenuItem Name="MenuItem_Utility_CommonMetaData" Header="Update common meta information" Command="{Binding UpdateCommonMetaDataCommand}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip Content="Using additional files (InChIKey InChI SMILES)"/>
+                    </ToolTipService.ToolTip>
+                </MenuItem>
+
 
             </MenuItem>
 

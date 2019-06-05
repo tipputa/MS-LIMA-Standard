@@ -35,6 +35,7 @@ namespace Metabolomics.MsLima
         {
             using (var sw = new StreamWriter(filePath, false, Encoding.UTF8))
             {
+                sw.WriteLine("m/z,RT,InChIKey,Name,AdductType");
                 foreach (var comp in compounds)
                 {
                     Writer.MassSpectrumWriter.WriteMassSpectraAsMzMineFormat(sw, comp);

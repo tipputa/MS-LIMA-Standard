@@ -44,7 +44,7 @@ namespace Metabolomics.MsLima.Model
         public static void SaveCompoundTableAsMzMineFormat(List<CompoundBean> compounds)
         {
             var sfd = new SaveFileDialog();
-            sfd.Filter = "MSP file(.msp)|*.msp|All Files (*.*)|*.*";
+            sfd.Filter = "CSV format (.csv)|*.csv|All Files (*.*)|*.*";
 
             if (sfd.ShowDialog() == true)
             {

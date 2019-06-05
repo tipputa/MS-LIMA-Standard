@@ -76,7 +76,7 @@ namespace Metabolomics.MsLima.Writer
             var exported = new List<string>();
             foreach(var spec in compound.Spectra){
                 if (exported.Contains(spec.AdductIon.AdductIonName) == true) continue;
-                sw.WriteLine(Math.Round(spec.TheoreticalMass, 6) + "\t" + spec.RetentionTime + "\t" + spec.InChIKey + "\t" + spec.Name + "\t" + spec.AdductIon.AdductIonName);
+                sw.WriteLine(Math.Round(spec.TheoreticalMass, 6) + "," + spec.RetentionTime + "," + spec.InChIKey + "," + spec.Name + "," + spec.AdductIon.AdductIonName);
                 exported.Add(spec.AdductIon.AdductIonName);
             }
         }

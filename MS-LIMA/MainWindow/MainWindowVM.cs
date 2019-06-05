@@ -228,6 +228,8 @@ namespace Metabolomics.MsLima
         public DelegateCommand DropRetentionTime { get; set; }
         public DelegateCommand RemoveUnannotatedCommand { get; set; }
         public DelegateCommand SaveCommonProductIonCommand { get; set; }
+        public DelegateCommand UpdateSmilesAndInChiBasedOnInChIKeyCommand { get; set; }
+        public DelegateCommand UpdateCommonMetaDataCommand { get; set; }
         #endregion
 
 
@@ -302,6 +304,14 @@ namespace Metabolomics.MsLima
             SaveCommonProductIonCommand = new DelegateCommand(
                 x => ExportUtility.SaveCommonProductIonTable(CompoundTable),
                 x => !IsDataLoaded());
+
+            UpdateSmilesAndInChiBasedOnInChIKeyCommand = new DelegateCommand(
+                x => WindowUtility.UpdateMetaData(CompoundTable),
+                x => !IsDataLoaded());
+
+            UpdateCommonMetaDataCommand = new DelegateCommand(
+              x => WindowUtility.UpdateCommonMetaData(CompoundTable),
+              x => !IsDataLoaded());
 
             #endregion
 
@@ -422,6 +432,12 @@ namespace Metabolomics.MsLima
             SaveAsMspCommand.RaiseCanExecuteChanged();
             SaveAsMspWithoutRTCommand.RaiseCanExecuteChanged();
             SaveAsMzMineCommand.RaiseCanExecuteChanged();
+            UpdateSmilesAndInChiBasedOnInChIKeyCommand.RaiseCanExecuteChanged();
+            ConvertAccurateMassToTheoreticalMass.RaiseCanExecuteChanged();
+            DropRetentionTime.RaiseCanExecuteChanged();
+            RemoveUnannotatedCommand.RaiseCanExecuteChanged();
+            SaveCommonProductIonCommand.RaiseCanExecuteChanged();
+            UpdateCommonMetaDataCommand.RaiseCanExecuteChanged();
             OnPropertyChanged(nameof(FilteredComponudTableView));
             OnPropertyChanged(nameof(LabelNumCompounds));
             OnPropertyChanged(nameof(LabelNumSpectra));

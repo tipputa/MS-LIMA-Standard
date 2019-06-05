@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChartDrawing\ChartDrawing.csproj" />
+    <ProjectReference Include="..\CommonWindows\CommonWindows.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\MS-LIMA-CommonView\MS-LIMA-CommonView.csproj" />
+    <ProjectReference Include="..\MS-LIMA-Core\MS-LIMA-Core.csproj" />
+    <ProjectReference Include="..\MS-LIMA\MS-LIMA-Windows.csproj" />
+    <ProjectReference Include="..\ViewFromSmiles\ViewFromSmiles.csproj" />
+  </ItemGroup>
+
+</Project>

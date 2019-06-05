@@ -341,5 +341,50 @@ namespace Metabolomics.MsLima.Model
                 }
             }
         }
+
+        public static void UpdateMetaData(List<CompoundBean> compounds, List<TemporaryFile> temporaryInfo, out List<string> errorMessage)
+        {
+            var inChIKeyDict = new Dictionary<string, TemporaryFile>();
+            errorMessage = new List<string>();
+
+            foreach (var row in temporaryInfo)
+            {
+                inChIKeyDict.Add(row.InChIKey, row);
+            }
+            foreach (var comp in compounds)
+            {
+                if (inChIKeyDict.Keys.Contains(comp.InChIKey))
+                {
+                    comp.InChI = inChIKeyDict[comp.InChIKey].InChI;
+                    comp.Smiles = inChIKeyDict[comp.InChIKey].SMILES;
+                    foreach (var spectrum in comp.Spectra)
+                    {
+                        if (spectrum.InChIKey == comp.InChIKey)
+                        {
+                            spectrum.InChI = inChIKeyDict[comp.InChIKey].InChI;
+                            spectrum.Smiles = inChIKeyDict[comp.InChIKey].SMILES;
+                        }
+                        else if (inChIKeyDict.Keys.Contains(spectrum.InChIKey))
+                        {
+                            spectrum.InChI = inChIKeyDict[spectrum.InChIKey].InChI;
+                            spectrum.Smiles = inChIKeyDict[spectrum.InChIKey].SMILES;
+                        }
+                        else if (spectrum.InChIKey.Contains("-UHFFFAOYSA-"))
+                        {
+                            spectrum.InChI = inChIKeyDict[comp.InChIKey].InChI;
+                            spectrum.Smiles = inChIKeyDict[comp.InChIKey].SMILES;
+                        }
+                        else
+                        {
+                            errorMessage.Add("Spectrum ID: " + spectrum.Id + ": " + spectrum.InChIKey + ", " + spectrum.Name + "\n");
+                        }
+                    }
+                }
+                else
+                {
+                    errorMessage.Add("Componud ID: " + comp.Id + ": " + comp.InChIKey + ", " + comp.Name + "\n");
+                }
+            }            
+        }
     }
 }
