@@ -233,6 +233,53 @@ namespace Metabolomics.MsLima
         #endregion
 
 
+        private DelegateCommand temporaryMethod;
+        public DelegateCommand TemporaryMethods {
+            get {
+                return temporaryMethod ?? new DelegateCommand(x =>
+                {
+                    if (this.CompoundTable == null) return;
+                    foreach (var c in CompoundTable)
+                    {
+                        foreach (var spec in c.Spectra)
+                        {
+                            if (spec.Comment.Contains("CorrelDec"))
+                            {
+                                spec.Comment = "MS2 deconvoluted using CorrDec from all ion fragmentation data; MetaboLights identifier MTBLS1040";
+                            }
+                            else
+                            {
+                                spec.Comment = "MS2 deconvoluted using MS2Dec from all ion fragmentation data; MetaboLights identifier MTBLS1040; " + spec.Comment;
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        private DelegateCommand temporaryMethod2;
+        public DelegateCommand TemporaryMethods2 {
+            get {
+                return temporaryMethod2 ?? new DelegateCommand(x =>
+                {
+                    if (this.CompoundTable == null) return;
+                    foreach (var c in CompoundTable)
+                    {
+                        foreach (var spec in c.Spectra)
+                        {
+                            Console.WriteLine(spec.CollisionEnergy);
+                            if (spec.CollisionEnergy == 0)
+                            {
+                                Console.WriteLine("working");
+                                spec.MsLevel = "MS1";
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+
         #endregion
         #endregion
 

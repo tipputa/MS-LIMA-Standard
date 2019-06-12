@@ -116,6 +116,11 @@ namespace Metabolomics.MsLima.Bean
                 AdductIon = Metabolomics.Core.Parser.AdductIonParser.GetAdductIon(this.AdductIon.AdductIonName),
                 Spectrum = new List<AnnotatedPeak>()
             };
+            foreach (var o in this.OtherMetaData)
+            {
+                spectrum.OtherMetaData.Add(o);
+            }
+
             foreach (var peak in this.Spectrum) {
                 spectrum.Spectrum.Add(peak.Copy());
             }

@@ -135,9 +135,14 @@ namespace Metabolomics.MsLima.Reader
                                 spectrum.AdductIon = AdductIonParser.GetAdductIon(wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim());
                                 continue;
                             }
+                            else if (Regex.IsMatch(wkstr, "MS.?LEVEL:.*", RegexOptions.IgnoreCase))
+                            {
+                                spectrum.MsLevel = wkstr.Split(':')[1].Trim();
+                                continue;
+                            }
                             else if (Regex.IsMatch(wkstr, "COMPOUNDCLASS:.*", RegexOptions.IgnoreCase))
                             {
-                                spectrum.CompoundClass = wkstr.Split(':')[1].Trim();
+                                spectrum.CompoundClass = wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim();
                                 continue;
                             }
                             else if (Regex.IsMatch(wkstr, "Links:.*", RegexOptions.IgnoreCase))

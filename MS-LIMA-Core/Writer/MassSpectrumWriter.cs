@@ -44,7 +44,7 @@ namespace Metabolomics.MsLima.Writer
             sw.WriteLine("INSTRUMENT: " + spec.Instrument);
             sw.WriteLine("INSTRUMENTTYPE: " + spec.InstrumentType);
             sw.WriteLine("LICENSE: " + spec.License);
-            
+            sw.WriteLine("MSLEVEL: " + spec.MsLevel);
             if(spec.OtherMetaData != null && spec.OtherMetaData.Count > 0)
             {
                 foreach(var m in spec.OtherMetaData)
@@ -76,7 +76,7 @@ namespace Metabolomics.MsLima.Writer
             var exported = new List<string>();
             foreach(var spec in compound.Spectra){
                 if (exported.Contains(spec.AdductIon.AdductIonName) == true) continue;
-                sw.WriteLine(Math.Round(spec.TheoreticalMass, 6) + "," + spec.RetentionTime + "," + spec.InChIKey + "," + spec.Name + "," + spec.AdductIon.AdductIonName);
+                sw.WriteLine(Math.Round(spec.TheoreticalMass, 6) + "," + spec.RetentionTime + "," + spec.InChIKey + "," + spec.Name.Replace(',', '_') + "," + spec.AdductIon.AdductIonName);
                 exported.Add(spec.AdductIon.AdductIonName);
             }
         }
