@@ -130,7 +130,7 @@
                 <!--
                 <MenuItem Name="MenuItem_TemporaryMethod1" Header="Temporary Method for developer" Command="{Binding TemporaryMethods}"/>
                 <MenuItem Name="MenuItem_TemporaryMethod2" Header="Temporary Method for developer" Command="{Binding TemporaryMethods2}"/>
--->
+                -->
 
             </MenuItem>
 

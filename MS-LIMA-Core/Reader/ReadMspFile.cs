@@ -21,7 +21,7 @@ namespace Metabolomics.MsLima.Reader
             string wkstr;
             int counter = 0;
 
-            using (StreamReader sr = new StreamReader(filePath, Encoding.ASCII))
+            using (StreamReader sr = new StreamReader(filePath, Encoding.UTF8))
             {
                 float rt = 0, preMz = 0, ri = 0;
 
