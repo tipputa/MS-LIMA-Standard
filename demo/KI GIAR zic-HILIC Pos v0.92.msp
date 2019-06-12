@@ -49,13 +49,6 @@ FlowGradient: 5/95 at 0-1.5 min, 60/40 at 12-14 min, 75/25 at 14.2-17 min; 5/95 
 FlowRate: 0.3ml/min
 SolventA: water with 0.1% formic acid (pH2.7)
 SolventB: acetonitrile with 0.1% formic acidLC-ESI-QTOF
-AquisitionType: AIF
-IONISATION: ESI
-COLUMN: Merck SeQuant ZIC HILIC (2.1 x 100 mm, 3.5 µm particle size) with Merck SeQuant ZIC HILIC Guard column (2.1 mm x 2 mm, 3.5 µm particle size) 
-FlowGradient: 5/95 at 0-1.5 min, 60/40 at 12-14 min, 75/25 at 14.2-17 min; 5/95 at 18-25 min
-FlowRate: 0.3ml/min
-SolventA: water with 0.1% formic acid (pH2.7)
-SolventB: acetonitrile with 0.1% formic acid
 COMMENT: MS2 deconvoluted using CorrDec from all ion fragmentation data, MetaboLights identifier MTBLS1040
 Num Peaks:2
 201.0553	53.5	"r=0.94 (7 samples); Theoretical m/z 201.054615, Mass diff 0.001 (3.41 ppm), SMILES O=CC=CC=CC=1C=CC=2OCOC=2(C=1), Annotation [C12H10O3-H]+, Rule of HR True"
@@ -84,13 +77,6 @@ FlowGradient: 5/95 at 0-1.5 min, 60/40 at 12-14 min, 75/25 at 14.2-17 min; 5/95 
 FlowRate: 0.3ml/min
 SolventA: water with 0.1% formic acid (pH2.7)
 SolventB: acetonitrile with 0.1% formic acidLC-ESI-QTOF
-AquisitionType: AIF
-IONISATION: ESI
-COLUMN: Merck SeQuant ZIC HILIC (2.1 x 100 mm, 3.5 µm particle size) with Merck SeQuant ZIC HILIC Guard column (2.1 mm x 2 mm, 3.5 µm particle size) 
-FlowGradient: 5/95 at 0-1.5 min, 60/40 at 12-14 min, 75/25 at 14.2-17 min; 5/95 at 18-25 min
-FlowRate: 0.3ml/min
-SolventA: water with 0.1% formic acid (pH2.7)
-SolventB: acetonitrile with 0.1% formic acid
 COMMENT: MS2 deconvoluted using CorrDec from all ion fragmentation data, MetaboLights identifier MTBLS1040
 Num Peaks:1
 201.0552	100	"r=0.92 (7 samples); Theoretical m/z 201.054615, Mass diff 0.001 (2.91 ppm), SMILES O=CC=CC=CC=1C=CC=2OCOC=2(C=1), Annotation [C12H10O3-H]+, Rule of HR True"
@@ -111,13 +97,6 @@ INSTRUMENT: LC-ESI-QTOF
 INSTRUMENTTYPE: 
 LICENSE: CC-BY
 MSLEVEL: MS1
-AquisitionType: AIF
-IONISATION: ESI
-COLUMN: Merck SeQuant ZIC HILIC (2.1 x 100 mm, 3.5 µm particle size) with Merck SeQuant ZIC HILIC Guard column (2.1 mm x 2 mm, 3.5 µm particle size) 
-FlowGradient: 5/95 at 0-1.5 min, 60/40 at 12-14 min, 75/25 at 14.2-17 min; 5/95 at 18-25 min
-FlowRate: 0.3ml/min
-SolventA: water with 0.1% formic acid (pH2.7)
-SolventB: acetonitrile with 0.1% formic acidLC-ESI-QTOF
 AquisitionType: AIF
 IONISATION: ESI
 COLUMN: Merck SeQuant ZIC HILIC (2.1 x 100 mm, 3.5 µm particle size) with Merck SeQuant ZIC HILIC Guard column (2.1 mm x 2 mm, 3.5 µm particle size) 
