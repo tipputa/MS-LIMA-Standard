@@ -11,6 +11,14 @@ It supports MS2 peak annotations by MS-FINDER. Please also check [MS-FINDER](htt
 + MGF format (.mgf)
 + MassBank format (.txt)
 
+## Demonstration files
+You can try MS-LIMA using demonstration files.
+
+There are two MSP files in the demo folder.
+
++ KI GIAR zic-HILIC Pos v0.92.msp
++ KI HILIC DDA V1.00.msp
+
 ## How to use
 Please import a mass spectral library file from menu.
 
