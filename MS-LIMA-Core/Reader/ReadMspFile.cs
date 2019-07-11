@@ -48,12 +48,12 @@ namespace Metabolomics.MsLima.Reader
                                 spectrum.Authors = wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim();
                                 continue;
                             }
-                            else if (Regex.IsMatch(wkstr, "INSTRUMENT.*:.*", RegexOptions.IgnoreCase))
+                            else if (Regex.IsMatch(wkstr, "INSTRUMENT:.*", RegexOptions.IgnoreCase))
                             {
                                 spectrum.Instrument = wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim();
                                 continue;
                             }
-                            else if (Regex.IsMatch(wkstr, "INSTRUMENT.?TYPE.*:.*", RegexOptions.IgnoreCase))
+                            else if (Regex.IsMatch(wkstr, "INSTRUMENT.?TYPE:.*", RegexOptions.IgnoreCase))
                             {
                                 spectrum.InstrumentType = wkstr.Substring(wkstr.Split(':')[0].Length + 2).Trim();
                                 continue;

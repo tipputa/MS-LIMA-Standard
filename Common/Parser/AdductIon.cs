@@ -27,6 +27,7 @@ namespace Metabolomics.Core.Parser
         /// 
         public static AdductIon GetAdductIon(string adductName)
         {
+            if (string.IsNullOrEmpty(adductName)) return new AdductIon();
             AdductIon adduct = new AdductIon() { AdductIonName = adductName };
 
             if (IonTypeFormatChecker(adductName) == false) { adduct.FormatCheck = false; return adduct; }

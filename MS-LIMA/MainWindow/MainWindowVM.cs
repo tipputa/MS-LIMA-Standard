@@ -279,6 +279,64 @@ namespace Metabolomics.MsLima
             }
         }
 
+        private DelegateCommand temporaryMethod3;
+        public DelegateCommand TemporaryMethods3 {
+            get {
+                return temporaryMethod3 ?? new DelegateCommand(x =>
+                {
+                    if (this.CompoundTable == null) return;
+                    using (var sw = new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(MsLimaData.DataStorage.FilePath) + "\\ms2sim.tsv", false, Encoding.UTF8))
+                    {
+                        foreach (var c in CompoundTable)
+                        {
+                            c.Name = c.Name.Replace(',', '_');
+                            if (c.NumSpectra == 3)
+                            {
+                                sw.WriteLine(c.InChIKey + "\t" + c.Name + "\t" + c.NumSpectra + "\t");
+                                continue;
+                            }
+
+                            var dic = new Dictionary<float, MassSpectrum>();
+                            foreach (var spec in c.Spectra)
+                            {
+                                if (dic.ContainsKey(spec.CollisionEnergy))
+                                {                                    
+                                    var s1 = spec;
+                                    var s2 = dic[spec.CollisionEnergy];
+                                    if (spec.Comment.Contains("CorrDec"))
+                                    {
+                                        s1 = dic[spec.CollisionEnergy];
+                                        s2 = spec;
+                                    }
+
+                                    var ms2tol = (float)MsLimaData.Parameter.MS2Tol;
+                                    var dotProductFactor = 1.0;
+                                    var reverseDotProdFactor = 1.0;
+                                    var presensePercentageFactor = 1.0;
+
+                                    var dotScore = (float)MsSimilarityScoring.GetMassSpectraSimilarity(s1, s2, ms2tol) * 100;
+                                    var revScore = (float)MsSimilarityScoring.GetReverseSearchSimilarity(s1, s2, ms2tol) * 100;
+                                    var matchScore = (float)MsSimilarityScoring.GetPresenceSimilarityBasedOnReference(s1, s2, ms2tol) * 100;
+                                    var totalScore = (float)((dotProductFactor * dotScore + reverseDotProdFactor * revScore + presensePercentageFactor * matchScore) / (dotProductFactor + reverseDotProdFactor + presensePercentageFactor));
+
+                                    var revScore2 = (float)MsSimilarityScoring.GetReverseSearchSimilarity(s2, s1, ms2tol) * 100;
+                                    var matchScore2 = (float)MsSimilarityScoring.GetPresenceSimilarityBasedOnReference(s2, s1, ms2tol) * 100;
+                                    var totalScore2 = (float)((dotProductFactor * dotScore + reverseDotProdFactor * revScore2 + presensePercentageFactor * matchScore2) / (dotProductFactor + reverseDotProdFactor + presensePercentageFactor));
+
+                                    sw.Write(c.InChIKey + "\t" + c.Name + "\t" + c.NumSpectra + "\t");
+                                    sw.WriteLine(spec.CollisionEnergy + "\t" + dotScore + "\t" + revScore + "\t" + matchScore + "\t" + totalScore + "\t" + revScore2 + "\t" + matchScore2 + "\t" + totalScore2);
+                                }
+                                else
+                                {
+                                    dic.Add(spec.CollisionEnergy, spec);
+                                }
+                            }
+
+                        }
+                    }
+                });
+            }
+        }
 
         #endregion
         #endregion

@@ -17,7 +17,7 @@ namespace Metabolomics.MsLima.Model
     {
         public static List<MassSpectrum> ImportFile(out string fileName)
         {
-            List<MassSpectrum> res;
+            List<MassSpectrum> res = new List<MassSpectrum>();
             OpenFileDialog ofd = new OpenFileDialog
             {
                 Filter = "MSP file(*.msp)|*.msp; Text file (*.txt)|*.txt; all files(*)|*;",
@@ -30,13 +30,16 @@ namespace Metabolomics.MsLima.Model
             {
                 Mouse.OverrideCursor = Cursors.Wait;
                 fileName = ofd.FileName;
-                res = ReadFile.ReadLibraryFiles(ofd.FileName);
+                var raw = ReadFile.ReadLibraryFiles(ofd.FileName);                
+                foreach (var s in raw)
+                {
+                    res.Add(MassSpectrumUtility.ConvertToRelativeIntensity(s));
+                }
                 Mouse.OverrideCursor = null;
             }
             else
             {
                 fileName = "";
-                res = new List<MassSpectrum>();
             }
             return res;
 

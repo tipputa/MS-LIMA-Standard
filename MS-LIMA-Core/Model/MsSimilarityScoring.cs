@@ -146,10 +146,15 @@ namespace Metabolomics.MsLima.Model
             {
                 if (referenceMassList[i][1] < cutoff)
                     continue;
-
+                /*
                 scalarM += measuredMassList[i][1] * measuredMassList[i][0];
                 scalarR += referenceMassList[i][1] * referenceMassList[i][0];
                 covariance += Math.Sqrt(measuredMassList[i][1] * referenceMassList[i][1]) * measuredMassList[i][0];
+            */
+                scalarM += measuredMassList[i][1];
+                scalarR += referenceMassList[i][1];
+                covariance += Math.Sqrt(measuredMassList[i][1] * referenceMassList[i][1]);
+
             }
 
             if (scalarM == 0 || scalarR == 0) { return 0; }
@@ -247,9 +252,14 @@ namespace Metabolomics.MsLima.Model
             foreach (var m in referenceMassList) { System.Diagnostics.Debug.WriteLine(m[0] + " " + m[1]); }
             for (int i = 0; i < measuredMassList.Count; i++)
             {
+                /*scalarM += measuredMassList[i][1] * measuredMassList[i][0];
+                scalarR += referenceMassList[i][1] * referenceMassList[i][0];
+                covariance += Math.Sqrt(measuredMassList[i][1] * referenceMassList[i][1])*measuredMassList[i][0];
+    */
                 scalarM += measuredMassList[i][1];
                 scalarR += referenceMassList[i][1];
                 covariance += Math.Sqrt(measuredMassList[i][1] * referenceMassList[i][1]);
+
             }
 
             if (scalarM == 0 || scalarR == 0) { return 0; }

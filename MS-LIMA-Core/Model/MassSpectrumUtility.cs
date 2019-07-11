@@ -36,9 +36,11 @@ namespace Metabolomics.MsLima.Model
             var peaks = new List<AnnotatedPeak>();
             foreach(var peak in spectrum.Spectrum)
             {
-                if(peak.Comment != "")
+                if(!string.IsNullOrEmpty(peak.Comment))
                 {
                     peaks.Add(peak);
+                    Console.Write(peak.Mz + "\t");
+                    Console.WriteLine(peak.Comment);
                 }
             }
             spectrum.Spectrum = peaks;
