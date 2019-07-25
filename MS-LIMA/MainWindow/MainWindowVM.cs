@@ -402,6 +402,52 @@ namespace Metabolomics.MsLima
             }
         }
 
+        public DelegateCommand TemporaryMethods5 {
+            get {
+                return new DelegateCommand(x =>
+                {
+                    Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog
+                    {
+                        Filter = "MSP file(*.msp)|*.msp| MGF file (*.mgf)|*.mgf| Text file (*.txt)|*.txt| all files(*)|*;",
+                        Title = "Import a library file",
+                        RestoreDirectory = true,
+                        Multiselect = false
+                    };
+
+                    if (ofd.ShowDialog() == true)
+                    {
+                        var ms1 = Reader.ReadMspFile.ReadAsMsSpectra(ofd.FileName);
+
+                        Microsoft.Win32.OpenFileDialog ofd2 = new Microsoft.Win32.OpenFileDialog
+                        {
+                            Filter = "MSP file(*.msp)|*.msp| MGF file (*.mgf)|*.mgf| Text file (*.txt)|*.txt| all files(*)|*;",
+                            Title = "Import a library file",
+                            RestoreDirectory = true,
+                            Multiselect = false
+                        };
+
+                        if (ofd2.ShowDialog() == true)
+                        {
+                            var ms2 = Reader.ReadMspFile.ReadAsMsSpectra(ofd2.FileName);
+
+
+                            for (var i = 0; i < ms1.Count; i++)
+                            {
+                                if (ms1[i].Comment.Contains("CorrDec")) continue;
+                                var s = ms2[i].PrecursorMz;
+                                ms1[i].Comment = "Experimental precursorMz " + Math.Round(s,5) + "; " + ms1[i].Comment;
+                            }
+
+                        }
+                        using (var sw = new System.IO.StreamWriter(ofd.FileName + "mod", false, Encoding.UTF8))
+                        {
+                            Writer.MassSpectrumWriter.WriteMassSpectraAsMsp(sw, ms1);
+                        }
+                    }
+                });
+            }
+        }
+
         private DelegateCommand saveChart;
 
         public DelegateCommand SaveChart{
