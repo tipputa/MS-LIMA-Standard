@@ -1,0 +1,50 @@
+﻿<Window x:Class="Metabolomics.MsLima.SaveChartDrawing"
+        Name="SaveChartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Metabolomics.MsLima"
+        mc:Ignorable="d"
+        Title="SaveChartDrawing" Height="250" Width="360">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MinHeight="100"/>
+            <RowDefinition Height="50" MinHeight="50"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
+                <Label Content="Width:" Margin="10,0,0,0"/>
+                <TextBox Text="{Binding Width, StringFormat=0.0}" Width="80" Margin="10,0,0,0"/>
+                <Label Content="Height:" Margin="20, 0, 0, 0"/>
+                <TextBox Text="{Binding Height, StringFormat=0.0}" Width="80" Margin="10,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
+                <Label Content="Min m/z:" Margin="5,0,0,0"/>
+                <TextBox Text="{Binding MinX}" Width="80" Margin="10,0,0,0"/>
+                <Label Content="Max m/z:" Margin="10, 0, 0, 0"/>
+                <TextBox Text="{Binding MaxX}" Width="80" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
+                <Label Content="DPI X: " Margin="10,0,0,0"/>
+                <TextBox Text="{Binding DpiX}" Width="80" Margin="10,0,0,0"/>
+                <Label Content="DPI Y:  " Margin="20, 0, 0, 0"/>
+                <TextBox Text="{Binding DpiY}" Width="80" Margin="10,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
+                <Label Content="FilePath: " Margin="10,0, 0, 0" />
+                <TextBox Text="{Binding FilePath}" Margin="10,0, 5, 0" Width="200"/>
+                <Button Command="{Binding FileSelect}" Content="Folder" Width="50"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
+                <CheckBox IsChecked="{Binding IsArticleFormat}" Content="Article Format (White Background)" Margin="10,0, 0, 0" />
+                <CheckBox IsChecked="{Binding IsPngChecked}" Content="PNG" Margin="10, 0, 0, 0" />
+                <CheckBox IsChecked="{Binding IsEmfChecked}" Content="EMF" Margin="10, 0, 0, 0" />
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Button Content="Export" Command="{Binding ExportCommand}" CommandParameter="{Binding ElementName=SaveChartWindow}" Width="70" Height="25" Margin="0,0,90,0" HorizontalAlignment="Right"/>
+            <Button Content="Cancel" Command="{Binding CancelCommans}" CommandParameter="{Binding ElementName=SaveChartWindow}" Width="70" Height="25" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+        </Grid>
+    </Grid>
+</Window>

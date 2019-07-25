@@ -154,7 +154,14 @@
                 </StackPanel>
             </Grid>
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1">
-                <chart:DefaultUC x:Name="MassSpectrogramWithRefUI" Content="{Binding MassSpectrumWithRef}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <chart:DefaultUC x:Name="MassSpectrogramWithRefUI" Content="{Binding MassSpectrumWithRef}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <chart:DefaultUC.ContextMenu>
+                    <ContextMenu>
+                            <MenuItem Header="Save spectrum" Command="{Binding SaveChart}" CommandParameter="{Binding MassSpectrumVM}" />
+                    </ContextMenu>
+                </chart:DefaultUC.ContextMenu>
+                </chart:DefaultUC>
+
                 <!--="{DynamicResource ResourceKey=menuReverseMassSpectrogram}" />-->
             </Grid>
         </Grid>

@@ -300,7 +300,7 @@ namespace Metabolomics.MsLima
                             foreach (var spec in c.Spectra)
                             {
                                 if (dic.ContainsKey(spec.CollisionEnergy))
-                                {                                    
+                                {
                                     var s1 = spec;
                                     var s2 = dic[spec.CollisionEnergy];
                                     if (spec.Comment.Contains("CorrDec"))
@@ -337,6 +337,82 @@ namespace Metabolomics.MsLima
                 });
             }
         }
+
+        public DelegateCommand TemporaryMethods4 {
+            get {
+                return new DelegateCommand(x => {
+                    if (this.CompoundTable == null) return;
+                    using (var sw = new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(MsLimaData.DataStorage.FilePath) + "\\ms2sim.tsv", false, Encoding.UTF8))
+                    {
+                        foreach (var c in CompoundTable)
+                        {
+                            c.Name = c.Name.Replace(',', '_');
+                            if (c.NumSpectra != 10)
+                            {
+                                continue;
+                            }
+
+                            var dic1 = new Dictionary<float, MassSpectrum>();
+                            var dic2 = new Dictionary<float, MassSpectrum>();
+                            foreach (var spec in c.Spectra)
+                            {
+                                if (dic1.ContainsKey(spec.CollisionEnergy))
+                                {
+                                    if (dic2.ContainsKey(spec.CollisionEnergy))
+                                    {
+                                        var s1 = spec;
+                                        var s2 = dic1[spec.CollisionEnergy];
+                                        var s3 = dic2[spec.CollisionEnergy];
+
+                                        var ms2tol = (float)MsLimaData.Parameter.MS2Tol;
+
+                                        var dotScore1 = (float)MsSimilarityScoring.GetMassSpectraSimilarity(s2, s1, ms2tol) * 100;
+                                        var dotScore2 = (float)MsSimilarityScoring.GetMassSpectraSimilarity(s3, s1, ms2tol) * 100;
+
+                                        sw.Write(c.InChIKey + "\t" + c.Name + "\t" + c.NumSpectra + "\t");
+                                        sw.WriteLine(spec.CollisionEnergy + "\t" + dotScore1 + "\t" + dotScore2);
+
+                                        var s1rel = MassSpectrumUtility.ConvertToRelativeIntensity(s1);
+                                        var s2rel = MassSpectrumUtility.ConvertToRelativeIntensity(s2);
+                                        var s3rel = MassSpectrumUtility.ConvertToRelativeIntensity(s3);
+                                        var f1 = System.IO.Path.GetDirectoryName(MsLimaData.DataStorage.FilePath) + "\\" + c.Id +"_"+ "CorrDec_" + Math.Round(dotScore1, 1) + "_" + spec.CollisionEnergy + "_" + c.Name;
+                                        var f2 = System.IO.Path.GetDirectoryName(MsLimaData.DataStorage.FilePath) + "\\" + c.Id +"_"+ "MS2Dec_" + Math.Round(dotScore2, 1) + "_" + spec.CollisionEnergy + "_" + c.Name;
+                                        var dv1 = MsHandler.GetMassSpectrumWithRefDrawVisual(s2rel, s1rel);
+                                        var dv2 = MsHandler.GetMassSpectrumWithRefDrawVisual(s3rel, s1rel);
+                                        dv1.Title.Label = "CorrDec; " + s1.CollisionEnergy + "eV; " + Math.Round((dotScore1), 1) + "%; " + s2.Name;
+                                        dv2.Title.Label = "MS2Dec; " + s2.CollisionEnergy + "eV; " + Math.Round((dotScore2), 1) + "%; " + s3.Name;
+                                        Exporter.ExportDrawVisual.SaveAsPng(f1 + ".png", dv1, dv1.MinX, dv1.MaxX, dv1.MinY, dv1.MaxY, 350, 300, 300, 300, true);
+                                        Exporter.ExportDrawVisual.SaveAsPng(f2 + ".png", dv2, dv2.MinX, dv2.MaxX, dv2.MinY, dv2.MaxY, 350, 300, 300, 300, true);
+                                    }
+                                    else
+                                    {
+                                        dic2.Add(spec.CollisionEnergy, spec);
+                                    }
+                                }
+                                else
+                                {
+                                    dic1.Add(spec.CollisionEnergy, spec);
+                                }
+                            }
+
+                        }
+                    }
+
+                });
+            }
+        }
+
+        private DelegateCommand saveChart;
+
+        public DelegateCommand SaveChart{
+            get {
+                return saveChart ?? new DelegateCommand(x => {
+                    var w = new SaveChartDrawing(((DrawVisualMassSpectrum)x));
+                    w.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+                    w.Show();
+                });
+            }
+       }
 
         #endregion
         #endregion

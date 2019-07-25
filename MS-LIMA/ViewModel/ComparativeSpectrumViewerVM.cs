@@ -195,6 +195,15 @@ namespace Metabolomics.MsLima.ViewModel
         public DelegateCommand SameInChIKeyCheckBoxCheckedCommand { get; set; }
         public DelegateCommand SameInChIKeyCheckBoxUncheckedCommand { get; set; }
         public DelegateCommand SpectraSelectionChangedCommand { get; set; }
+        public DelegateCommand SaveChart {
+            get {
+                return new DelegateCommand(x => {
+                    var w = new SaveChartDrawing(MassSpectrumVM);
+                    w.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+                    w.Show();
+                });
+            }
+        }
 
         #endregion
 

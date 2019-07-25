@@ -48,6 +48,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Export\ExportChartDrawing.cs" />
     <Compile Include="MassSpectrumViewHandler.cs" />
     <Compile Include="MassSpectrum\DrawVisualMassSpectrum.cs" />
     <Compile Include="MassSpectrum\MassSpectrumUI.xaml.cs">

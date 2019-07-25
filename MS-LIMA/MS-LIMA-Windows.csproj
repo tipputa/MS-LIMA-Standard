@@ -88,6 +88,7 @@
     <Compile Include="Model\WindowUtility.cs" />
     <Compile Include="ViewModel\AllSpectraMetaInformationTableVM.cs" />
     <Compile Include="ViewModel\ParameterSettingVM.cs" />
+    <Compile Include="ViewModel\SaveChartDrawingVM.cs" />
     <Compile Include="ViewModel\ShortMessageVM.cs" />
     <Compile Include="Window\AllSpectraMetaInformationTable.xaml.cs">
       <DependentUpon>AllSpectraMetaInformationTable.xaml</DependentUpon>
@@ -97,6 +98,9 @@
     </Compile>
     <Compile Include="Window\ParameterSetting.xaml.cs">
       <DependentUpon>ParameterSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Window\SaveChartDrawing.xaml.cs">
+      <DependentUpon>SaveChartDrawing.xaml</DependentUpon>
     </Compile>
     <Compile Include="Window\ShortMessage.xaml.cs">
       <DependentUpon>ShortMessage.xaml</DependentUpon>
@@ -128,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Window\ParameterSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window\SaveChartDrawing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

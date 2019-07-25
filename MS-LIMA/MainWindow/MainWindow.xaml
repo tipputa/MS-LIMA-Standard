@@ -38,21 +38,7 @@
             <Setter Property="BorderBrush" Value="Gray" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
-<!--
-        <ContextMenu x:Key="control_basic">
-            <MenuItem Header="Copy spectra table as MSP format" Click="contextMenu_copyMspFormat_Click" />
-        </ContextMenu>
-        <ContextMenu x:Key="control_compInfo">
-            <MenuItem Header="Copy cell value" Click="contextMenu_copyCell_Click" />
-            <MenuItem Header="Copy row values" Click="contextMenu_copyRows_Click" />
-            <MenuItem Header="Copy spectra table as MSP format" Click="contextMenu_copyMspFormat_Click" />
-        </ContextMenu>
-        
-        <ContextMenu x:Key="control_MassSpectrogram">
-            <MenuItem Header="Save image as.." Click="contextMenu_SaveImageAs_Click" />
-            <MenuItem Header="Copy image as.." Click="contextMenu_CopyImageAs_Click" />
-        </ContextMenu>
--->
+
     </Window.Resources>
     <DockPanel Name="DockPanel_MainWindow">
 
@@ -127,11 +113,10 @@
                         <ToolTip Content="Using additional files (InChIKey InChI SMILES)"/>
                     </ToolTipService.ToolTip>
                 </MenuItem>
-                <!--
                 <MenuItem Name="MenuItem_TemporaryMethod1" Header="Temporary Method for developer" Command="{Binding TemporaryMethods}"/>
                 <MenuItem Name="MenuItem_TemporaryMethod2" Header="Temporary Method for developer" Command="{Binding TemporaryMethods2}"/>
                 <MenuItem Name="MenuItem_TemporaryMethod3" Header="Temporary Method for developer" Command="{Binding TemporaryMethods3}"/>
--->
+                <MenuItem Name="MenuItem_TemporaryMethod4" Header="Temporary Method for developer" Command="{Binding TemporaryMethods4}"/>
             </MenuItem>
 
 
@@ -167,14 +152,27 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <TabItem Header="MS/MS single viewer" Name="TabItem_SingleView" Background="LightSteelBlue" IsSelected="True">
-                            <view:MassSpectrumUI x:Name="SelectedSpectrumUI" Content="{Binding SingleMassSpectrumUI}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
+                            <view:MassSpectrumUI x:Name="SelectedSpectrumUI" Content="{Binding SingleMassSpectrumUI}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" >
+                                <view:MassSpectrumUI.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Save spectrum" Command="{Binding SaveChart}" CommandParameter="{Binding SingleMassSpectrumVM}" />
+                                    </ContextMenu>
+                                </view:MassSpectrumUI.ContextMenu>
+                            </view:MassSpectrumUI>
                         </TabItem>
 
                         <TabItem Header="MS/MS multiple viewer" Name="TabItem_ScrollView" Background="LightSteelBlue">
                             <ScrollViewer Name="MultiSpectra" Content="{Binding MultipleSpectra}" VerticalScrollBarVisibility ="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,1,0"/>
                         </TabItem>
                         <TabItem Header="MS/MS grouping viewer" Name="TabItem_GroupView" Background="LightSteelBlue">
-                            <view:MassSpectrumUI x:Name="ConsensusSpectrumUI" Content="{Binding ConsensusSpectrumUI}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0" />
+                            <view:MassSpectrumUI x:Name="ConsensusSpectrumUI" Content="{Binding ConsensusSpectrumUI}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,2,2,0">
+                            <view:MassSpectrumUI.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Save spectrum" Command="{Binding SaveChart}" CommandParameter="{Binding ConsensusSpectrumVM}" />
+                                </ContextMenu>
+                            </view:MassSpectrumUI.ContextMenu>
+                            </view:MassSpectrumUI>
+
                         </TabItem>
 
                     </TabControl>
