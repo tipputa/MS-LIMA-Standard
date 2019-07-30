@@ -33,6 +33,7 @@ namespace Metabolomics.MsLima.Model
                 var raw = ReadFile.ReadLibraryFiles(ofd.FileName);                
                 foreach (var s in raw)
                 {
+                    if (s.Spectrum.Count == 0) continue;
                     res.Add(MassSpectrumUtility.ConvertToRelativeIntensity(s));
                 }
                 Mouse.OverrideCursor = null;
@@ -52,6 +53,7 @@ namespace Metabolomics.MsLima.Model
             {
                 foreach(var spec in comp.Spectra)
                 {
+                    if (spec.Spectrum.Count == 0) continue;
                     spectra.Add(MassSpectrumUtility.ConvertToRelativeIntensity(spec.Copy()));
                 }
             }
