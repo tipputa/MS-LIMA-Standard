@@ -110,7 +110,7 @@ namespace Metabolomics.MsLima.Reader
                                 if (float.TryParse(wkstr.Split(':')[1].Trim(), out rt)) spectrum.RetentionTime = rt; else spectrum.RetentionTime = -1;
                                 continue;
                             }
-                            else if (Regex.IsMatch(wkstr, "RT:.?", RegexOptions.IgnoreCase))
+                            else if (Regex.IsMatch(wkstr, "^RT:.?", RegexOptions.IgnoreCase))
                             {
                                 if (float.TryParse(wkstr.Split(':')[1].Trim(), out rt)) spectrum.RetentionTime = rt; else spectrum.RetentionTime = -1;
                                 continue;

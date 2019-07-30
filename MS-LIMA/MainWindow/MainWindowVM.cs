@@ -233,6 +233,7 @@ namespace Metabolomics.MsLima
         #endregion
 
 
+        // Change comments to add particular sentence;
         private DelegateCommand temporaryMethod;
         public DelegateCommand TemporaryMethods {
             get {
@@ -257,6 +258,7 @@ namespace Metabolomics.MsLima
             }
         }
 
+        // Change MsLevel of CorrDec
         private DelegateCommand temporaryMethod2;
         public DelegateCommand TemporaryMethods2 {
             get {
@@ -279,6 +281,7 @@ namespace Metabolomics.MsLima
             }
         }
 
+        // CorrDec vs MS2Dec similarity in DIA GIAR library
         private DelegateCommand temporaryMethod3;
         public DelegateCommand TemporaryMethods3 {
             get {
@@ -338,6 +341,7 @@ namespace Metabolomics.MsLima
             }
         }
 
+        // CorrDecやMS2Dec(DIA; GIAR) vs. DDA (KI)を比較したときの結果をtxt, pngで保存。
         public DelegateCommand TemporaryMethods4 {
             get {
                 return new DelegateCommand(x => {
@@ -402,6 +406,8 @@ namespace Metabolomics.MsLima
             }
         }
 
+        // 2つのMSPファイルを開き、後に開いた方のprecursor mzを、先に開いた方のコメント欄に追記する。
+        // なお、その時にCorrDecとコメントに入っている場合は何もしない。
         public DelegateCommand TemporaryMethods5 {
             get {
                 return new DelegateCommand(x =>
@@ -442,6 +448,111 @@ namespace Metabolomics.MsLima
                         using (var sw = new System.IO.StreamWriter(ofd.FileName + "mod", false, Encoding.UTF8))
                         {
                             Writer.MassSpectrumWriter.WriteMassSpectraAsMsp(sw, ms1);
+                        }
+                    }
+                });
+            }
+        }
+
+        // CorrDec revision用
+        // Tyrosineの低段階希釈サンプルをCorrDecで全通り計算したので、それらを比較するためのメソッド。
+        // 対象とするライブラリを変更することも可。2つめに開いたライブラリが対象ライブラリ。
+        public DelegateCommand TemporaryMethods6 {
+            get {
+                return new DelegateCommand(x =>
+                {
+                    Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog
+                    {
+                        Filter = "MSP file(*.msp)|*.msp| MGF file (*.mgf)|*.mgf| Text file (*.txt)|*.txt| all files(*)|*;",
+                        Title = "Import a library file",
+                        RestoreDirectory = true,
+                        Multiselect = false
+                    };
+
+                    if (ofd.ShowDialog() == true)
+                    {
+                        var ms1 = Reader.ReadMspFile.ReadAsMsSpectra(ofd.FileName);
+
+                        Microsoft.Win32.OpenFileDialog ofd2 = new Microsoft.Win32.OpenFileDialog
+                        {
+                            Filter = "MSP file(*.msp)|*.msp| MGF file (*.mgf)|*.mgf| Text file (*.txt)|*.txt| all files(*)|*;",
+                            Title = "Import a library file",
+                            RestoreDirectory = true,
+                            Multiselect = false
+                        };
+
+                        if (ofd2.ShowDialog() == true)
+                        {
+                            using (var sw = new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(MsLimaData.DataStorage.FilePath) + "\\ms2similarity_tyrosine_serires.tsv", false, Encoding.UTF8))
+                            {
+                                var resMatrix = new double[100,100];
+                                // ms2には1つだけmass spectrum入れておくこと。
+                                var ms2 = Reader.ReadMspFile.ReadAsMsSpectra(ofd2.FileName);
+                                var s2rel = MassSpectrumUtility.ConvertToRelativeIntensity(ms2[0]);
+                                var s2relv2 = new MassSpectrum() { Spectrum = new List<AnnotatedPeak>() };
+                                foreach (var spec in s2rel.Spectrum)
+                                {
+                                    if (spec.Intensity < 1) continue;
+                                    s2relv2.Spectrum.Add(spec);
+                                }
+
+                                for (var i = 0; i < ms1.Count; i++)
+                                {
+                                    var start = 0;
+                                    var end = 0;
+                                    foreach (var meta in ms1[i].OtherMetaData)
+                                    {
+                                        Console.WriteLine(meta);
+                                        if (meta.Contains("Start: "))
+                                        {
+                                            var tmps = meta.Split(':')[1].Trim();
+                                            start = int.Parse(tmps);
+                                            Console.WriteLine(start);
+                                        }
+                                        else if (meta.Contains("End: "))
+                                        {
+                                            var tmps = meta.Split(':')[1].Trim();
+                                            end = int.Parse(tmps);
+                                        }
+                                    }
+
+                                    if (ms1[i].Spectrum.Count == 0)
+                                    {
+                                        resMatrix[start, end] = 0.0;
+                                        continue;
+                                    }
+
+                                    var s1rel = MassSpectrumUtility.ConvertToRelativeIntensity(ms1[i]);
+                                    var s1relv2 = new MassSpectrum() { Spectrum = new List<AnnotatedPeak>() };
+                                    foreach (var spec in s1rel.Spectrum)
+                                    {
+                                        if (spec.Intensity < 1) continue;
+                                        s1relv2.Spectrum.Add(spec);
+                                    }
+                                    
+                                    s1relv2.Name = s1rel.Name;
+                                    resMatrix[start,end] = MsSimilarityScoring.GetMassSpectraSimilarity(s1relv2, s2relv2, 0.01f) * 100;
+                                    
+                                }
+                                // header
+                                sw.Write("i/j" + "\t");
+                                for(var i = 0; i < 100; i++)
+                                {
+                                    sw.Write(i + "\t");
+                                }
+                                sw.WriteLine("");
+
+                                for(var i = 0; i < 100; i++)
+                                {
+                                    // rownames
+                                    sw.Write(i + "\t");
+                                    for(var j = 0; j < 100; j++)
+                                    {
+                                        sw.Write(resMatrix[i, j] + "\t");
+                                    }
+                                    sw.WriteLine("");
+                                }
+                            }
                         }
                     }
                 });

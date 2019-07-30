@@ -248,8 +248,6 @@ namespace Metabolomics.MsLima.Model
             if (sumReference - 0.5 == 0) wR = 0;
             else wR = 1 / (sumReference - 0.5);
 
-            foreach (var m in measuredMassList) { System.Diagnostics.Debug.WriteLine(m[0] + " " + m[1]); }
-            foreach (var m in referenceMassList) { System.Diagnostics.Debug.WriteLine(m[0] + " " + m[1]); }
             for (int i = 0; i < measuredMassList.Count; i++)
             {
                 /*scalarM += measuredMassList[i][1] * measuredMassList[i][0];
