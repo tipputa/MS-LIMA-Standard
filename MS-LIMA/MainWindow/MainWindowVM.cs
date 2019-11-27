@@ -559,6 +559,62 @@ namespace Metabolomics.MsLima
             }
         }
 
+        public DelegateCommand TemporaryMethods7 {
+            get {
+                return new DelegateCommand(x =>
+                {
+                    var filePath = MsLimaData.DataStorage.FilePath + ".removeLowAccuracyMS.msp";
+                    using (var sw = new System.IO.StreamWriter(filePath, false, Encoding.UTF8))
+                    {
+                        var result = new List<List<AnnotatedPeak>>();
+                        foreach (var i in MsLimaData.DataStorage.CompoundList)
+                        {
+                            var spectra = new List<MassSpectrum>();
+                            foreach (var c in i.Spectra)
+                            {
+                                if (IsHighAccuracyMS(c.Spectrum))
+                                {
+                                    spectra.Add(c);
+                                }
+                            }
+                            Writer.MassSpectrumWriter.WriteMassSpectraAsMsp(sw, spectra);
+                        }
+                    }
+                });
+            }
+        }
+
+        private bool IsHighAccuracyMS(List<AnnotatedPeak> msp)
+        {
+            int counter = 0;
+            if (msp.Count < 2) return false;
+            foreach (var s in msp)
+            {
+                var precision = GetPrecision(s.Mz);
+                if (precision < 2)
+                {
+                    counter += 1;                    
+                }
+                if(counter == 2)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private int GetPrecision(double val)
+        {
+            string priceString = val.ToString().TrimEnd('0');
+
+            int index = priceString.IndexOf('.');
+            if (index == -1)
+                return 0;
+
+            return priceString.Substring(index + 1).Length;
+        }
+
+
         private DelegateCommand saveChart;
 
         public DelegateCommand SaveChart{
@@ -576,7 +632,7 @@ namespace Metabolomics.MsLima
 
         public MainWindowVM()
         {
-            Task.Run(() => SmilesUtility.TryClassLoad());
+            //Task.Run(() => SmilesUtility.TryClassLoad());
             MsLimaData = new MsLimaData();
             MsHandler = new MassSpectrumViewHandler(MsLimaData.Parameter);
             AutoExporter = new AutoRepeater(MsLimaData.Parameter.WinParam.AutoExportIntervalMillisecond);
@@ -586,6 +642,14 @@ namespace Metabolomics.MsLima
 
             ControlRefresh = new ControlRefresh(this);
             SetCommands();
+            var i = 120.123f;
+            Console.WriteLine(i);
+            Console.WriteLine((double)i);
+            var i2 =(double)i * 2;
+            Console.WriteLine(i + " * 2 = " + i2);
+            var i3 = (float)i2 / 2.0f;
+            Console.WriteLine("i = " + i3);
+
         }
 
         private void MainWindowLoad()

@@ -278,7 +278,7 @@ namespace Metabolomics.Core.Parser
         public static float GetCollisionEnergy(string ce)
         {
             string figure = string.Empty;
-            float ceValue;
+            float ceValue = -1;
             for (int i = 0; i < ce.Length; i++)
             {
                 if (Char.IsNumber(ce[i]) || ce[i] == '.')
@@ -287,12 +287,20 @@ namespace Metabolomics.Core.Parser
                 }
                 else
                 {
-                    float.TryParse(figure, out ceValue);
-                    return ceValue;
+                    if (float.TryParse(figure, out ceValue))
+                        return ceValue;
+                    else
+                        return -1;
                 }
             }
-            float.TryParse(figure, out ceValue);
-            return ceValue;
+            if (float.TryParse(figure, out ceValue))
+            {
+                return ceValue;
+            }
+            else
+            {
+                return -1f;
+            }
         }
 
         public static double ConvertFormulaToAdductMass(AdductIon adductIon, string formula, IonMode ion)

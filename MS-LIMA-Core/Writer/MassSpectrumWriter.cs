@@ -30,6 +30,8 @@ namespace Metabolomics.MsLima.Writer
             sw.WriteLine("NAME: " + spec.Name);
             if (spec.RetentionTime >= 0)
                 sw.WriteLine("RETENTIONTIME: " + spec.RetentionTime);
+            else
+                sw.WriteLine("RETENTIONTIME: -1");
             sw.WriteLine("PRECURSORMZ: " + spec.PrecursorMz);
             if(spec.AdductIon != null && !string.IsNullOrEmpty(spec.AdductIon.AdductIonName))
                 sw.WriteLine("PRECURSORTYPE: " + spec.AdductIon.AdductIonName);

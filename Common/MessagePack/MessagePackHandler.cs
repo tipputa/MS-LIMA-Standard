@@ -87,7 +87,7 @@ namespace Metabolomics.Core.Handler
             }
         }
 
-        public static void Serialize<T>(Stream stream, List<T> value, IFormatterResolver resolver)
+        public static void Serialize<T>(Stream stream, List<T> value, IFormatterResolver resolver = null)
         {
             if (resolver == null) resolver = DefaultResolver;
             var bytes = GetBuffer();
@@ -102,7 +102,7 @@ namespace Metabolomics.Core.Handler
                 var formatter = resolver.GetFormatterWithVerify<T>();
                 var startOffSet = offset;
                 var c = value.Count;
-                offset += 5;
+                offset = 5;
                 var lastCounter = -1;
                 var bufferLz4 = GetBufferLZ4();
                 for (int i = 0; i < c; i++)
@@ -118,9 +118,12 @@ namespace Metabolomics.Core.Handler
                         bytes = GetBuffer();
                     }
                 }
-                MessagePackBinary.WriteArrayHeader(ref bytes, startOffSet, c - lastCounter - 1);
-                bufferLz4 = ToLZ4Binary(new ArraySegment<byte>(bytes, 0, offset));
-                stream.Write(bufferLz4, startOffSet, bufferLz4.Length);
+                if (lastCounter < c - 1)
+                {
+                    MessagePackBinary.WriteArrayHeader(ref bytes, startOffSet, c - lastCounter - 1);
+                    bufferLz4 = ToLZ4Binary(new ArraySegment<byte>(bytes, 0, offset));
+                    stream.Write(bufferLz4, startOffSet, bufferLz4.Length);
+                }
             }
         }
 
@@ -133,6 +136,7 @@ namespace Metabolomics.Core.Handler
 
         static ArraySegment<byte> ToLZ4BinaryCore(ArraySegment<byte> serializedData)
         {
+            Console.WriteLine("before LZ4 compress length: " + serializedData.Count);
             if (serializedData.Count < NotCompressionSize)
             {
                 return serializedData;
@@ -153,7 +157,7 @@ namespace Metabolomics.Core.Handler
 
                 // write body
                 var lz4Length = LZ4Codec.Encode(serializedData.Array, serializedData.Offset, serializedData.Count, buffer, offset, buffer.Length - offset);
-                Console.WriteLine("lz4Length" + lz4Length);
+                Console.WriteLine("lz4Length: " + lz4Length);
                 // write extension header(always 6 bytes)
                 extHeaderOffset += MessagePackBinary.WriteExtensionFormatHeaderForceExt32Block(ref buffer, extHeaderOffset, (sbyte)ExtensionTypeCode, lz4Length + 5);
 
@@ -223,8 +227,16 @@ namespace Metabolomics.Core.Handler
                 {
                     // decode lz4
                     var offset = bytes.Offset + readSize;
+                    Console.WriteLine("initial bytes.Offset: " + bytes.Offset);
+                    Console.WriteLine("initial readSize readExtension format header size: " + readSize);
+                    Console.WriteLine("initial deserialize offset: " + offset);
                     var length = MessagePackBinary.ReadInt32(bytes.Array, offset, out readSize);
+                    Console.WriteLine("readInt32 length: " + length);
+                    Console.WriteLine("header length: " + header.Length);
+
                     offset += readSize;
+                    Console.WriteLine("second deserialize offset: " + offset);
+
                     int bufferLength = (int)header.Length - 5;
                     buffer = GetBuffer(); // use LZ4 Pool
 
@@ -239,6 +251,8 @@ namespace Metabolomics.Core.Handler
                         offset = 0;
                         // LZ4 Decode
                         var len = bytes.Count + bytes.Offset - offset;
+                        Console.WriteLine("bytes.Count: " + bytes.Count);
+                        Console.WriteLine("bytes.Offset: " + bytes.Offset);
                         var bufferLz4 = new byte[length];
                         LZ4Codec.Decode(bytes.Array, bytes.Offset, len, bufferLz4, 0, length);
                         return DeserializeList<T>(bufferLz4, offset, resolver, out readSize);
@@ -258,14 +272,12 @@ namespace Metabolomics.Core.Handler
             }
             else
             {
-                Console.WriteLine("working");
+                Console.WriteLine("LZ4 decoded length: " + bytes.Length);
                 var startOffset = offset;
                 var formatter = formatterResolver.GetFormatterWithVerify<T>();
-                Console.WriteLine(formatter);
                 var len = MessagePackBinary.ReadArrayHeader(bytes, offset, out readSize);
-                Console.WriteLine("num list " + len);
-                offset += readSize;
-                var list = new List<T>();
+                offset = 5; // max value of readSize;
+                var list = new List<T>(len);
                 for (int i = 0; i < len; i++)
                 {
                     list.Add(formatter.Deserialize(bytes, offset, formatterResolver, out readSize));
@@ -276,6 +288,10 @@ namespace Metabolomics.Core.Handler
             }
         }
     }
+
+
+
+    /// test case for learning MessagePack
 
     public class LargeMspFormatFormatter<T> : IMessagePackFormatter<List<T>> {
         public List<T> Deserialize(byte[] bytes, int offset, IFormatterResolver formatterResolver, out int readSize)

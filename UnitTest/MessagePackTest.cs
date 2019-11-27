@@ -18,16 +18,16 @@ namespace UnitTest
             //var file = @"C:\Users\tipputa\Downloads\LC02MS02 iSTD MSP curated.msp";
             var msp = MspParser.MspFileReader(file);
             */
-            var file2 = @"C:\Users\tipputa\Downloads\MSDIAL-LipidDB-VS47.msp";
-            var file3 = @"C:\Users\tipputa\Downloads\MSDIAL-LipidDB-VS47.msp2";
-            var file4 = @"C:\Users\tipputa\Downloads\TestMessagePackLarge2.msp2";
+            var file2 = @"C:\Users\tipputa\Desktop\KI_HILIC_v0.95_Pos.msp";
+            var file3 = @"C:\Users\tipputa\Desktop\KI_HILIC_v0.95_Pos_V2.msp";
+            var file4 = @"C:\Users\tipputa\Desktop\KI_HILIC_v0.95_Pos_V3.msp";
 
             var msp = MspParser.MspFileReader(file2);
             SaveNewMessagePack(msp, file3);
-            /*var msp = ReadNewMessagePack(file3);
+            var msp2 = ReadNewMessagePack(file3);
 
             var largeMsp = new List<MspBean>();
-            /*AddList(largeMsp, msp);
+            AddList(largeMsp, msp);
             AddList(largeMsp, msp);
             AddList(largeMsp, msp);
             AddList(largeMsp, msp);
@@ -41,14 +41,14 @@ namespace UnitTest
             AddList(largeMsp, msp);
             AddList(largeMsp, msp);
 
+
             Console.WriteLine("num small" + msp.Count);
             Console.WriteLine("num large" + largeMsp.Count);
 
 
             SaveNewMessagePack(largeMsp, file4);
             var tmp2 = ReadNewMessagePack(file4);
-            Console.WriteLine(tmp2.Count);
-            */
+            Console.WriteLine(tmp2.Count);            
         }
 
         public void SaveNewMessagePack(List<MspBean> msp, string file)
