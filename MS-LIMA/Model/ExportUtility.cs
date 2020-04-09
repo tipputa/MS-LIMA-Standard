@@ -56,6 +56,21 @@ namespace Metabolomics.MsLima.Model
             }
         }
 
+        public static void SaveAsMgf(List<CompoundBean> compounds)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "MGF file(.mgf)|*.mgf|All Files (*.*)|*.*";
+
+            if (sfd.ShowDialog() == true)
+            {
+                var filePath = sfd.FileName;
+                Mouse.OverrideCursor = Cursors.Wait;
+                ExportCompoundTable.ExportCompoundTableAsMgf(filePath, compounds);
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+
         public static void SaveCommonProductIonTable(List<CompoundBean> compounds)
         {
             var sfd = new SaveFileDialog();

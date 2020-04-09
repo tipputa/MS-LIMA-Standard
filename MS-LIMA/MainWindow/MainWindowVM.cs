@@ -31,8 +31,13 @@ namespace Metabolomics.MsLima
         public TabMassSpectraView TabMassSpectraView { get; set; }
         public TabMassSpectrumTable TabMassSpectrumTable { get; set; } = TabMassSpectrumTable.SinglePeak;
 
-        public ICollectionView FilteredComponudTableView {
-            get => FilteredCompoundTable.View;
+        public ICollectionView FilteredComponudTableView
+        {
+            get
+            {
+                if (FilteredCompoundTable == null) return null;
+                return FilteredCompoundTable.View;
+            }
         }
 
         public List<MsGroup> ConsensusSpectraTable {
@@ -214,6 +219,7 @@ namespace Metabolomics.MsLima
 
         public DelegateCommand SaveAsMspCommand { get; set; }
         public DelegateCommand SaveAsMspWithoutRTCommand { get; set; }
+        public DelegateCommand SaveAsMgfCommand { get; set; }
         public DelegateCommand SaveAsMzMineCommand { get; set; }
 
         public DelegateCommand WindowLoaded { get; set; }
@@ -686,7 +692,9 @@ namespace Metabolomics.MsLima
             SaveAsMspWithoutRTCommand = new DelegateCommand(
                 x => ExportUtility.SaveAsMspWithoutRT(CompoundTable),
                 x => !IsDataLoaded());
-
+            SaveAsMgfCommand = new DelegateCommand(
+                x => ExportUtility.SaveAsMgf(CompoundTable),
+                x => !IsDataLoaded());
             SaveAsMzMineCommand = new DelegateCommand(
                 x => ExportUtility.SaveCompoundTableAsMzMineFormat(CompoundTable),
                 x => !IsDataLoaded());

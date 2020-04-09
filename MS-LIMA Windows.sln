@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MS-LIMA-Windows", "MS-LIMA\MS-LIMA-Windows.csproj", "{D5CEF2D5-3B54-4EEB-BFE3-523F83FD32A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsLimaWindows", "MS-LIMA\MsLimaWindows.csproj", "{D5CEF2D5-3B54-4EEB-BFE3-523F83FD32A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{6D8D81CA-8D7C-4799-A58B-58FC0BEC651C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MS-LIMA-Core", "MS-LIMA-Core\MS-LIMA-Core.csproj", "{7C4124E9-0A9D-4FFB-BB5D-4A7DD9CFD21C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsLimaBase", "MS-LIMA-Core\MsLimaBase.csproj", "{7C4124E9-0A9D-4FFB-BB5D-4A7DD9CFD21C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonWindows", "CommonWindows\CommonWindows.csproj", "{691F7770-0EFB-4761-97DB-205F56C3E848}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonMVVM", "CommonWindows\CommonMVVM.csproj", "{691F7770-0EFB-4761-97DB-205F56C3E848}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartDrawing", "ChartDrawing\ChartDrawing.csproj", "{6131640B-30E6-4606-A394-BE953590F3E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MS-LIMA-CommonView", "MS-LIMA-CommonView\MS-LIMA-CommonView.csproj", "{E4626675-9F5A-4EBE-9433-6E46413262AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsLimaCommonView", "MS-LIMA-CommonView\MsLimaCommonView.csproj", "{E4626675-9F5A-4EBE-9433-6E46413262AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFromSmiles", "ViewFromSmiles\ViewFromSmiles.csproj", "{66163AD9-3884-4150-ADAC-0B2402B1A001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{9E542E10-EEF8-410B-B15B-A2BFAA4C273C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{9E542E10-EEF8-410B-B15B-A2BFAA4C273C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsLimaConsole", "MsLimaConsole\MsLimaConsole.csproj", "{66A956F8-6D01-4D24-9471-82548B9BB5F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -227,6 +229,30 @@ Global
 		{9E542E10-EEF8-410B-B15B-A2BFAA4C273C}.Release|x64.Build.0 = Release|Any CPU
 		{9E542E10-EEF8-410B-B15B-A2BFAA4C273C}.Release|x86.ActiveCfg = Release|Any CPU
 		{9E542E10-EEF8-410B-B15B-A2BFAA4C273C}.Release|x86.Build.0 = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|ARM.Build.0 = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|x64.Build.0 = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Debug|x86.Build.0 = Debug|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|ARM.ActiveCfg = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|ARM.Build.0 = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|iPhone.Build.0 = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|x64.ActiveCfg = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|x64.Build.0 = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|x86.ActiveCfg = Release|Any CPU
+		{66A956F8-6D01-4D24-9471-82548B9BB5F6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

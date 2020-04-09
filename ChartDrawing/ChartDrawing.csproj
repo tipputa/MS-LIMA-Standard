@@ -72,9 +72,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonWindows\CommonWindows.csproj">
+    <ProjectReference Include="..\CommonWindows\CommonMVVM.csproj">
       <Project>{691f7770-0efb-4761-97db-205f56c3e848}</Project>
-      <Name>CommonWindows</Name>
+      <Name>CommonMVVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{6d8d81ca-8d7c-4799-a58b-58fc0bec651c}</Project>

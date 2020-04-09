@@ -14,11 +14,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChartDrawing\ChartDrawing.csproj" />
-    <ProjectReference Include="..\CommonWindows\CommonWindows.csproj" />
+    <ProjectReference Include="..\CommonWindows\CommonMVVM.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\MS-LIMA-CommonView\MS-LIMA-CommonView.csproj" />
-    <ProjectReference Include="..\MS-LIMA-Core\MS-LIMA-Core.csproj" />
-    <ProjectReference Include="..\MS-LIMA\MS-LIMA-Windows.csproj" />
+    <ProjectReference Include="..\MS-LIMA-CommonView\MsLimaCommonView.csproj" />
+    <ProjectReference Include="..\MS-LIMA-Core\MsLimaBase.csproj" />
+    <ProjectReference Include="..\MS-LIMA\MsLimaWindows.csproj" />
     <ProjectReference Include="..\ViewFromSmiles\ViewFromSmiles.csproj" />
   </ItemGroup>
 

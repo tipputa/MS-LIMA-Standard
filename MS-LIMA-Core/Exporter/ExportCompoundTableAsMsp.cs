@@ -43,6 +43,19 @@ namespace Metabolomics.MsLima
             }
         }
 
+        public static void ExportCompoundTableAsMgf(string filePath, List<CompoundBean> compounds)
+        {
+            using (var sw = new StreamWriter(filePath, false, Encoding.UTF8))
+            {
+                foreach (var comp in compounds)
+                {
+                    Writer.MassSpectrumWriter.WriteMassSpectraAsMgf(sw, comp.Spectra);
+                }
+            }
+
+        }
+
+
         public static void CalculateConsensusPeakInLibrary(string filePath, List<CompoundBean> compounds)
         {
             using (var sw = new StreamWriter(filePath, false, Encoding.UTF8))

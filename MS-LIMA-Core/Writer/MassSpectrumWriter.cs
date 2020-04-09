@@ -73,6 +73,39 @@ namespace Metabolomics.MsLima.Writer
 
         #endregion
 
+
+        #region MGF
+        public static void WriteMassSpectraAsMgf(StreamWriter sw, List<MassSpectrum> spectra)
+        {
+            foreach (var spectrum in spectra)
+            {
+                WriteMassSpectrumAsMgf(sw, spectrum);
+            }
+        }
+
+        public static void WriteMassSpectrumAsMgf(StreamWriter sw, MassSpectrum spec)
+        {
+            if (spec.PeakNumber == 0) return;
+            sw.WriteLine("BEGIN IONS");
+            var rt = -1.0;
+            if (spec.RetentionTime >= 0)
+               rt = Math.Round(spec.RetentionTime * 60, 2);
+
+            var titleString = spec.Name + "; CE=" + spec.CollisionEnergy + "; Num Peaks:" + spec.PeakNumber;
+            sw.WriteLine("TITLE=" + titleString);
+            sw.WriteLine("RTINMINUTES=" + Math.Round(spec.RetentionTime, 3));
+            sw.WriteLine("RTINSECONDS=" + rt);
+            sw.WriteLine("PEPMASS=" + Math.Round(spec.PrecursorMz,5));
+
+            foreach (var peak in spec.Spectrum)
+            {
+                sw.WriteLine(peak.Mz + "\t" + peak.Intensity);
+            }
+            sw.WriteLine("END IONS");
+        }
+
+        #endregion
+
         public static void WriteMassSpectraAsMzMineFormat(StreamWriter sw, CompoundBean compound)
         {
             var exported = new List<string>();

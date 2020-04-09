@@ -177,21 +177,21 @@
       <Project>{6131640b-30e6-4606-a394-be953590f3e9}</Project>
       <Name>ChartDrawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommonWindows\CommonWindows.csproj">
+    <ProjectReference Include="..\CommonWindows\CommonMVVM.csproj">
       <Project>{691f7770-0efb-4761-97db-205f56c3e848}</Project>
-      <Name>CommonWindows</Name>
+      <Name>CommonMVVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{6d8d81ca-8d7c-4799-a58b-58fc0bec651c}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MS-LIMA-CommonView\MS-LIMA-CommonView.csproj">
+    <ProjectReference Include="..\MS-LIMA-CommonView\MsLimaCommonView.csproj">
       <Project>{e4626675-9f5a-4ebe-9433-6e46413262ab}</Project>
-      <Name>MS-LIMA-CommonView</Name>
+      <Name>MsLimaCommonView</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MS-LIMA-Core\MS-LIMA-Core.csproj">
-      <Project>{fc4631e8-01dc-4498-a6a9-3cff0287ca3a}</Project>
-      <Name>MS-LIMA-Core</Name>
+    <ProjectReference Include="..\MS-LIMA-Core\MsLimaBase.csproj">
+      <Project>{7C4124E9-0A9D-4FFB-BB5D-4A7DD9CFD21C}</Project>
+      <Name>MsLimaBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

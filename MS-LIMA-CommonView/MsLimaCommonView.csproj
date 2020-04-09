@@ -61,17 +61,17 @@
       <Project>{6131640b-30e6-4606-a394-be953590f3e9}</Project>
       <Name>ChartDrawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommonWindows\CommonWindows.csproj">
+    <ProjectReference Include="..\CommonWindows\CommonMVVM.csproj">
       <Project>{691f7770-0efb-4761-97db-205f56c3e848}</Project>
-      <Name>CommonWindows</Name>
+      <Name>CommonMVVM</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{6d8d81ca-8d7c-4799-a58b-58fc0bec651c}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MS-LIMA-Core\MS-LIMA-Core.csproj">
+    <ProjectReference Include="..\MS-LIMA-Core\MsLimaBase.csproj">
       <Project>{7c4124e9-0a9d-4ffb-bb5d-4a7dd9cfd21c}</Project>
-      <Name>MS-LIMA-Core</Name>
+      <Name>MsLimaBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
